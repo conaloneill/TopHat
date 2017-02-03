@@ -26,7 +26,7 @@ public class RenderPanel extends JPanel {
 	
 	private Color backGreen = new Color(198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
-	private int dotsize = 30, logoWidth = 500, logoHeight = 200, fontSize = 30;;
+	private int dotsize = 15, logoWidth = 500, logoHeight = 200, fontSize = 30;;
 	
 	public Image getImage(String path){ //Function to get images
 		Image temp = null;
@@ -102,7 +102,7 @@ public class RenderPanel extends JPanel {
 			g.setColor(Color.BLACK);//Draw black rectangles around tiles
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
 			
-			g.setColor(Color.red);
+			g.setColor(Color.yellow);
 			if(o.hasPlayer){
 				g.fillOval(o.x - dotsize/2, o.y - dotsize/2, dotsize, dotsize);
 			}
