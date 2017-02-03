@@ -44,10 +44,10 @@ public class RenderPanel extends JPanel {
 		GameScreen screen = GameScreen.screen; //enables use of info from screen
 		super.paintComponent(g);
 		
-		g.setColor(backGreen);//Draw gray background
-		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 - GameScreen.TILESIZE/2 ,GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH + GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT);
+		g.setColor(backGreen);//Draw green background
+		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11 ,GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH, GameScreen.BOARD_HEIGHT);
 		g.setColor(insideGreen);
-		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 + GameScreen.TILESIZE/2 ,GameScreen.BOARD_HEIGHT  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE - GameScreen.TILESIZE/2 , GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*2);
+		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_HEIGHT  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*2);
 
 		if(backgroundImage == null){ //get images
 			backgroundImage = getImage("drawable/monopoly.jpg");
@@ -69,38 +69,45 @@ public class RenderPanel extends JPanel {
 			g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 			g.setColor(Color.black);
 			String s = "Tile no. " + screen.currentTile + " info here";
-			g.drawString(s , GameScreen.BOARD_WIDTH/2 - s.length()/2-fontSize*3, GameScreen.S_HEIGHT/2);
+			g.drawString(s , GameScreen.BOARD_WIDTH/2 - s.length()/2-fontSize*3, GameScreen.BOARD_HEIGHT/2);
 		}else{
-			g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2 + 23, GameScreen.S_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
+			g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
 		}
 		
 		//Draw Images on board
-		g.drawImage(go, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(freepark, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(jail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(injail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(go, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(freepark, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(jail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(injail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*8, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*8, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*3, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*8, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*8, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*7, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*8, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE - GameScreen.TILESIZE*10, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*5, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*8, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*9, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE - GameScreen.TILESIZE*10, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*5, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*5, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*10, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*6, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*5, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*6, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*6, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*6, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 
-		g.drawImage(incometax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2 - GameScreen.TILESIZE*4, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(luxurytax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE/2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*3, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(incometax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*5, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(luxurytax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*3, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 
 		
 		for(Tile o : screen.Tiles){ 
 			
 			g.setColor(Color.BLACK);//Draw black rectangles around tiles
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
+			
+			
+			
+			/*//Tile Area testing
+			g.setColor(Color.BLUE);
+			g.fillRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
+			*/
 			
 			g.setColor(Color.yellow);
 			if(o.hasPlayer){
@@ -109,5 +116,9 @@ public class RenderPanel extends JPanel {
 				g.drawOval(o.x - dotsize/2, o.y - dotsize/2, dotsize, dotsize);
 			}
 		}
+		
+		//Mouse tracker red dot
+		g.setColor(Color.red);
+		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
 	}
 }

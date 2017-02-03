@@ -26,7 +26,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public JButton enter;
 	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2;
-	public static final int  TILESIZE = 60, S_WIDTH = 1100, S_HEIGHT = 690, BOARD_WIDTH = 630, BOARD_HEIGHT = 660;
+	public static final int  TILESIZE = 60, S_WIDTH = 1100, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
 	public static GameScreen screen;
@@ -39,7 +39,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		timer = new Timer(20, this);//Params are delay and actionListener
 		
 		frame = new JFrame();
-		frame.setSize(S_WIDTH,S_HEIGHT);
+		frame.setSize(S_WIDTH,BOARD_HEIGHT);
 		frame.setResizable(false);
 		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);
 		
@@ -56,7 +56,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private void addComponentsToPane(Container pane) {//Adds Components to screen
 		pane.setLayout(new BorderLayout());
 		
-		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+TILESIZE/2+1, BOARD_HEIGHT+1));
+		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_HEIGHT+1));
 		pane.add(boardGraphics, BorderLayout.LINE_START);
 		
 		Container INFOAREA = new Container();//Container to hold text boxes and button (everything on the right)
@@ -98,7 +98,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		
 		//Loops to create Tiles in correct order
-		int x = BOARD_WIDTH;
+		int x = BOARD_WIDTH - TILESIZE/2;
 		int y = BOARD_HEIGHT - TILESIZE/2;
 		for(int row = 0;row<11;row++){//BOTTOM ROW
 			Tiles.add(new Tile(row, 0,100,x,y));
@@ -159,7 +159,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		//Moves a token around the board
 		if(ticks%10==0){//Every 10 ticks...
-			boardGraphics.repaint();//redraw board every frame
+			
 			if(tileIndex>=Tiles.size()-1){
 				Tiles.get(tileIndex).hasPlayer = false;
 				tileIndex = 0;
@@ -174,6 +174,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				tileIndex++;
 				Tiles.get(tileIndex).hasPlayer = true;	
 			}	
+			
+			boardGraphics.repaint();//redraw board
 		}
 	}
 	@Override
