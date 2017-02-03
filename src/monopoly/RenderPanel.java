@@ -105,6 +105,8 @@ public class RenderPanel extends JPanel {
 			g.setColor(Color.yellow);
 			if(o.hasPlayer){
 				g.fillOval(o.x - dotsize/2, o.y - dotsize/2, dotsize, dotsize);
+				g.setColor(Color.BLACK);
+				g.drawOval(o.x - dotsize/2, o.y - dotsize/2, dotsize, dotsize);
 			}
 		}
 	}
