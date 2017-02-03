@@ -150,11 +150,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 		//If mouse is in the center of the board ( not a tile )
-		if(mouseX > BOARD_WIDTH - TILESIZE*10 + TILESIZE/2 && 
-		   mouseX <  BOARD_WIDTH - TILESIZE/2 &&
+		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+		   mouseX <  BOARD_WIDTH - TILESIZE &&
 		   mouseY > BOARD_HEIGHT - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-		   mouseY < BOARD_HEIGHT - TILESIZE/2 ||
-		   mouseX > BOARD_WIDTH + TILESIZE/2){
+		   mouseY < BOARD_HEIGHT - TILESIZE ||
+		   //or off the board
+		   mouseX > BOARD_WIDTH - 10){
 			mouseIsOnATile = false;
 		}
 		//Moves a token around the board
@@ -183,8 +184,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 	@Override
 	public void mouseMoved(MouseEvent m) {//When mouse is moved
-		mouseX = m.getX();//Get mouse Location
-		mouseY = m.getY();
+		mouseX = m.getX() - 2;//Get mouse Location
+		mouseY = m.getY() - 25;
 	}
 	
 	
