@@ -11,8 +11,6 @@ public class Player {
 	
 	private Color colour;
 	
-	
-	
 	public int playerNumber;
 	private int currentTile;
 }
