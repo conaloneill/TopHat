@@ -13,16 +13,15 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener{
 	public Timer timer;
 	public JFrame frame;
-	public JTextArea infoPanel;
-	public JTextField commandPanel;
+	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
 	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2;
@@ -66,12 +65,31 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
 		infoPanel.setText("INFO PANEL");
 		infoPanel.setEditable(false);
-		//infoPanel.setBounds(0, 0, 180, 100);
-		infoPanel.setBackground(boardGraphics.insideGreen);
-		INFOAREA.add(infoPanel, BorderLayout.NORTH);
 		
-		commandPanel = new JTextField("COMMAND PANEL", 20);
-		INFOAREA.add(commandPanel, BorderLayout.CENTER);
+		//lines now wrap to next line so only vertical scrolling needed
+		infoPanel.setLineWrap(true);
+		infoPanel.setWrapStyleWord(true);
+		
+		infoPanel.setBackground(boardGraphics.insideGreen);
+		
+		//adding a JScrollPane to the info panel to allow it to vertically scroll through all the commands
+		JScrollPane infoScrollPane = new JScrollPane(infoPanel);
+		infoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);
+		
+		
+		//commandPanel set at JTextArea so line can wrap around and can be made scrollable vertically
+		commandPanel = new JTextArea("COMMAND PANEL", 5,3);
+		commandPanel.setLineWrap(true);
+		commandPanel.setWrapStyleWord(true);
+		
+		//adding a JScrollPane to the command panel to allow it to vertically scroll through the new command
+		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
+		commandScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);
+	
 		
 		enter = new JButton("Enter");
 		enter.setPreferredSize(new Dimension((S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1))/2,50));
@@ -132,7 +150,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		
 		//Keep mouse position in the command panel
 		String mousePos = mouseX + ", " + mouseY;
-		commandPanel.setText(mousePos);
+		//commandPanel.setText(mousePos);
 		
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())){
