@@ -175,7 +175,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && 
 					mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
 				mouseIsOnATile = true;
-				currentTile =  o.number;
+				currentTile =  o.getTileNum();
 			}
 		}
 		//If mouse is in the center of the board ( not a tile )
