@@ -28,7 +28,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public JButton enter;
 	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2;
-	public static final int  TILESIZE = 60, S_WIDTH = 1100, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
+	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
 	public static GameScreen screen;
