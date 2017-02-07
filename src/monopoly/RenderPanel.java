@@ -26,6 +26,9 @@ public class RenderPanel extends JPanel {
 	private Image train = null;
 	private Image incometax = null;
 	private Image luxurytax = null;
+	
+	private Image propertyTest = null;
+
 
 	private Color backGreen = new Color(198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
@@ -40,7 +43,9 @@ public class RenderPanel extends JPanel {
 
 
 	
-	private int dotsize = 15, logoWidth = 500, logoHeight = 200, fontSizeBig = 30, fontSizeRent = 17;
+	private int dotsize = 15, logoWidth = 500, logoHeight = 200, fontSizeBig = 30, fontSizeRent = 17, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100,
+			propertyImageHeight = GameScreen.BOARD_HEIGHT/2 + 100;
+	
 	public Image getImage(String path){ //Function to get images
 		Image temp = null;
 		try {
@@ -51,7 +56,7 @@ public class RenderPanel extends JPanel {
 		}
 		return temp;
 	}
-	//method to rotate camvas by 90*
+	//method to rotate canvas by 90*
 	private void rotate90Degrees(Graphics2D g){ 
 		g.translate(GameScreen.BOARD_WIDTH/2, GameScreen.BOARD_HEIGHT/2);
 		g.rotate(Math.toRadians(90));
@@ -68,7 +73,8 @@ public class RenderPanel extends JPanel {
 		g.setColor(insideGreen);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_HEIGHT  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*2);
 
-		if(backgroundImage == null){ //get images
+		 //get images
+		if(backgroundImage == null){
 			backgroundImage = getImage("drawable/monopoly.jpg");
 			monopolyLogo = getImage("drawable/monologo.png");
 			go = getImage("drawable/go.jpg");
@@ -80,6 +86,7 @@ public class RenderPanel extends JPanel {
 			train = getImage("drawable/train.png");
 			incometax = getImage("drawable/incometax.png");
 			luxurytax = getImage("drawable/luxurytax.png");
+			propertyTest = getImage("drawable/PropertyTest1.png");
 		}
 
 		//g.drawImage(backgroundImage,0,0,GameScreen.BOARD_WIDTH, GameScreen.BOARD_HEIGHT, this);
@@ -89,7 +96,10 @@ public class RenderPanel extends JPanel {
 			g.setColor(Color.black);
 			String s = "Tile no. " + screen.currentTile + " info here";
 			g.drawString(s , GameScreen.BOARD_WIDTH/2 - s.length()/2-fontSizeBig*3, GameScreen.BOARD_HEIGHT/2);
-		}else{
+			/*if(screen.currentTile == 1){
+				g.drawImage(propertyTest, GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+			}*/
+			}else{
 			g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
 		}
 
@@ -138,14 +148,17 @@ public class RenderPanel extends JPanel {
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
 
 		
-			if (o.getTileNum() == 7 || o.getTileNum() == 22 || o.getTileNum() == 36) {
+			/*if (o.getTileNum() == 7 || o.getTileNum() == 22 || o.getTileNum() == 36) {
 				o.setImage(chance);
-			}
+			}*/
 
+			//should put this in init() so its not done everytime
 			switch (o.getTileNum()) {
 			
 			case 0:
 				o.setImage(go); break;
+			case 1:
+				o.setinfoImage(propertyTest);   //Testing tile images
 			case 2:
 				o.setImage(comchest); break;
 			case 4:
@@ -189,7 +202,11 @@ public class RenderPanel extends JPanel {
 				g.setColor(Color.BLACK);
 				g.drawOval(o.x - dotsize/2, o.y - dotsize/2, dotsize, dotsize);
 			}
-			 
+			
+			//If mouse is on tile, draw tile info image
+			if(o.getTileNum() == screen.currentTile){
+				g.drawImage(o.getinfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+			}
 		}
 
 		//Mouse tracker red dot

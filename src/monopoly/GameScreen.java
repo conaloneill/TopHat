@@ -144,6 +144,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			y+= TILESIZE;
 		}
 
+		//Loop to setup Tile images should be here
+		for(Tile o : Tiles){
+			
+		}
 	}
 	
 	
@@ -186,6 +190,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//or off the board
 				mouseX > BOARD_WIDTH - 10){
 			mouseIsOnATile = false;
+			currentTile = 100;
 		}
 		//Moves a token around the board
 		if(ticks%10==0){//Every 10 ticks...

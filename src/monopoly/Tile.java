@@ -15,7 +15,12 @@ public class Tile {
 	public void setImage(Image img) {
 		this.image = img;
 	}
-	
+	public void setinfoImage(Image img) {
+		this.infoImage = img;
+	}
+	public Image getinfoImage() {
+		return this.infoImage;
+	}
 	public int getTileNum() {
 		return this.number;
 	}
@@ -28,6 +33,7 @@ public class Tile {
 	private int Type;
 	private int Rent;
 	private Image image;
+	private Image infoImage;
 	private int number;
 	public int x;
 	public int y;
