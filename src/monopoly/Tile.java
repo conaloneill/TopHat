@@ -20,6 +20,10 @@ public class Tile {
 		return this.number;
 	}
 	
+	public String rentToString(){
+		String s = "" + Rent;
+		return s;
+	}
 	public boolean hasPlayer;
 	private int Type;
 	private int Rent;
