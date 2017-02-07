@@ -218,8 +218,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
 					Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
 					Players.get(count-1).currentTile++;
-					if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach go
-						Players.get(count-1).currentTile=0;
+					if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square						Players.get(count-1).currentTile=0;
 					}
 				}
 				a++;

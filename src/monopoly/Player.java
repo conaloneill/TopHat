@@ -13,6 +13,6 @@ public class Player {
 	
 	public int playerNumber;
 	public int currentTile;
-	public int xPosition;
-	public int yPosition;
+	public int xPosition;  //Stores current x position
+	public int yPosition;  //Stores current y position
 }

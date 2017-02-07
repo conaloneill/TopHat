@@ -147,6 +147,9 @@ public class RenderPanel extends JPanel {
 			g.setColor(Color.BLACK);//Draw black rectangles around tiles
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
 			
+			
+			//Draws the individual player tokens
+			
 			//Player 1
 			int xOne=screen.Players.get(0).xPosition;  //Gets current x position
 			int yOne=screen.Players.get(0).yPosition;  //Gets current y position
