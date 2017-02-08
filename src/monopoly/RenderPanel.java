@@ -148,7 +148,7 @@ public class RenderPanel extends JPanel {
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
 			
 			
-			//Draws the individual player tokens
+			//Draws the individual player token
 			
 			//Player 1
 			int xOne=screen.Players.get(0).xPosition;  //Gets current x position

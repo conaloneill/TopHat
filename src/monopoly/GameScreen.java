@@ -199,7 +199,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			String s = commandPanel.getText();
 			String temp = infoPanel.getText();
 			infoPanel.setText(temp + "\n" + s);
-			if(s.equals("roll")){   //Moves the players when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
+			if(s.equals("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
 				int dice = ThreadLocalRandom.current().nextInt(2, 13);  //Generates a random number between 2 and 12,then moves the player that many squares
 				int a=1;  //"a" keeps track of how many squares left to move
 				while(a<=dice){  //This loop moves the players around the board
@@ -218,7 +218,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
 					Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
 					Players.get(count-1).currentTile++;
-					if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square						Players.get(count-1).currentTile=0;
+					if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
+						Players.get(count-1).currentTile=0;
 					}
 				}
 				a++;
