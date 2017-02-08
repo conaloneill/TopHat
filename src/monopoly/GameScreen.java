@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
+
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener{
 	public Timer timer;
@@ -39,32 +40,32 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	GameScreen(){
 		init();
 		timer = new Timer(20, this);//Params are delay and actionListener
-		
+
 		frame = new JFrame();
 		frame.setSize(S_WIDTH,BOARD_HEIGHT);
 		frame.setResizable(false);
 		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);
-		
+
 		addComponentsToPane(frame.getContentPane());
-		
+
 		frame.pack(); //shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
-		
+
 		ticks = 0;
 		timer.start();
 	}
 	private void addComponentsToPane(Container pane) {//Adds Components to screen
 		pane.setLayout(new BorderLayout());
-		
-		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+TILESIZE/2+1, BOARD_HEIGHT+1));
+
+		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_HEIGHT+1));
 		pane.add(boardGraphics, BorderLayout.LINE_START);
-		
+
 		Container INFOAREA = new Container();//Container to hold text boxes and button (everything on the right)
 		INFOAREA.setPreferredSize(new Dimension(S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1), BOARD_HEIGHT+1));
 		INFOAREA.setLayout(new BorderLayout());
-		
+
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
 		infoPanel.setText("INFO PANEL\nPlayer 1:");
 		infoPanel.setEditable(false);
@@ -100,16 +101,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		enter.addActionListener(this);
 		enter.setActionCommand("ENTER");//Name of action
 		INFOAREA.add(enter, BorderLayout.LINE_END);
-		
+
 		pane.add(INFOAREA, BorderLayout.LINE_END);
 	}
 	private void init() {  //Called once on create. Used to setup game
-	
+
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
 			numberOfPlayers = Integer.parseInt(n);
-			
+
 			if(numberOfPlayers >= minNumberOfPlayers && numberOfPlayers <= maxNumberOfPlayers){
 				playerNumberCheck = true;
 			}
@@ -118,11 +119,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		for(int i = 0;i<numberOfPlayers;i++){
 			Players.add(new Player(0, i));
 		}
-		
+
 		//Sets the starting position for each individual player
 		Players.get(0).xPosition=650;
 		Players.get(0).yPosition=645;
-		
+
 		Players.get(1).xPosition=675;
 		Players.get(1).yPosition=645;
 		
@@ -146,7 +147,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		Players.get(5).yPosition=685;
 		}
 				
-		
+
 		//Loops to create Tiles in correct order
 		int x = BOARD_WIDTH - TILESIZE/2;
 		int y = BOARD_HEIGHT - TILESIZE/2;
@@ -176,12 +177,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			
 		}
 		
+
+		//Loop to setup Tile images should be here
+		for(Tile o : Tiles){
+			
+		}
 	}
 
 	
 	public static void main(String[] args) {
 		screen = new GameScreen();
 	}
+
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {  //MAIN LOOP, gets called when timer ticks
@@ -237,11 +245,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			
 			infoPanel.append("\nPlayer "+count+" :");  //Asks the next player for input
 		}
-		
+
 		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
 		for(Tile o : Tiles){ //figure out what tile the mouse is on
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && 
-			   mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+					mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
 				mouseIsOnATile = true;
 				currentTile =  o.getTileNum();
 			}
@@ -258,6 +266,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		//Moves a token around the board
 		/*if(ticks%10==0){//Every 10 ticks...
+
+
+
 			if(tileIndex>=Tiles.size()-1){
 				Tiles.get(tileIndex).hasPlayer = false;
 				tileIndex = 0;
@@ -272,6 +283,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				tileIndex++;
 				Tiles.get(tileIndex).hasPlayer = true;
 			}	
+
+			boardGraphics.repaint();//redraw board
+
+			boardGraphics.repaint();//redraw board
+
+			boardGraphics.repaint();//redraw board
 		}*/
 	}
 	@Override
