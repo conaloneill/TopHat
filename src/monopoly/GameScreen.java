@@ -67,7 +67,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
-		infoPanel.setText("INFO PANEL\nPlayer 1:");
+		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\nPlayer 1:");
 		infoPanel.setEditable(false);
 		
 		//lines now wrap to next line so only vertical scrolling needed
@@ -174,7 +174,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		
 		//Loop to setup Tile images should be here
 		for(Tile o : Tiles){
-			
+
 		}
 		
 
