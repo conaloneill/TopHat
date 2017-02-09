@@ -1,6 +1,5 @@
 package monopoly;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -20,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
-
 
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener{
@@ -94,10 +92,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
 		commandScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
-
 		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);
-
 
 		enter = new JButton("Enter");
 		enter.setPreferredSize(new Dimension((S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1))/2,50));
@@ -120,7 +115,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
-			Players.add(new Player(0, i));
+			Players.add(new Player(0, i+1));
 		}
 
 		//Sets the starting position for each individual player

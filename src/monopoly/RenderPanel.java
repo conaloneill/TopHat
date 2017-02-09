@@ -143,6 +143,9 @@ public class RenderPanel extends JPanel {
 			g.fillOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws player token at current x,y coordinates
 			g.setColor(Color.BLACK);
 			g.drawOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws black circle around token
+			String playerNum = "P" + p.playerNumber;
+			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
+			g.drawString(playerNum, p.xPosition+3, p.yPosition + 12);
 		}
 		//Mouse tracker red dot
 		g.setColor(Color.red);

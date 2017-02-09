@@ -9,7 +9,6 @@ public class Player {
 		playerNumber = playerNum;
 	}
 	
-	
 	public void setColour(Color color) {
 		this.colour = color;
 	}
@@ -17,7 +16,6 @@ public class Player {
 	public Color getColour() {
 		return this.colour;
 	}
-	
 	
 	private Color colour;
 	
