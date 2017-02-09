@@ -2,6 +2,7 @@ package monopoly;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -125,28 +126,34 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Sets the starting position for each individual player
 		Players.get(0).xPosition=650;
 		Players.get(0).yPosition=645;
+		Players.get(0).setColour(Color.magenta);
 
 		Players.get(1).xPosition=675;
 		Players.get(1).yPosition=645;
+		Players.get(1).setColour(Color.blue);
 
 		if(numberOfPlayers>=3){
 			Players.get(2).xPosition=650;
 			Players.get(2).yPosition=665;
+			Players.get(2).setColour(Color.yellow);
 		}
 
 		if(numberOfPlayers>=4){
 			Players.get(3).xPosition=675;
 			Players.get(3).yPosition=665;
+			Players.get(3).setColour(Color.green);
 		}
 
 		if(numberOfPlayers>=5){
 			Players.get(4).xPosition=650;
 			Players.get(4).yPosition=685;
+			Players.get(4).setColour(Color.darkGray);
 		}
 
 		if(numberOfPlayers>=6){
 			Players.get(5).xPosition=675;
 			Players.get(5).yPosition=685;
+			Players.get(5).setColour(Color.pink);
 		}
 
 

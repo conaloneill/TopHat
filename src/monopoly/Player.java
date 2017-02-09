@@ -10,6 +10,15 @@ public class Player {
 	}
 	
 	
+	public void setColour(Color color) {
+		this.colour = color;
+	}
+	
+	public Color getColour() {
+		return this.colour;
+	}
+	
+	
 	private Color colour;
 	
 	public int playerNumber;

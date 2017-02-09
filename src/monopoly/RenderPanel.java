@@ -78,7 +78,7 @@ public class RenderPanel extends JPanel {
 			monopolyLogo = getImage("drawable/monologo.png");
 			go = getImage("drawable/go.jpg");
 			freepark = getImage("drawable/freepark.png");
-			gotojail = getImage("drawable/jail.png");
+			gotojail = getImage("drawable/gotojail.png");
 			injail = getImage("drawable/injail.png");
 			chance = getImage("drawable/chance.png");
 			comchest = getImage("drawable/comchest.png");
@@ -160,7 +160,7 @@ public class RenderPanel extends JPanel {
 		
 		//Draws the individual player tokens
 		for(Player p : screen.Players){
-			g.setColor(Color.magenta);  //Sets colour
+			g.setColor(p.getColour());  //Sets colour
 			g.fillOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws player token at current x,y coordinates
 			g.setColor(Color.BLACK);
 			g.drawOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws balck circle around token
