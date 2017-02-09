@@ -11,6 +11,7 @@ import java.net.URL;
 
 import javax.swing.JPanel;
 
+//test merge
 
 @SuppressWarnings("serial")
 public class RenderPanel extends JPanel {
