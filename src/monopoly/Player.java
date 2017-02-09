@@ -9,6 +9,7 @@ public class Player {
 		playerNumber = playerNum;
 	}
 	
+	
 	private Color colour;
 	
 	public int playerNumber;

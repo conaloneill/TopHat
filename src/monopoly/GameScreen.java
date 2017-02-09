@@ -173,7 +173,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31, 0,100,x,y));
 			y+= TILESIZE;
 		}
-
+		Tiles.get(1).setinfoImage(boardGraphics.propertyTest);
 		//Loop to setup Tile images should be here
 		for(Tile o : Tiles){
 
@@ -209,8 +209,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			String s = commandPanel.getText();
 			String temp = infoPanel.getText();
 			infoPanel.setText(temp + "\n" + s);
-			if(s.equals("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
-				int dice = ThreadLocalRandom.current().nextInt(2, 13);  //Generates a random number between 2 and 12,then moves the player that many squares
+			if(s.equalsIgnoreCase("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
+				int dice = ThreadLocalRandom.current().nextInt(1, 7) + ThreadLocalRandom.current().nextInt(1, 7);  //Generates a random number between 2 and 12,then moves the player that many squares
 				int a=1;  //"a" keeps track of how many squares left to move
 				while(a<=dice){  //This loop moves the players around the board
 					if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left

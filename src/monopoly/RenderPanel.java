@@ -27,7 +27,7 @@ public class RenderPanel extends JPanel {
 	private Image incometax = null;
 	private Image luxurytax = null;
 	
-	private Image propertyTest = null;
+	public Image propertyTest = null;
 	
 	
 	private Color backGreen = new Color(198, 255, 181);
@@ -85,7 +85,7 @@ public class RenderPanel extends JPanel {
 			train = getImage("drawable/train.png");
 			incometax = getImage("drawable/incometax.png");
 			luxurytax = getImage("drawable/luxurytax.png");
-			propertyTest = getImage("drawable/PropertyTest1.png");
+			propertyTest = getImage("drawable/Picadilly.png");
 		}
 		
 		//g.drawImage(backgroundImage,0,0,GameScreen.BOARD_WIDTH, GameScreen.BOARD_HEIGHT, this);
@@ -141,6 +141,8 @@ public class RenderPanel extends JPanel {
 
 		g2d.setTransform(old); //rotate back to original canvas
 
+		
+		
 				
 		for(Tile o : screen.Tiles){ 
 			
@@ -148,65 +150,21 @@ public class RenderPanel extends JPanel {
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
 			
 			
-			//Draws the individual player tokens
 			
-			//Player 1
-			int xOne=screen.Players.get(0).xPosition;  //Gets current x position
-			int yOne=screen.Players.get(0).yPosition;  //Gets current y position
-			g.setColor(Color.magenta);  //Sets colour
-			g.fillOval(xOne, yOne, dotsize, dotsize);  //Draws player token at current x,y coordinates
-			g.setColor(Color.BLACK);
-			g.drawOval(xOne, yOne, dotsize, dotsize);  //Draws balck circle around token
-			
-			//Player 2
-			int xTwo=screen.Players.get(1).xPosition;
-			int yTwo=screen.Players.get(1).yPosition;
-			g.setColor(Color.blue);
-			g.fillOval(xTwo, yTwo, dotsize, dotsize);
-			g.setColor(Color.BLACK);
-			g.drawOval(xTwo, yTwo, dotsize, dotsize);
-
-			//Player 3
-			if(screen.numberOfPlayers>=3){
-				int xThree=screen.Players.get(2).xPosition;
-				int yThree=screen.Players.get(2).yPosition;    
-			    g.setColor(Color.yellow);
-			    g.fillOval(xThree, yThree, dotsize, dotsize);
-			    g.setColor(Color.BLACK);
-				g.drawOval(xThree, yThree, dotsize, dotsize);
+			if(o.getTileNum() == screen.currentTile){
+				g.drawImage(o.getinfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
 			}
 			
-			//Player 4
-			if(screen.numberOfPlayers>=4){
-				int xFour=screen.Players.get(3).xPosition;
-				int yFour=screen.Players.get(3).yPosition;
-				g.setColor(Color.green);
-				g.fillOval(xFour, yFour, dotsize, dotsize);
-				g.setColor(Color.BLACK);
-				g.drawOval(xFour, yFour, dotsize, dotsize);
-			}
-			
-			//Player 5
-			if(screen.numberOfPlayers>=5){
-				int xFive=screen.Players.get(4).xPosition;
-				int yFive=screen.Players.get(4).yPosition;
-				g.setColor(Color.darkGray);
-				g.fillOval(xFive, yFive, dotsize, dotsize);
-				g.setColor(Color.BLACK);
-				g.drawOval(xFive, yFive, dotsize, dotsize);
-			}
-			
-			//Player 6
-			if(screen.numberOfPlayers>=6){
-				int xSix=screen.Players.get(5).xPosition;
-				int ySix=screen.Players.get(5).yPosition;
-				g.setColor(Color.pink);
-				g.fillOval(xSix, ySix, dotsize, dotsize);
-				g.setColor(Color.BLACK);
-				g.drawOval(xSix, ySix, dotsize, dotsize);
-			}
 		}
 		
+		
+		//Draws the individual player tokens
+		for(Player p : screen.Players){
+			g.setColor(Color.magenta);  //Sets colour
+			g.fillOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws player token at current x,y coordinates
+			g.setColor(Color.BLACK);
+			g.drawOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws balck circle around token
+		}
 		//Mouse tracker red dot
 		g.setColor(Color.red);
 		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
