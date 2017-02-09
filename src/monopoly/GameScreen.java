@@ -7,7 +7,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import javax.swing.Timer;
 
 
 @SuppressWarnings("serial")
-public class GameScreen extends JFrame implements ActionListener, MouseMotionListener{
+public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener{
 	public Timer timer;
 	public JFrame frame;
 	public JTextArea infoPanel, commandPanel;
@@ -50,6 +51,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		frame.pack(); //shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addKeyListener(this);
 		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
 
@@ -69,11 +71,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
 		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\nPlayer 1:");
 		infoPanel.setEditable(false);
-		
+
 		//lines now wrap to next line so only vertical scrolling needed
 		infoPanel.setLineWrap(true);
 		infoPanel.setWrapStyleWord(true);
-		
+
 		infoPanel.setBackground(boardGraphics.insideGreen);
 
 		//adding a JScrollPane to the info panel to allow it to vertically scroll through all the commands
@@ -81,8 +83,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);
-		
-	    //commandPanel set at JTextArea so line can wrap around and can be made scrollable vertically
+
+		//commandPanel set at JTextArea so line can wrap around and can be made scrollable vertically
 		commandPanel = new JTextArea("COMMAND PANEL", 5,3);
 		commandPanel.setLineWrap(true);
 		commandPanel.setWrapStyleWord(true);
@@ -91,8 +93,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
 		commandScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		
-		
+
+
 		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);
 
 
@@ -126,27 +128,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		Players.get(1).xPosition=675;
 		Players.get(1).yPosition=645;
-		
+
 		if(numberOfPlayers>=3){
 			Players.get(2).xPosition=650;
 			Players.get(2).yPosition=665;
 		}
-		
+
 		if(numberOfPlayers>=4){
-		Players.get(3).xPosition=675;
-		Players.get(3).yPosition=665;
+			Players.get(3).xPosition=675;
+			Players.get(3).yPosition=665;
 		}
-		
+
 		if(numberOfPlayers>=5){
-		Players.get(4).xPosition=650;
-		Players.get(4).yPosition=685;
+			Players.get(4).xPosition=650;
+			Players.get(4).yPosition=685;
 		}
-		
+
 		if(numberOfPlayers>=6){
-		Players.get(5).xPosition=675;
-		Players.get(5).yPosition=685;
+			Players.get(5).xPosition=675;
+			Players.get(5).yPosition=685;
 		}
-				
+
 
 		//Loops to create Tiles in correct order
 		int x = BOARD_WIDTH - TILESIZE/2;
@@ -171,38 +173,38 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31, 0,100,x,y));
 			y+= TILESIZE;
 		}
-		
+
 		//Loop to setup Tile images should be here
 		for(Tile o : Tiles){
 
 		}
-		
+
 
 		//Loop to setup Tile images should be here
 		for(Tile o : Tiles){
-			
+
 		}
 	}
 
-	
+
 	public static void main(String[] args) {
 		screen = new GameScreen();
 	}
 
-	
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {  //MAIN LOOP, gets called when timer ticks
 		ticks++;
 		boardGraphics.repaint();//redraw board every frame
-		
+
 		//		cant put mouse position in command panel if using command panel to input textual commands
 		//		//Keep mouse position in the command panel
 		//		String mousePos = mouseX + ", " + mouseY;
 		//		commandPanel.setText(mousePos);
-		
+
 		//If button is pushed, add command panel text to the info panel
-		
+
 		if ("ENTER".equals(e.getActionCommand())){
 			String s = commandPanel.getText();
 			String temp = infoPanel.getText();
@@ -211,38 +213,38 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				int dice = ThreadLocalRandom.current().nextInt(2, 13);  //Generates a random number between 2 and 12,then moves the player that many squares
 				int a=1;  //"a" keeps track of how many squares left to move
 				while(a<=dice){  //This loop moves the players around the board
-				if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
-				Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
-				Players.get(count-1).currentTile++;
-				}
-				else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
-					Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
-					Players.get(count-1).currentTile++;
-				}
-				else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
-					Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
-					Players.get(count-1).currentTile++;
-				}
-				else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
-					Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
-					Players.get(count-1).currentTile++;
-					if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
-						Players.get(count-1).currentTile=0;
+					if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
+						Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
+						Players.get(count-1).currentTile++;
 					}
+					else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
+						Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
+						Players.get(count-1).currentTile++;
+					}
+					else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
+						Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
+						Players.get(count-1).currentTile++;
+					}
+					else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
+						Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
+						Players.get(count-1).currentTile++;
+						if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
+							Players.get(count-1).currentTile=0;
+						}
+					}
+					a++;
 				}
-				a++;
+				infoPanel.append("\nPlayer "+count+  " moved "+dice+" squares\n");  //Says how many squares a player has moved
+
+				if(count>=numberOfPlayers){  //If every player has had a turn, resets to player 1
+					count=1;
+				}
+				else{  //Moves on to the next player
+					count++;
+				}
+
 			}
-			infoPanel.append("\nPlayer "+count+  " moved "+dice+" squares\n");  //Says how many squares a player has moved
-			
-			if(count>=numberOfPlayers){  //If every player has had a turn, resets to player 1
-				count=1;
-			}
-			else{  //Moves on to the next player
-			  count++;
-			}
-			
-		}
-			
+
 			infoPanel.append("\nPlayer "+count+" :");  //Asks the next player for input
 		}
 
@@ -264,32 +266,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			mouseIsOnATile = false;
 			currentTile = 100;
 		}
-		//Moves a token around the board
-		/*if(ticks%10==0){//Every 10 ticks...
 
-
-
-			if(tileIndex>=Tiles.size()-1){
-				Tiles.get(tileIndex).hasPlayer = false;
-				tileIndex = 0;
-			}
-			if(tileIndex ==0){
-				Tiles.get(tileIndex).hasPlayer = true;
-				tileIndex++;
-			}
-			else{
-				Tiles.get(0).hasPlayer = false;
-				Tiles.get(tileIndex).hasPlayer = false;
-				tileIndex++;
-				Tiles.get(tileIndex).hasPlayer = true;
-			}	
-
-			boardGraphics.repaint();//redraw board
-
-			boardGraphics.repaint();//redraw board
-
-			boardGraphics.repaint();//redraw board
-		}*/
 	}
 	@Override
 	public void mouseDragged(MouseEvent m) {
@@ -299,5 +276,21 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		mouseX = m.getX() - 2;//Get mouse Location
 		mouseY = m.getY() - 25;
 	}
-	
+	//Meant to enable pressing the enter key as a button click, doesnt work yet
+	@Override
+	public void keyPressed(KeyEvent key) {
+		if(key.getKeyCode() == KeyEvent.VK_SPACE){
+			enter.doClick();
+
+		}
+		System.out.println(key.getKeyCode());
+
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
 }
