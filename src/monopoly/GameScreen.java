@@ -13,7 +13,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +28,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public JFrame frame;
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
+	public Dice dice = new Dice();
 	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
@@ -156,7 +156,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Players.get(5).setColour(Color.pink);
 		}
 
-
 		//Loops to create Tiles in correct order
 		int x = BOARD_WIDTH - TILESIZE/2;
 		int y = BOARD_HEIGHT - TILESIZE/2;
@@ -181,45 +180,29 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			y+= TILESIZE;
 		}
 		Tiles.get(1).setinfoImage(boardGraphics.propertyTest);
-		//Loop to setup Tile images should be here
-		for(Tile o : Tiles){
-
-		}
-
 
 		//Loop to setup Tile images should be here
-		for(Tile o : Tiles){
+		/*for(Tile o : Tiles){
 
-		}
+		}*/
 	}
-
 
 	public static void main(String[] args) {
 		screen = new GameScreen();
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {  //MAIN LOOP, gets called when timer ticks
 		ticks++;
 		boardGraphics.repaint();//redraw board every frame
 
-		//		cant put mouse position in command panel if using command panel to input textual commands
-		//		//Keep mouse position in the command panel
-		//		String mousePos = mouseX + ", " + mouseY;
-		//		commandPanel.setText(mousePos);
-
 		//If button is pushed, add command panel text to the info panel
-
 		if ("ENTER".equals(e.getActionCommand())){
-			String s = commandPanel.getText();
-			String temp = infoPanel.getText();
-			infoPanel.setText(temp + "\n" + s);
-			if(s.equalsIgnoreCase("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
-				int dice = ThreadLocalRandom.current().nextInt(1, 7) + ThreadLocalRandom.current().nextInt(1, 7);  //Generates a random number between 2 and 12,then moves the player that many squares
-				int a=1;  //"a" keeps track of how many squares left to move
-				while(a<=dice){  //This loop moves the players around the board
+			infoPanel.append(commandPanel.getText());//add text to info panel
+			if(commandPanel.getText().equalsIgnoreCase("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
+				dice.Roll();
+				//This loop moves the players around the board
+				for(int i = 1;i<=dice.getValue();i++){
 					if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
 						Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
 						Players.get(count-1).currentTile++;
@@ -239,9 +222,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							Players.get(count-1).currentTile=0;
 						}
 					}
-					a++;
 				}
-				infoPanel.append("\nPlayer "+count+  " moved "+dice+" squares\n");  //Says how many squares a player has moved
+				infoPanel.append("\nPlayer "+count+  " moved "+dice.getValue()+" squares\n");  //Says how many squares a player has moved
 
 				if(count>=numberOfPlayers){  //If every player has had a turn, resets to player 1
 					count=1;
