@@ -15,6 +15,10 @@ public class Tile {
 	public void setImage(Image img) {
 		this.image = img;
 	}
+	public Image getImage() {
+		return this.image;
+	}
+	
 	public void setInfoImage(Image img) {
 		this.infoImage = img;
 	}
