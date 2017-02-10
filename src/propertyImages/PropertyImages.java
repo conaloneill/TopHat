@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.net.URL;
 
 import monopoly.GameScreen;
-import monopoly.RenderPanel;
 import monopoly.Tile;
 
 
@@ -42,6 +41,17 @@ public class PropertyImages {
 	private Image whitechapelRdTile;
 	private Image whitehallTile;
 
+
+	public Image monopolyLogo;
+	private Image go;
+	private Image freepark;
+	private Image gotojail;
+	private Image injail;
+	private Image chance;
+	private Image comchest;
+	private Image train;
+	private Image incometax;
+	private Image luxurytax;
 
 
 	public Image getImage(String path){ 
@@ -90,28 +100,54 @@ public class PropertyImages {
 			whitehallTile = getImage("drawable/Whitehall Tile.png");
 
 
+			//Non- Property images
+			monopolyLogo = getImage("drawable/monologo.png");
+			go = getImage("drawable/go.jpg");
+			freepark = getImage("drawable/freepark.png");
+			gotojail = getImage("drawable/gotojail.png");
+			injail = getImage("drawable/injail.png");
+			chance = getImage("drawable/chance.png");
+			comchest = getImage("drawable/comchest.png");
+			train = getImage("drawable/train.png");
+			incometax = getImage("drawable/incometax.png");
+			luxurytax = getImage("drawable/luxurytax.png");
 		}
 
 
 		for (Tile o : screen.Tiles) {
 			switch (o.getTileNum()) {
+			case 0:
+				o.setImage(go);
+				break;
 			case 1:
 				o.setImage(oldKentRoadTile);
+				break;
+			case 2:
+				o.setImage(comchest);
 				break;
 			case 3:
 				o.setImage(whitechapelRdTile);
 				break;
+			case 4:
+				o.setImage(incometax);
+				break;
 			case 5:
-				o.setImage(kingsCrossTile);
+				o.setImage(train);
 				break;
 			case 6:
 				o.setImage(angelIslingtonTile);
+				break;
+			case 7:
+				o.setImage(chance);
 				break;
 			case 8:
 				o.setImage(eustonRoadTile);
 				break;
 			case 9:
 				o.setImage(pentonvilleRdTile);
+				break;
+			case 10:
+				o.setImage(injail);
 				break;
 			case 11:
 				o.setImage(pallMallTile);
@@ -126,10 +162,13 @@ public class PropertyImages {
 				o.setImage(northumberlandAvTile);
 				break;
 			case 15:
-				o.setImage(maryboyleStationTile);
+				o.setImage(train);
 				break;
 			case 16:
 				o.setImage(bowStreetTile);
+				break;
+			case 17:
+				o.setImage(comchest);
 				break;
 			case 18:
 				o.setImage(marlboroughStTile);
@@ -137,8 +176,14 @@ public class PropertyImages {
 			case 19:
 				o.setImage(vineStreetTile);
 				break;
+			case 20:
+				o.setImage(freepark);
+				break;
 			case 21:
 				o.setImage(strandTile);
+				break;
+			case 22:
+				o.setImage(chance);
 				break;
 			case 23:
 				o.setImage(fleetStreetTile);
@@ -147,7 +192,7 @@ public class PropertyImages {
 				o.setImage(trafalgarSqTile);
 				break;
 			case 25:
-				o.setImage(fenchurchStStationTile);
+				o.setImage(train);
 				break;
 			case 26:
 				o.setImage(leicesterSqTile);
@@ -161,20 +206,32 @@ public class PropertyImages {
 			case 29:
 				o.setImage(piccadillyTile);
 				break;
+			case 30:
+				o.setImage(gotojail);
+				break;
 			case 31:
 				o.setImage(regentStreetTile);
 				break;
 			case 32:
 				o.setImage(oxfordStreetTile);
 				break;
+			case 33:
+				o.setImage(comchest);
+				break;
 			case 34:
 				o.setImage(bondStreetTile);
 				break;
 			case 35: 
-				o.setImage(liverpoolStStationTile);
+				o.setImage(train);
+				break;
+			case 36:
+				o.setImage(chance);
 				break;
 			case 37:
 				o.setImage(parkLaneTile);
+				break;
+			case 38:
+				o.setImage(luxurytax);
 				break;
 			case 39:
 				o.setImage(mayfairTile);
