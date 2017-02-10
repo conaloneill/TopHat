@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import propertyCards.PropertyCards;
+import propertyImages.PropertyImages;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener{
