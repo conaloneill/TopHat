@@ -46,7 +46,7 @@ public class PropertyCards {
 	public Image getImage(String path){ 
 		Image temp = null;
 		try {
-			URL imageURL = RenderPanel.class.getResource(path);
+			URL imageURL = PropertyCards.class.getResource(path);
 			temp = Toolkit.getDefaultToolkit().getImage(imageURL);
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -58,13 +58,14 @@ public class PropertyCards {
 	public void assignTileInfoImages() {
 		GameScreen screen = GameScreen.screen;
 
-		if(monopolyLogo == null){ //get images
+		if(bondStreet == null){ //get images
+//			System.out.println("got here\n");
 			bondStreet = getImage("drawable/Bond Street.png");
 			bowStreet = getImage("drawable/Bow Street.png");
 			coventryStreet = getImage("drawable/Coventry Street.png");
 			electricCo = getImage("drawable/Electric Co.png");
 			eustonRoad = getImage("drawable/Euston Road.png");
-			fenchurchStStation = getImage("drawable/Fenchurch Street Station/png");
+			fenchurchStStation = getImage("drawable/Fenchurch Street Station.png");
 			fleetStreet = getImage("drawable/Fleet Street.png");
 			kingsCross = getImage("drawable/King's Cross Station.png");
 			leicesterSq = getImage("drawable/Leicester Square.png");
@@ -74,19 +75,20 @@ public class PropertyCards {
 			mayfair = getImage("drawable/Mayfair.png");
 			northumberlandAv = getImage("drawable/Northumberland Avenue.png");
 			oldKentRoad = getImage("drawable/Old Kent Road.png");
+//			System.out.print("dsgf: " + oldKentRoad + "\n");
 			oxfordStreet = getImage("drawable/Oxford Street.png");
 			pallMall = getImage("drawable/Pall Mall.png");
 			parkLane = getImage("drawable/Park Lane.png");
 			pentonvilleRd = getImage("drawable/Pentonville Road.png");
 			piccadilly = getImage("drawable/Piccadilly.png");
 			regentStreet = getImage("drawable/Regent Street.png");
-			strand = getImage("drawable/Strand");
+			strand = getImage("drawable/Strand.png");
 			angelIslington = getImage("drawable/The Angel Islington.png");
 			trafalgarSq = getImage("drawable/Trafalgar Square.png");
 			vineStreet = getImage("drawable/Vine Street.png");
 			waterWorks = getImage("drawable/Water Works.png");
 			whitechapelRd = getImage("drawable/Whitechapel Road.png");
-			whitehall = getImage("drawable/Whitehall");
+			whitehall = getImage("drawable/Whitehall.png");
 		}
 		
 		
@@ -94,6 +96,7 @@ public class PropertyCards {
 			switch (o.getTileNum()) {
 			case 1:
 				o.setInfoImage(oldKentRoad);
+//				System.out.print("OKRD: " + oldKentRoad);
 				break;
 			case 3:
 				o.setInfoImage(whitechapelRd);
