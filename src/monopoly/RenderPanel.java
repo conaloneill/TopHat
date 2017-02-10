@@ -11,6 +11,8 @@ import java.net.URL;
 
 import javax.swing.JPanel;
 
+import propertyCards.PropertyCards;
+
 
 @SuppressWarnings("serial")
 public class RenderPanel extends JPanel {
@@ -27,6 +29,7 @@ public class RenderPanel extends JPanel {
 	private Image luxurytax = null;
 
 	public Image propertyTest = null;
+	private PropertyCards propertyCards = new PropertyCards();
 
 	private Color backGreen = new Color(198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
@@ -76,12 +79,17 @@ public class RenderPanel extends JPanel {
 			luxurytax = getImage("drawable/luxurytax.png");
 			propertyTest = getImage("drawable/Picadilly.png");
 		}
+		
+		//still not actually assigning images yet, just assigns null still
+		propertyCards.assignTileImages();
+		
+		System.out.print(screen.Tiles.get(33).getInfoImage());
 
 		if(screen.mouseIsOnATile){
 			g.setFont(new Font("TimesRoman", Font.PLAIN, fontSizeBig));
 			g.setColor(Color.black);
 			String s = "Tile no. " + screen.currentTile + " info here";
-			g.drawString(s , GameScreen.BOARD_WIDTH/2 - s.length()/2-fontSizeBig*3, GameScreen.BOARD_HEIGHT/2);
+			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage() , GameScreen.BOARD_WIDTH/2 - s.length()/2-fontSizeBig*3, GameScreen.BOARD_HEIGHT/2, this);
 		}else{
 			g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
 		}
@@ -130,11 +138,12 @@ public class RenderPanel extends JPanel {
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
-
+			
 			//If mouse is on tile o, then draw o's info image
 			if(o.getTileNum() == screen.currentTile){
-				g.drawImage(o.getinfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+				g.drawImage(o.getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
 			}
+			
 		}
 
 		//Draws the individual player tokens

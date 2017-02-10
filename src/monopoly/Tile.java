@@ -15,10 +15,10 @@ public class Tile {
 	public void setImage(Image img) {
 		this.image = img;
 	}
-	public void setinfoImage(Image img) {
+	public void setInfoImage(Image img) {
 		this.infoImage = img;
 	}
-	public Image getinfoImage() {
+	public Image getInfoImage() {
 		return this.infoImage;
 	}
 	public int getTileNum() {

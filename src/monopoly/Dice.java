@@ -5,11 +5,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Dice {
 
 	public void Roll(){
-		this.value = ThreadLocalRandom.current().nextInt(1, 7) + ThreadLocalRandom.current().nextInt(1, 7);
+		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
+		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
 	}
 	
-	public int getValue(){
-		return this.value;
+	public boolean checkDouble() {
+		return valueDice1 == valueDice2;
 	}
-	private int value;
+	public int getValue(){
+		return this.valueDice1 + this.valueDice2 ;
+	}
+	private int valueDice1;
+	private int valueDice2;
 }
