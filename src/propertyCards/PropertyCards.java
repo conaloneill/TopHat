@@ -55,7 +55,7 @@ public class PropertyCards {
 	}
 	
 	
-	public void assignTileImages() {
+	public void assignTileInfoImages() {
 		GameScreen screen = GameScreen.screen;
 
 		if(monopolyLogo == null){ //get images

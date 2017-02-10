@@ -81,7 +81,7 @@ public class RenderPanel extends JPanel {
 		}
 		
 		//still not actually assigning images yet, just assigns null still
-		propertyCards.assignTileImages();
+		propertyCards.assignTileInfoImages();
 		
 		System.out.print(screen.Tiles.get(33).getInfoImage());
 
