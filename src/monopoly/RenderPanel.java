@@ -11,7 +11,8 @@ import java.net.URL;
 
 import javax.swing.JPanel;
 
-import propertyCards.PropertyCards;
+
+import propertyImages.PropertyImages;
 
 
 @SuppressWarnings("serial")
@@ -29,7 +30,7 @@ public class RenderPanel extends JPanel {
 	private Image luxurytax = null;
 
 	public Image propertyTest = null;
-	private PropertyCards propertyCards = new PropertyCards();
+	private PropertyImages propertyImages = new PropertyImages();
 
 	private Color backGreen = new Color(198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
@@ -79,7 +80,7 @@ public class RenderPanel extends JPanel {
 			incometax = getImage("drawable/incometax.png");
 			luxurytax = getImage("drawable/luxurytax.png");
 			propertyTest = getImage("drawable/Picadilly.png");
-			propertyCards.assignTileInfoImages();
+			propertyImages.assignTileImages();
 		}
 
 		
@@ -96,10 +97,12 @@ public class RenderPanel extends JPanel {
 
 		Graphics2D g2d = (Graphics2D)g; //Cast to 2dGraphics to enable rotating method
 		AffineTransform old = g2d.getTransform();//Save old canvas to revert back to
-
+		
+		System.out.print(screen.Tiles.get(1).getImage());
 		//Draw Images on board
 		//bottom row
 		g.drawImage(go, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
+		g.drawImage(screen.Tiles.get(1).getImage(), GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*3, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 		g.drawImage(incometax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*5, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
@@ -135,6 +138,8 @@ public class RenderPanel extends JPanel {
 		g2d.setTransform(old); 
 
 		for(Tile o : screen.Tiles){ 
+			
+			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);

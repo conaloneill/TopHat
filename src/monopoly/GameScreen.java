@@ -20,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
-import propertyCards.PropertyCards;
 import propertyImages.PropertyImages;
 
 @SuppressWarnings("serial")
@@ -30,7 +29,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
 	public Dice dice = new Dice();
-	public PropertyCards propertyCards = new PropertyCards();
+	public PropertyImages propertyCards = new PropertyImages();
 	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
