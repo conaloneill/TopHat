@@ -145,7 +145,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		if(numberOfPlayers>=5){
 			Players.get(4).xPosition=650;
 			Players.get(4).yPosition=685;
-			Players.get(4).setColour(Color.darkGray);
+			Players.get(4).setColour(Color.orange);
 		}
 
 		if(numberOfPlayers>=6){
