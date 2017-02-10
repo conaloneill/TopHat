@@ -35,9 +35,7 @@ public class RenderPanel extends JPanel {
 	private Color backGreen = new Color(198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int dotsize = 15, logoWidth = 500, logoHeight = 200, fontSizeBig = 30, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100,
-			propertyImageHeight = GameScreen.BOARD_HEIGHT/2 + 100;
-
+	private int dotsize = 15, logoWidth = 500, logoHeight = 200;
 
 	//Function to get images
 	public Image getImage(String path){ 
@@ -83,17 +81,8 @@ public class RenderPanel extends JPanel {
 			propertyImages.assignTileImages();
 		}
 
-		
-		//still not actually assigning images yet, just assigns null still
-		
-		
-		//System.out.print(screen.Tiles.get(34).getInfoImage());
-
-		if(screen.mouseIsOnATile){
-			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_HEIGHT/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
-		}else{
-			g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
-		}
+		//Draw Monopoly Logo on board
+		g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
 
 		Graphics2D g2d = (Graphics2D)g; //Cast to 2dGraphics to enable rotating method
 		AffineTransform old = g2d.getTransform();//Save old canvas to revert back to
@@ -138,7 +127,7 @@ public class RenderPanel extends JPanel {
 		g2d.setTransform(old); 
 
 		for(Tile o : screen.Tiles){ 
-			
+			//Draw Tile's image
 			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
@@ -155,8 +144,5 @@ public class RenderPanel extends JPanel {
 			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 			g.drawString("P" + p.playerNumber, p.xPosition+3, p.yPosition + 12);
 		}
-		//Mouse tracker red dot
-		g.setColor(Color.red);
-		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
 	}
 }

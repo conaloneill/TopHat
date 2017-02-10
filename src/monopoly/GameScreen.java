@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -23,14 +21,14 @@ import javax.swing.Timer;
 import propertyImages.PropertyImages;
 
 @SuppressWarnings("serial")
-public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener{
+public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public Timer timer;
 	public JFrame frame;
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
 	public Dice dice = new Dice();
 	public PropertyImages propertyCards = new PropertyImages();
-	public int ticks, tileIndex =0, mouseX, mouseY, currentTile,
+	public int ticks, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
@@ -54,7 +52,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		frame.pack(); //shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(this);
-		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
 
 		ticks = 0;
@@ -158,34 +155,25 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		int x = BOARD_WIDTH - TILESIZE/2;
 		int y = BOARD_HEIGHT - TILESIZE/2;
 		for(int row = 0;row<11;row++){//BOTTOM ROW
-			Tiles.add(new Tile(row, 0,100,x,y));
+			Tiles.add(new Tile(row,x,y));
 			x-= TILESIZE;
 		}
 		x+=TILESIZE;
 		y-= TILESIZE;
 		for(int col = 0;col<9;col++){//LEFT COL
-			Tiles.add(new Tile(col + 11, 0,100,x,y));
+			Tiles.add(new Tile(col + 11,x,y));
 			y-= TILESIZE;
 		}
 		for(int row = 0;row<11;row++){//TOP ROW
-			Tiles.add(new Tile(row + 20, 0,100,x,y));
+			Tiles.add(new Tile(row + 20,x,y));
 			x+= TILESIZE;
 		}
 		x-=TILESIZE;
 		y+= TILESIZE;
 		for(int col = 0;col<9;col++){//RIGHT COL
-			Tiles.add(new Tile(col + 31, 0,100,x,y));
+			Tiles.add(new Tile(col + 31,x,y));
 			y+= TILESIZE;
-		}
-		Tiles.get(1).setInfoImage(boardGraphics.propertyTest);
-
-		//Loop to setup Tile images should be here
-		/*for(Tile o : Tiles){
-
-		}*/
-		
-		
-		
+		}	
 	}
 
 	public static void main(String[] args) {
@@ -232,38 +220,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				else{  //Moves on to the next player
 					count++;
 				}
-
 			}
-
 			infoPanel.append("\nPlayer "+ count +" :");  //Asks the next player for input
+			commandPanel.setText(null);
 		}
-
-		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles){ //figure out what tile the mouse is on
-			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-				mouseIsOnATile = true;
-				currentTile =  o.getTileNum();
-			}
-		}
-		//If mouse is in the center of the board ( not a tile )
-		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-				mouseX <  BOARD_WIDTH - TILESIZE &&
-				mouseY > BOARD_HEIGHT - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-				mouseY < BOARD_HEIGHT - TILESIZE ||
-				//or off the board
-				mouseX > BOARD_WIDTH - 10){
-			mouseIsOnATile = false;
-			currentTile = 100;
-		}
-
-	}
-	@Override
-	public void mouseDragged(MouseEvent m) {
-	}
-	@Override
-	public void mouseMoved(MouseEvent m) {//When mouse is moved
-		mouseX = m.getX() - 2;//Get mouse Location
-		mouseY = m.getY() - 25;
 	}
 	//Meant to enable pressing the enter key as a button click, doesnt work yet
 	@Override
