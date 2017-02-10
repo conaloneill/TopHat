@@ -48,12 +48,7 @@ public class RenderPanel extends JPanel {
 		}
 		return temp;
 	}
-	//method to rotate canvas by 90*
-	private void rotate90Degrees(Graphics2D g){ 
-		g.translate(GameScreen.BOARD_WIDTH/2, GameScreen.BOARD_HEIGHT/2);
-		g.rotate(Math.toRadians(90));
-		g.translate( - GameScreen.BOARD_WIDTH/2,   - GameScreen.BOARD_HEIGHT/2);
-	}
+
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -83,48 +78,6 @@ public class RenderPanel extends JPanel {
 
 		//Draw Monopoly Logo on board
 		g.drawImage(monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
-
-		Graphics2D g2d = (Graphics2D)g; //Cast to 2dGraphics to enable rotating method
-		AffineTransform old = g2d.getTransform();//Save old canvas to revert back to
-		
-		System.out.print(screen.Tiles.get(1).getImage());
-		//Draw Images on board
-		//bottom row
-		g.drawImage(go, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(screen.Tiles.get(1).getImage(), GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*3, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(incometax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*5, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*8, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(injail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-
-		//Rotate 90*
-		rotate90Degrees(g2d);
-
-		//left column
-		g.drawImage(train, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*6, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*8, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(freepark, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-
-		//Rotate 90*
-		rotate90Degrees(g2d);
-
-		//Top row
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*3, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(gotojail, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-
-		//Rotate 90*
-		rotate90Degrees(g2d);
-
-		//Right column
-		g.drawImage(comchest, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*4, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(train, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*6, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(chance, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*7, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-		g.drawImage(luxurytax, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*9, GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
-
-		//rotate back to original canvas
-		g2d.setTransform(old); 
 
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image
