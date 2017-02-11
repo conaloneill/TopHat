@@ -51,6 +51,10 @@ public class PropertyImages {
 	private Image comchest;
 	private Image incometax;
 	private Image luxurytax;
+	private Image comchestleft;
+	private Image comchestright;
+	private Image chancetop;
+	private Image chanceright;
 
 
 	public Image getImage(String path){ 
@@ -109,6 +113,10 @@ public class PropertyImages {
 			comchest = getImage("drawable/comchest.png");
 			incometax = getImage("drawable/incometax.png");
 			luxurytax = getImage("drawable/luxurytax.png");
+			comchestleft = getImage("drawable/comchestleft.png");;
+			comchestright = getImage("drawable/comchestright.png");;
+			chancetop = getImage("drawable/chancetop.png");;
+			chanceright = getImage("drawable/chanceright.png");;
 		}
 
 
@@ -166,7 +174,7 @@ public class PropertyImages {
 				o.setImage(bowStreetTile);
 				break;
 			case 17:
-				o.setImage(comchest);
+				o.setImage(comchestleft);
 				break;
 			case 18:
 				o.setImage(marlboroughStTile);
@@ -181,7 +189,7 @@ public class PropertyImages {
 				o.setImage(strandTile);
 				break;
 			case 22:
-				o.setImage(chance);
+				o.setImage(chancetop);
 				break;
 			case 23:
 				o.setImage(fleetStreetTile);
@@ -214,7 +222,7 @@ public class PropertyImages {
 				o.setImage(oxfordStreetTile);
 				break;
 			case 33:
-				o.setImage(comchest);
+				o.setImage(comchestright);
 				break;
 			case 34:
 				o.setImage(bondStreetTile);
@@ -223,7 +231,7 @@ public class PropertyImages {
 				o.setImage(liverpoolStStationTile);
 				break;
 			case 36:
-				o.setImage(chance);
+				o.setImage(chanceright);
 				break;
 			case 37:
 				o.setImage(parkLaneTile);
