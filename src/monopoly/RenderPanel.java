@@ -16,7 +16,7 @@ public class RenderPanel extends JPanel {
 	public boolean firstTime = true;
 	private PropertyImages propertyImages = new PropertyImages();
 
-	private Color backGreen = new Color(198, 255, 181);
+	private Color backGreen = Color.WHITE;//198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
 
 	private int dotsize = 15, logoWidth = 500, logoHeight = 200;
