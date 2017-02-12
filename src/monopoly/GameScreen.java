@@ -34,7 +34,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
 	public static GameScreen screen;
-	public boolean mouseIsOnATile = false, playerNumberCheck = false;
+	public boolean playerNumberCheck = false;
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
 

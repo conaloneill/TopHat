@@ -23,7 +23,7 @@ public class PropertyImages {
 	private Image leicesterSqTile;
 	private Image liverpoolStStationTile;
 	private Image marlboroughStTile;
-	private Image maryboyleStationTile;
+	private Image maryleboneStationTile;
 	private Image mayfairTile;
 	private Image northumberlandAvTile;
 	private Image oldKentRoadTile;
@@ -49,9 +49,12 @@ public class PropertyImages {
 	private Image injail;
 	private Image chance;
 	private Image comchest;
-	private Image train;
 	private Image incometax;
 	private Image luxurytax;
+	private Image comchestleft;
+	private Image comchestright;
+	private Image chancetop;
+	private Image chanceright;
 
 
 	public Image getImage(String path){ 
@@ -73,15 +76,15 @@ public class PropertyImages {
 			bondStreetTile = getImage("drawable/Bond Street Tile.png");
 			bowStreetTile = getImage("drawable/Bow Street Tile.png");
 			coventryStreetTile = getImage("drawable/Coventry Street Tile.png");
-			electricCoTile = getImage("drawable/Electric Co Tile.png");
+			electricCoTile = getImage("drawable/ElectricCompany Tile.png");
 			eustonRoadTile = getImage("drawable/Euston Road Tile.png");
-			fenchurchStStationTile = getImage("drawable/Fenchurch Street Station Tile.png");
+			fenchurchStStationTile = getImage("drawable/Fenchurch St Station Tile.png");
 			fleetStreetTile = getImage("drawable/Fleet Street Tile.png");
-			kingsCrossTile = getImage("drawable/King's Cross Station Tile.png");
+			kingsCrossTile = getImage("drawable/Kings Cross Station Tile.png");
 			leicesterSqTile = getImage("drawable/Leicester Square Tile.png");
-			liverpoolStStationTile = getImage("drawable/Liverpool Street Station Tile.png");
+			liverpoolStStationTile = getImage("drawable/Liverpool St Station Tile.png");
 			marlboroughStTile = getImage("drawable/Marlborough Street Tile.png");
-			maryboyleStationTile = getImage("drawable/Maryboyle Station Tile.png");
+			maryleboneStationTile = getImage("drawable/Marylebone Station Tile.png");
 			mayfairTile = getImage("drawable/Mayfair Tile.png");
 			northumberlandAvTile = getImage("drawable/Northumberland Avenue Tile.png");
 			oldKentRoadTile = getImage("drawable/Old Kent Road Tile.png");
@@ -95,7 +98,7 @@ public class PropertyImages {
 			angelIslingtonTile = getImage("drawable/The Angel Islington Tile.png");
 			trafalgarSqTile = getImage("drawable/Trafalgar Square Tile.png");
 			vineStreetTile = getImage("drawable/Vine Street Tile.png");
-			waterWorksTile = getImage("drawable/Water Works Tile.png");
+			waterWorksTile = getImage("drawable/WaterWorks Tile.png");
 			whitechapelRdTile = getImage("drawable/Whitechapel Road Tile.png");
 			whitehallTile = getImage("drawable/Whitehall Tile.png");
 
@@ -108,9 +111,12 @@ public class PropertyImages {
 			injail = getImage("drawable/injail.png");
 			chance = getImage("drawable/chance.png");
 			comchest = getImage("drawable/comchest.png");
-			train = getImage("drawable/train.png");
 			incometax = getImage("drawable/incometax.png");
 			luxurytax = getImage("drawable/luxurytax.png");
+			comchestleft = getImage("drawable/comchestleft.png");;
+			comchestright = getImage("drawable/comchestright.png");;
+			chancetop = getImage("drawable/chancetop.png");;
+			chanceright = getImage("drawable/chanceright.png");;
 		}
 
 
@@ -132,7 +138,7 @@ public class PropertyImages {
 				o.setImage(incometax);
 				break;
 			case 5:
-				o.setImage(train);
+				o.setImage(kingsCrossTile);
 				break;
 			case 6:
 				o.setImage(angelIslingtonTile);
@@ -162,13 +168,13 @@ public class PropertyImages {
 				o.setImage(northumberlandAvTile);
 				break;
 			case 15:
-				o.setImage(train);
+				o.setImage(maryleboneStationTile);
 				break;
 			case 16:
 				o.setImage(bowStreetTile);
 				break;
 			case 17:
-				o.setImage(comchest);
+				o.setImage(comchestleft);
 				break;
 			case 18:
 				o.setImage(marlboroughStTile);
@@ -183,7 +189,7 @@ public class PropertyImages {
 				o.setImage(strandTile);
 				break;
 			case 22:
-				o.setImage(chance);
+				o.setImage(chancetop);
 				break;
 			case 23:
 				o.setImage(fleetStreetTile);
@@ -192,7 +198,7 @@ public class PropertyImages {
 				o.setImage(trafalgarSqTile);
 				break;
 			case 25:
-				o.setImage(train);
+				o.setImage(fenchurchStStationTile);
 				break;
 			case 26:
 				o.setImage(leicesterSqTile);
@@ -216,16 +222,16 @@ public class PropertyImages {
 				o.setImage(oxfordStreetTile);
 				break;
 			case 33:
-				o.setImage(comchest);
+				o.setImage(comchestright);
 				break;
 			case 34:
 				o.setImage(bondStreetTile);
 				break;
 			case 35: 
-				o.setImage(train);
+				o.setImage(liverpoolStStationTile);
 				break;
 			case 36:
-				o.setImage(chance);
+				o.setImage(chanceright);
 				break;
 			case 37:
 				o.setImage(parkLaneTile);
