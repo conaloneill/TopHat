@@ -68,7 +68,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
-		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\nPlayer 1:");
+		infoPanel.setText("INFO PANEL\n\n");
 		infoPanel.setEditable(false);
 
 		//lines now wrap to next line so only vertical scrolling needed
@@ -187,43 +187,39 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())){
-			infoPanel.append(commandPanel.getText());//add text to info panel
-			if(commandPanel.getText().equalsIgnoreCase("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
-				dice.Roll();
-				//This loop moves the players around the board
-				for(int i = 1;i<=dice.getValue();i++){
-					if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
-						Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
-						Players.get(count-1).currentTile++;
-					}
-					else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
-						Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
-						Players.get(count-1).currentTile++;
-					}
-					else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
-						Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
-						Players.get(count-1).currentTile++;
-					}
-					else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
-						Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
-						Players.get(count-1).currentTile++;
-						if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
-							Players.get(count-1).currentTile=0;
+			infoPanel.append(commandPanel.getText()+"\n"); //add text to info panel
+			commandPanel.setText(null);
+			}
+		
+		
+		if(ticks%10==0){  //Move the player token one square every 10 ticks		
+			if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
+				Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
+				Players.get(count-1).currentTile++;
+				}
+			else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
+				Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
+				Players.get(count-1).currentTile++;
+				}
+			else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
+				Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
+				Players.get(count-1).currentTile++;
+				}
+			else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
+				Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
+				Players.get(count-1).currentTile++;
+				if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
+					Players.get(count-1).currentTile=0;
+					count++;
+					if(count>numberOfPlayers){  //After the last player has moved, cycles back to the first player
+						count=1;
 						}
 					}
 				}
-				infoPanel.append("\nPlayer "+count+  " moved "+dice.getValue()+" squares\n");  //Says how many squares a player has moved
-
-				if(count>=numberOfPlayers){  //If every player has had a turn, resets to player 1
-					count=1;
-				}
-				else{  //Moves on to the next player
-					count++;
-				}
 			}
-			infoPanel.append("\nPlayer "+ count +" :");  //Asks the next player for input
-			commandPanel.setText(null);
-		}
+		
+		
+		
 	}
 	//Meant to enable pressing the enter key as a button click, doesnt work yet
 	@Override
@@ -233,7 +229,8 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		}
 		System.out.println(key.getKeyCode());
-
+		
+		
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
