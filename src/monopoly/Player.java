@@ -1,9 +1,9 @@
 package monopoly;
 /*
  *---Tophat---
- * Brian O'Leary
- * Conal O'Neill
- * Daniel Graham
+ * Brian O'Leary - 134775468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
  * 
  * This class is used to create Player objects. Each player currently has its
  * own color, number and x,y position. These are used by our 'RenderPanel' class
