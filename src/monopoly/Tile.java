@@ -20,7 +20,7 @@ public class Tile {
 		x=posx;
 		y=posy;
 	}
-	
+
 	public void setImage(Image img) {
 		this.image = img;
 	}
@@ -35,6 +35,6 @@ public class Tile {
 	private int number;
 	public int x;
 	public int y;
-	
-	
+
+
 }

@@ -55,7 +55,7 @@ public class RenderPanel extends JPanel {
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
-			
+
 		}
 
 		//Draws the individual player tokens

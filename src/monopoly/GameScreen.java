@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 
 import propertyImages.PropertyImages;
@@ -47,8 +48,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
 	public PropertyImages propertyCards = new PropertyImages();
-	public int ticks, currentTile,
-			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
+	public int ticks, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
@@ -100,7 +100,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		//adding a JScrollPane to the info panel to allow it to vertically scroll through all the commands
 		JScrollPane infoScrollPane = new JScrollPane(infoPanel);
-		infoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);
 
@@ -111,7 +111,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		//adding a JScrollPane to the command panel to allow it to vertically scroll through the new command
 		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
-		commandScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		commandScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);
 
@@ -203,32 +203,32 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		screen = new GameScreen();
 	}
 
-	
+
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
-		boardGraphics.repaint();//redraw board every frame
+
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())){
 			infoPanel.append(commandPanel.getText()+"\n"); //add text to info panel
 			commandPanel.setText(null);
-			}
-		
+		}
+
 		//Move the player token one square every 10 ticks
-		if(ticks%10==0){  		
+		if(ticks%15==0){  		
 			if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
 				Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
 				Players.get(count-1).currentTile++;
-				}
+			}
 			else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
 				Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
 				Players.get(count-1).currentTile++;
-				}
+			}
 			else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
 				Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
 				Players.get(count-1).currentTile++;
-				}
+			}
 			else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
 				Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
 				Players.get(count-1).currentTile++;
@@ -240,7 +240,9 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 					}
 				}
 			}
+			boardGraphics.repaint();//redraw board every frame
 		}
+
 	}
 	//Meant to enable pressing the space key as a button click
 	@Override
