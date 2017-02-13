@@ -1,5 +1,16 @@
 package propertyImages;
-
+/*
+ *---Tophat---
+ * Brian O'Leary
+ * Conal O'Neill
+ * Daniel Graham
+ * 
+ * This Class is used to handle all images drawn onto our monopoly board (RenderPanel).
+ * It retrieves images from propertyImages.drawable and assigns them to their correct Tile 
+ * in the ArrayList 'Tiles' making references to our instance of our main class 'GameScreen'
+ * called 'screen'. These images are drawn in the RenderPanel class.
+ * 
+ * */
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -56,7 +67,7 @@ public class PropertyImages {
 	private Image chancetop;
 	private Image chanceright;
 
-
+	//Function to retrieve images from their path
 	public Image getImage(String path){ 
 		Image temp = null;
 		try {
@@ -68,11 +79,12 @@ public class PropertyImages {
 		return temp;
 	}
 
-
 	public void assignTileImages() {
+		//Allow reference to our game screen
 		GameScreen screen = GameScreen.screen;
 
-		if(bondStreetTile == null){ //get images
+		//Get images
+		if(bondStreetTile == null){ 
 			bondStreetTile = getImage("drawable/Bond Street Tile.png");
 			bowStreetTile = getImage("drawable/Bow Street Tile.png");
 			coventryStreetTile = getImage("drawable/Coventry Street Tile.png");
@@ -119,7 +131,7 @@ public class PropertyImages {
 			chanceright = getImage("drawable/chanceright.png");;
 		}
 
-
+		//Assign Images to their correct Tile
 		for (Tile o : screen.Tiles) {
 			switch (o.getTileNum()) {
 			case 0:
@@ -242,7 +254,6 @@ public class PropertyImages {
 			case 39:
 				o.setImage(mayfairTile);
 				break;
-
 			default:
 				break;
 			}

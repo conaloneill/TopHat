@@ -1,5 +1,14 @@
 package monopoly;
-
+/*
+ *---Tophat---
+ * Brian O'Leary
+ * Conal O'Neill
+ * Daniel Graham
+ * 
+ * This class acts as our board for monopoly. It extends JPanel which we use to paint 
+ * images on the board. It is redrawn using the ActionListener in our GameScreen Class.
+ *
+ * */
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,9 +37,9 @@ public class RenderPanel extends JPanel {
 
 		//Draw green background
 		g.setColor(backGreen);
-		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11 ,GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH, GameScreen.BOARD_HEIGHT);
+		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11 ,GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH, GameScreen.BOARD_WIDTH);
 		g.setColor(insideGreen);
-		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_HEIGHT  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_HEIGHT - GameScreen.TILESIZE*2);
+		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_WIDTH  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2);
 
 		if(firstTime){ //get images
 			propertyImages.assignTileImages();
@@ -38,7 +47,7 @@ public class RenderPanel extends JPanel {
 		}
 
 		//Draw Monopoly Logo on board
-		g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_HEIGHT/2 - logoHeight/2,logoWidth,logoHeight, this);
+		g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
 
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image

@@ -1,5 +1,25 @@
 package monopoly;
-
+/*
+ * ---Tophat---
+ * Brian O'Leary
+ * Conal O'Neill
+ * Daniel Graham
+ * 
+ * This is our main class used for our Monopoly Game.
+ * It extends  JFrame as well as an ActionListener to run the game.
+ * This class contains an instance of our JPanel class 'RenderPanel' as well as 
+ * 2 ArrayLists. One used to hold our 'Tile' Objects and the other used to hold our 
+ * 'Player' Objects.
+ * The ActionListener is attached to a Timer. This activates the ActionListener 
+ * every time the Timer ticks. We use this method to redraw the board on a loop
+ * and show objects moving on the board.
+ * We also increment a counter called 'ticks' every loop and use this as
+ * a reference to move our tokens every 10 'ticks' of the timer.
+ * This class also implements a KeyListener which we intend to use as an alternative way
+ * of entering commands via our 'ENTER' button. This is still a work in process, but works 
+ * using the space bar.
+ *
+ * */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,11 +46,10 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public JFrame frame;
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
-	public Dice dice = new Dice();
 	public PropertyImages propertyCards = new PropertyImages();
 	public int ticks, currentTile,
 			numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
-	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11, BOARD_HEIGHT = TILESIZE*11;
+	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
 	public static GameScreen screen;
@@ -43,7 +62,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		timer = new Timer(20, this);//Params are delay and actionListener
 
 		frame = new JFrame();
-		frame.setSize(S_WIDTH,BOARD_HEIGHT);
+		frame.setSize(S_WIDTH,BOARD_WIDTH);
 		frame.setResizable(false);
 		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);
 
@@ -57,14 +76,16 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		ticks = 0;
 		timer.start();
 	}
-	private void addComponentsToPane(Container pane) {//Adds Components to screen
+	//Adds Components to screen (JFrame pane)
+	private void addComponentsToPane(Container pane) {
 		pane.setLayout(new BorderLayout());
 
-		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_HEIGHT+1));
+		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_WIDTH+1));
 		pane.add(boardGraphics, BorderLayout.LINE_START);
 
-		Container INFOAREA = new Container();//Container to hold text boxes and button (everything on the right)
-		INFOAREA.setPreferredSize(new Dimension(S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1), BOARD_HEIGHT+1));
+		//Container to hold text boxes and button (everything on the right)
+		Container INFOAREA = new Container();
+		INFOAREA.setPreferredSize(new Dimension(S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1), BOARD_WIDTH+1));
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
@@ -102,13 +123,14 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		pane.add(INFOAREA, BorderLayout.LINE_END);
 	}
-	private void init() {  //Called once on create. Used to setup game
+	//Called once on create. Used to setup game
+	private void init() {  
 
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
 			numberOfPlayers = Integer.parseInt(n);
-
+			//Check number of players is acceptable
 			if(numberOfPlayers >= minNumberOfPlayers && numberOfPlayers <= maxNumberOfPlayers){
 				playerNumberCheck = true;
 			}
@@ -153,7 +175,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 
 		//Loops to create Tiles in correct order
 		int x = BOARD_WIDTH - TILESIZE/2;
-		int y = BOARD_HEIGHT - TILESIZE/2;
+		int y = BOARD_WIDTH - TILESIZE/2;
 		for(int row = 0;row<11;row++){//BOTTOM ROW
 			Tiles.add(new Tile(row,x,y));
 			x-= TILESIZE;
@@ -177,11 +199,13 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	}
 
 	public static void main(String[] args) {
+		//Create an instance of our main class
 		screen = new GameScreen();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {  //MAIN LOOP, gets called when timer ticks
+	
+	@Override  //MAIN LOOP, gets called when timer ticks
+	public void actionPerformed(ActionEvent e) {  
 		ticks++;
 		boardGraphics.repaint();//redraw board every frame
 
@@ -191,8 +215,8 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 			commandPanel.setText(null);
 			}
 		
-		
-		if(ticks%10==0){  //Move the player token one square every 10 ticks		
+		//Move the player token one square every 10 ticks
+		if(ticks%10==0){  		
 			if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
 				Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
 				Players.get(count-1).currentTile++;
@@ -213,30 +237,21 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 					count++;
 					if(count>numberOfPlayers){  //After the last player has moved, cycles back to the first player
 						count=1;
-						}
 					}
 				}
 			}
-		
-		
-		
+		}
 	}
-	//Meant to enable pressing the enter key as a button click, doesnt work yet
+	//Meant to enable pressing the space key as a button click
 	@Override
 	public void keyPressed(KeyEvent key) {
+		//If 'SPACE' is pressed, click the button
 		if(key.getKeyCode() == KeyEvent.VK_SPACE){
 			enter.doClick();
-
 		}
-		System.out.println(key.getKeyCode());
-		
-		
 	}
 	@Override
-	public void keyReleased(KeyEvent e) {
-
-	}
+	public void keyReleased(KeyEvent e) {}
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) {}
 }
