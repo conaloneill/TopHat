@@ -1,9 +1,9 @@
 package monopoly;
 /*
  *---Tophat---
- * Brian O'Leary
- * Conal O'Neill
- * Daniel Graham
+ * Brian O'Leary - 134775468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
  * 
  * This class is used to create Tile objects which we use for spaces on the monopoly board.
  * These Tiles can be of any type(property, chance, community chest etc.)

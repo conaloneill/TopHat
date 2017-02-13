@@ -1,9 +1,9 @@
 package propertyImages;
 /*
  *---Tophat---
- * Brian O'Leary
- * Conal O'Neill
- * Daniel Graham
+ * Brian O'Leary - 134775468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
  * 
  * This Class is used to handle all images drawn onto our monopoly board (RenderPanel).
  * It retrieves images from propertyImages.drawable and assigns them to their correct Tile 

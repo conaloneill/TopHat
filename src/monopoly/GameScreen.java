@@ -1,9 +1,9 @@
 package monopoly;
 /*
  * ---Tophat---
- * Brian O'Leary
- * Conal O'Neill
- * Daniel Graham
+ * Brian O'Leary - 134775468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
  * 
  * This is our main class used for our Monopoly Game.
  * It extends  JFrame as well as an ActionListener to run the game.

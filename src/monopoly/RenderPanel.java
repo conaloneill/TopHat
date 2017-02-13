@@ -1,9 +1,9 @@
 package monopoly;
 /*
  *---Tophat---
- * Brian O'Leary
- * Conal O'Neill
- * Daniel Graham
+ * Brian O'Leary - 134775468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
  * 
  * This class acts as our board for monopoly. It extends JPanel which we use to paint 
  * images on the board. It is redrawn using the ActionListener in our GameScreen Class.
