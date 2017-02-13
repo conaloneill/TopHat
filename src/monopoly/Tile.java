@@ -33,8 +33,8 @@ public class Tile {
 	public boolean hasPlayer;
 	private Image image;
 	private int number;
-	public int x;
-	public int y;
+	public int x;	//stores tile x position
+	public int y;	//stores tile y position 
 
 
 }

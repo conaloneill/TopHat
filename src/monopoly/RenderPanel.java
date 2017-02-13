@@ -12,6 +12,7 @@ package monopoly;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import monopoly.GameScreen;
 
 import javax.swing.JPanel;
 
@@ -41,7 +42,7 @@ public class RenderPanel extends JPanel {
 		g.setColor(insideGreen);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_WIDTH  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2);
 
-		if(firstTime){ //get images
+		if(firstTime){ //get images for the tile spaces only on the first time this method is called.
 			propertyImages.assignTileImages();
 			firstTime = false;
 		}
@@ -49,6 +50,7 @@ public class RenderPanel extends JPanel {
 		//Draw Monopoly Logo on board
 		g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
 
+		//loop to go through all tiles and draw the image and the black outline.
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image
 			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);

@@ -52,7 +52,7 @@ public class PropertyImages {
 	private Image whitechapelRdTile;
 	private Image whitehallTile;
 
-
+	// Non-property Image variables
 	public Image monopolyLogo;
 	private Image go;
 	private Image freepark;
@@ -67,7 +67,7 @@ public class PropertyImages {
 	private Image chancetop;
 	private Image chanceright;
 
-	//Function to retrieve images from their path
+	//Function to retrieve images from their path in the drawable folder
 	public Image getImage(String path){ 
 		Image temp = null;
 		try {
@@ -83,7 +83,7 @@ public class PropertyImages {
 		//Allow reference to our game screen
 		GameScreen screen = GameScreen.screen;
 
-		//Get images
+		//Get images 
 		if(bondStreetTile == null){ 
 			bondStreetTile = getImage("drawable/Bond Street Tile.png");
 			bowStreetTile = getImage("drawable/Bow Street Tile.png");

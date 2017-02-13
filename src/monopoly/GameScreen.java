@@ -56,6 +56,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public boolean playerNumberCheck = false;
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
+	private boolean firstTime = true;
 
 	GameScreen(){
 		init();
@@ -140,7 +141,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 			Players.add(new Player(0, i+1));
 		}
 
-		//Sets the starting position for each individual player
+		//Sets the starting position and colour for each individual player
 		Players.get(0).xPosition=650;
 		Players.get(0).yPosition=645;
 		Players.get(0).setColour(Color.magenta);
@@ -208,6 +209,10 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
 
+		if (firstTime ) {	//only happens on first call of this method to have board drawn before players move
+			boardGraphics.repaint();//draw board before starting to move players
+			firstTime = false;
+		}
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())){
@@ -240,7 +245,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 					}
 				}
 			}
-			boardGraphics.repaint();//redraw board every frame
+			boardGraphics.repaint();//redraw board every time a player is moved.
 		}
 
 	}

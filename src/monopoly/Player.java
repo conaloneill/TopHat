@@ -19,7 +19,7 @@ public class Player {
 		currentTile = startingTile;
 		playerNumber = playerNum;
 	}
-
+	
 	public void setColour(Color color) {
 		this.colour = color;
 	}
