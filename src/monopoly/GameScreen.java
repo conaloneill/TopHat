@@ -7,14 +7,14 @@ package monopoly;
  * 
  * This is our main class used for our Monopoly Game.
  * It extends  JFrame as well as an ActionListener to run the game.
- * This class contains an instance of our JPanel class 'RenderPanel' as well as 
+ * This class contains an instance of our JPanel class 'RenderPanel' called 'boardGraphics' as well as 
  * 2 ArrayLists. One used to hold our 'Tile' Objects and the other used to hold our 
  * 'Player' Objects.
  * The ActionListener is attached to a Timer. This activates the ActionListener 
  * every time the Timer ticks. We use this method to redraw the board on a loop
  * and show objects moving on the board.
  * We also increment a counter called 'ticks' every loop and use this as
- * a reference to move our tokens every 10 'ticks' of the timer.
+ * a reference to move our tokens every 15 'ticks' of the timer.
  * This class also implements a KeyListener which we intend to use as an alternative way
  * of entering commands via our 'ENTER' button. This is still a work in process, but works 
  * using the space bar.
@@ -48,7 +48,7 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 	public JTextArea infoPanel, commandPanel;
 	public JButton enter;
 	public PropertyImages propertyCards = new PropertyImages();
-	public int ticks, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,count=1;
+	public int ticks, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,currentPlayer=0;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
@@ -65,11 +65,12 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		frame = new JFrame();
 		frame.setSize(S_WIDTH,BOARD_WIDTH);
 		frame.setResizable(false);
+		//Set location of the JFrame to the center of the users screen.
 		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);
 
 		addComponentsToPane(frame.getContentPane());
 
-		frame.pack(); //shrinks size to wrap layout
+		frame.pack(); //Shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(this);
 		frame.setVisible(true);
@@ -204,13 +205,14 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 		screen = new GameScreen();
 	}
 
-
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
 
-		if (firstTime ) {	//only happens on first call of this method to have board drawn before players move
-			boardGraphics.repaint();//draw board before starting to move players
+		//Only happens on first call of this method to have board drawn before players move
+		if (firstTime ) {	
+			//Draw board before starting to move players
+			boardGraphics.repaint();
 			firstTime = false;
 		}
 
@@ -220,34 +222,43 @@ public class GameScreen extends JFrame implements ActionListener, KeyListener{
 			commandPanel.setText(null);
 		}
 
-		//Move the player token one square every 10 ticks
+		//Move the player token one square every 15 ticks
+		//Keeps track of which Tile each Player is on for use in future Sprints
 		if(ticks%15==0){  		
-			if(Players.get(count-1).currentTile<=9){ //While on the bottom squares, players move to the left
-				Players.get(count-1).xPosition=Players.get(count-1).xPosition-64;
-				Players.get(count-1).currentTile++;
+			//While on the bottom squares, players move to the left
+			if(Players.get(currentPlayer).currentTile<=9){ 
+				Players.get(currentPlayer).xPosition -= TILESIZE;
+				Players.get(currentPlayer).currentTile++;
 			}
-			else if(Players.get(count-1).currentTile>9 && Players.get(count-1).currentTile<=19){  //While along the left side of the board, players move upwards
-				Players.get(count-1).yPosition=Players.get(count-1).yPosition-64;
-				Players.get(count-1).currentTile++;
+			//While along the left side of the board, players move upwards
+			else if(Players.get(currentPlayer).currentTile>9 && Players.get(currentPlayer).currentTile<=19){  
+				Players.get(currentPlayer).yPosition -= TILESIZE;
+				Players.get(currentPlayer).currentTile++;
 			}
-			else if(Players.get(count-1).currentTile>19 && Players.get(count-1).currentTile<=29){  //While along the top squares, players move to the right
-				Players.get(count-1).xPosition=Players.get(count-1).xPosition+64;
-				Players.get(count-1).currentTile++;
+			//While along the top squares, players move to the right
+			else if(Players.get(currentPlayer).currentTile>19 && Players.get(currentPlayer).currentTile<=29){  
+				Players.get(currentPlayer).xPosition += TILESIZE;
+				Players.get(currentPlayer).currentTile++;
 			}
-			else if(Players.get(count-1).currentTile>29 && Players.get(count-1).currentTile<=39){  //While along the left side of the board, players move downwards
-				Players.get(count-1).yPosition=Players.get(count-1).yPosition+64;
-				Players.get(count-1).currentTile++;
-				if(Players.get(count-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
-					Players.get(count-1).currentTile=0;
-					count++;
-					if(count>numberOfPlayers){  //After the last player has moved, cycles back to the first player
-						count=1;
+			//While along the left side of the board, players move downwards
+			else if(Players.get(currentPlayer).currentTile>29 && Players.get(currentPlayer).currentTile<=39){  
+				Players.get(currentPlayer).yPosition += TILESIZE;
+				Players.get(currentPlayer).currentTile++;
+				
+				//Resets their current tile number to zero when they reach the "go" square
+				if(Players.get(currentPlayer).currentTile>=Tiles.size()){  
+					Players.get(currentPlayer).currentTile=0;
+					currentPlayer++;
+					
+					//After the last player has moved, cycles back to the first player
+					if(currentPlayer>=numberOfPlayers){  
+						currentPlayer=0;
 					}
 				}
 			}
-			boardGraphics.repaint();//redraw board every time a player is moved.
+			//Redraw board every time a player is moved. (Every 15 ticks)
+			boardGraphics.repaint();
 		}
-
 	}
 	//Meant to enable pressing the space key as a button click
 	@Override
