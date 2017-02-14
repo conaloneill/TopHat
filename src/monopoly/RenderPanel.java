@@ -29,7 +29,8 @@ public class RenderPanel extends JPanel {
 	private Color backGreen = Color.WHITE;//198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int dotsize = 15, logoWidth = 500, logoHeight = 200;
+	private int dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
+
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -47,8 +48,11 @@ public class RenderPanel extends JPanel {
 			firstTime = false;
 		}
 
-		//Draw Monopoly Logo on board
-		g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
+		if(screen.mouseIsOnATile){
+			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+		}else{
+			g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
+		}
 
 		//loop to go through all tiles and draw the image and the black outline.
 		for(Tile o : screen.Tiles){ 
@@ -69,5 +73,8 @@ public class RenderPanel extends JPanel {
 			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 			g.drawString("P" + p.playerNumber, p.xPosition+3, p.yPosition + 12);
 		}
+		//Mouse tracker red dot
+		g.setColor(Color.red);
+		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
 	}
 }
