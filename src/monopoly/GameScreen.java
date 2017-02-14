@@ -19,7 +19,7 @@ package monopoly;
  * of entering commands via our 'ENTER' button. This is still a work in process, but works 
  * using the space bar.
  *
- * */
+ *  */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
