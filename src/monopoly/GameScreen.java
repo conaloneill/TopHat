@@ -45,7 +45,7 @@ import propertyImages.PropertyImages;
 import monopoly.RenderPanel;
 
 @SuppressWarnings("serial")
-public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener{
+public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener {
 	public Timer timer;
 	public JFrame frame;
 	public JTextArea infoPanel, commandPanel;
@@ -53,7 +53,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public Dice dice = new Dice();
 	public RenderPanel rp = new RenderPanel();
 	public PropertyImages propertyCards = new PropertyImages();
-	public int ticks, tileIndex = 0, mouseX, mouseY, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,currentPlayer=1;
+	public int ticks, tileIndex = 0, mouseX, mouseY, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,currentPlayer=1, doubleCount=0;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
@@ -63,7 +63,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Player> Players = new ArrayList<Player>();
 	private boolean firstTime = true;
 
-	GameScreen(){
+	GameScreen() {
 		init();
 		timer = new Timer(20, this);//Params are delay and actionListener
 
@@ -211,12 +211,18 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Create an instance of our main class
 		screen = new GameScreen();
 	}
-	
+
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
-		boardGraphics.repaint();
+		
+		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
+		//(slight lag in mouse tracking but performance improvements are worth it for now)
+		if (ticks%6==0) {
+			boardGraphics.repaint();
+		}
+		
 		//Only happens on first call of this method to have board drawn before players move
 		if (firstTime ) {	
 			//Draw board before starting to move players
@@ -225,48 +231,43 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 		//If button is pushed, add command panel text to the info panel
-		if ("ENTER".equals(e.getActionCommand())){
-			infoPanel.append(commandPanel.getText()+"\n"); //add text to info panel
+		if ("ENTER".equals(e.getActionCommand())) {
+			infoPanel.append(commandPanel.getText() + "\n"); //add text to info panel
+			
+			doubleCount = 0;
+			
+			while (doubleCount < 3) {
+				if (commandPanel.getText().equalsIgnoreCase("roll")) { //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
+					//for testing easier to keep 'roll' in cmd panel to speed up entering of cmd
+					//commandPanel.setText(null); 
+					dice.roll();
+					
+					movePlayer();
 
-			if(commandPanel.getText().equalsIgnoreCase("roll")){   //Moves the player tokens when the command "roll" is entered. Starts with Player 1 and then cycles through the other players in order
-				//commandPanel.setText(null); //for testing easier to keep 'roll' in cmd panel to speed up entering of cmd
-				dice.roll();
+					infoPanel.append("\nPlayer " + currentPlayer + " moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
-
-				//This loop moves the players around the board
-
-				for(int i = 1;i<=dice.getValue();i++){
-					if(Players.get(currentPlayer-1).currentTile<=9){ //While on the bottom squares, players move to the left
-						Players.get(currentPlayer-1).xPosition=Players.get(currentPlayer-1).xPosition-64;
-						Players.get(currentPlayer-1).currentTile++;
+					if (dice.checkDouble() && doubleCount < 3) {
+						doubleCount++;
+						continue;
 					}
-					else if(Players.get(currentPlayer-1).currentTile>9 && Players.get(currentPlayer-1).currentTile<=19){  //While along the left side of the board, players move upwards
-						Players.get(currentPlayer-1).yPosition=Players.get(currentPlayer-1).yPosition-64;
-						Players.get(currentPlayer-1).currentTile++;
+					
+					//move to jail on 3rd double roll check -- method not implemented yet.
+					if (doubleCount >= 2) {
+						moveToJail();
+						break;
 					}
-					else if(Players.get(currentPlayer-1).currentTile>19 && Players.get(currentPlayer-1).currentTile<=29){  //While along the top squares, players move to the right
-						Players.get(currentPlayer-1).xPosition=Players.get(currentPlayer-1).xPosition+64;
-						Players.get(currentPlayer-1).currentTile++;
+					
+					if (!dice.checkDouble()) {
+						doubleCount = 0;
+						break;
 					}
-					else if(Players.get(currentPlayer-1).currentTile>29 && Players.get(currentPlayer-1).currentTile<=39){  //While along the left side of the board, players move downwards
-						Players.get(currentPlayer-1).yPosition=Players.get(currentPlayer-1).yPosition+64;
-						Players.get(currentPlayer-1).currentTile++;
-						if(Players.get(currentPlayer-1).currentTile>=Tiles.size()){  //Resets their current tile number to zero when they reach the "go" square
-							Players.get(currentPlayer-1).currentTile=0;
-						}
-					}
-				}
-				infoPanel.append("\nPlayer "+currentPlayer+  " moved "+dice.getValue()+" squares\n");  //Says how many squares a player has moved
-
-				if(currentPlayer>=numberOfPlayers){  //If every player has had a turn, resets to player 1
-					currentPlayer=1;
-				}
-				else{  //Moves on to the next player
-					currentPlayer++;
-				}
-
+				} 
 			}
-
+			if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
+				currentPlayer = 1;
+			} else { //Moves on to the next player
+				currentPlayer++;
+			}
 			infoPanel.append("\nPlayer "+ currentPlayer +" :");  //Asks the next player for input
 			//Redraw board every time a player is moved.
 			boardGraphics.repaint();
@@ -274,7 +275,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 
 		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles){ //figure out what tile the mouse is on
+		for(Tile o : Tiles) { //figure out what tile the mouse is on
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
 				mouseIsOnATile = true;
 				currentTile =  o.getTileNum();
@@ -286,11 +287,41 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
 				mouseY < BOARD_WIDTH - TILESIZE ||
 				//or off the board
-				mouseX > BOARD_WIDTH - 10){
+				mouseX > BOARD_WIDTH - 10) {
 			mouseIsOnATile = false;
 			currentTile = 100;
 		}
 
+	}
+
+	private void moveToJail() {
+		// TODO Auto-generated method stub
+
+	}
+	//This method moves the players around the board based on player x/y position and value of the dice. 
+	private void movePlayer() {
+		for(int i = 1; i <= dice.getValue(); i++) {
+			if(Players.get(currentPlayer-1).currentTile <= 9) { //While on the bottom squares, players move to the left
+				Players.get(currentPlayer-1).xPosition = Players.get(currentPlayer-1).xPosition - 64;
+				Players.get(currentPlayer-1).currentTile++;
+			}
+			else if(Players.get(currentPlayer-1).currentTile > 9 && Players.get(currentPlayer-1).currentTile <= 19) {  //While along the left side of the board, players move upwards
+				Players.get(currentPlayer-1).yPosition = Players.get(currentPlayer-1).yPosition - 64;
+				Players.get(currentPlayer-1).currentTile++;
+			}
+			else if(Players.get(currentPlayer-1).currentTile > 19 && Players.get(currentPlayer-1).currentTile <= 29) {  //While along the top squares, players move to the right
+				Players.get(currentPlayer-1).xPosition = Players.get(currentPlayer-1).xPosition + 64;
+				Players.get(currentPlayer-1).currentTile++;
+			}
+			else if(Players.get(currentPlayer-1).currentTile > 29 && Players.get(currentPlayer-1).currentTile <= 39) {  //While along the left side of the board, players move downwards
+				Players.get(currentPlayer-1).yPosition = Players.get(currentPlayer-1).yPosition + 64;
+				Players.get(currentPlayer-1).currentTile++;
+
+				if(Players.get(currentPlayer-1).currentTile >= Tiles.size()) {  //Resets their current tile number to zero when they reach the "go" square
+					Players.get(currentPlayer-1).currentTile = 0;
+				}
+			}
+		}
 	}
 
 
