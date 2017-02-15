@@ -67,7 +67,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		init();
 		timer = new Timer(20, this);//Params are delay and actionListener
 
-		frame = new JFrame();
+		frame = new JFrame("TopHat");
 		frame.setSize(S_WIDTH,BOARD_WIDTH);
 		frame.setResizable(false);
 		//Set location of the JFrame to the center of the users screen.
@@ -98,7 +98,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
-		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\nPlayer 1:");
+		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\n");
 		infoPanel.setEditable(false);
 
 		//lines now wrap to next line so only vertical scrolling needed
@@ -147,6 +147,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
 			Players.add(new Player(0, i+1));
+			
+			//Ask for player name
+			int pnum = i+1;
+			String pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
+			Players.get(i).setName(pname);
 		}
 
 		//Sets the starting position and color for each individual player
@@ -225,6 +230,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		
 		//Only happens on first call of this method to have board drawn before players move
 		if (firstTime ) {	
+			infoPanel.append(Players.get(currentPlayer-1).getName() + " :");
 			//Draw board before starting to move players
 			boardGraphics.repaint();
 			firstTime = false;
@@ -244,7 +250,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					movePlayer();
 
-					infoPanel.append("\nPlayer " + currentPlayer + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
+					infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
 					if (dice.checkDouble() && doubleCount < 3) {
 						infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
@@ -254,8 +260,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					//move to jail on 3rd double roll check -- method not implemented yet.
 					if (doubleCount >= 2) {
-						infoPanel.append("Sent Player " + currentPlayer + " to jail!\n"); //add text to info pane
-						Players.get(currentPlayer).moveToJail();
+						infoPanel.append("Sent " + Players.get(currentPlayer-1).getName() + " to jail!\n"); //add text to info pane
+						Players.get(currentPlayer-1).moveToJail();
 						break;
 					}
 					
@@ -270,7 +276,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			} else { //Moves on to the next player
 				currentPlayer++;
 			}
-			infoPanel.append("\nPlayer "+ currentPlayer +" :");  //Asks the next player for input
+			infoPanel.append("\n" + Players.get(currentPlayer-1).getName() + " :");  //Asks the next player for input
 			//Redraw board every time a player is moved.
 			boardGraphics.repaint();
 		}

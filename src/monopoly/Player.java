@@ -34,6 +34,12 @@ public class Player {
 	public Color getColour() {
 		return this.colour;
 	}
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public void moveToJail(){
 		if(this.playerNumber == 0 || this.playerNumber == 2 || this.playerNumber == 4){
@@ -52,7 +58,8 @@ public class Player {
 	}
 	private Color colour;
 	private int  balance;
-
+	private String name;
+	
 	public int playerNumber;
 	public int currentTile;
 	public int xPosition;  //Stores current x position
