@@ -249,7 +249,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
-			Player playerName = Players.get(currentPlayer-1);
+			Player player = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
@@ -257,6 +257,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if (choice.equalsIgnoreCase("help")) {
 				infoPanel.append(helpString);
 			}
+			//allowing roll to be inputted more than once per turn even if no doubles rolled
 			else if (choice.equalsIgnoreCase("roll")) {
 				dice.roll();
 				if (doubleCount < 2) {
@@ -264,7 +265,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 			}
 			else if (choice.equalsIgnoreCase("balance")) {
-				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
+				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
 			}
 			else if (choice.equalsIgnoreCase("buy")) {
 				//implement buying current tile + error handling for non-buyable tile
@@ -278,15 +279,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
 			}
-			//choice 
+			//choice needs to be inputted twice for current player to increase for some reason
 			else if (choice.equalsIgnoreCase("done")) {
 				if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 					currentPlayer = 1;
 				} else { //Moves on to the next player
 					currentPlayer++;
+					//update player to point to correct element in Player list
+					player = Players.get(currentPlayer-1);
 				}
 			}
-			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
+			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
 		}
 
 
