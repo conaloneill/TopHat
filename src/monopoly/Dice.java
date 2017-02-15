@@ -8,7 +8,7 @@ public class Dice {
 		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
 		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
 	}
-	
+
 	public boolean checkDouble() {
 		return valueDice1 == valueDice2;
 	}
@@ -17,9 +17,12 @@ public class Dice {
 	}
 	public int getDice1(){
 		return this.valueDice1;
-	}public int getDice2(){
+	}
+	public int getDice2(){
 		return this.valueDice2;
 	}
+	
+	
 	private int valueDice1;
 	private int valueDice2;
 }

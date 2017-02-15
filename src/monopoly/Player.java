@@ -15,10 +15,10 @@ import java.awt.Color;
 
 public class Player {
 
-	Player(int startingTile, int playerNum){
+	Player(int startingTile, int playerNum, int balance){
 		currentTile = startingTile;
 		playerNumber = playerNum;
-		balance = 0;
+		this.balance = balance;
 	}
 	
 	public void setColour(Color color) {
@@ -28,7 +28,7 @@ public class Player {
 	public void deposit(int value) {
 		this.balance += value;
 	}
-	public int getBalcnce() {
+	public int getBalance() {
 		return this.balance;
 	}
 	public Color getColour() {
@@ -55,10 +55,18 @@ public class Player {
 			this.yPosition = 685;
 		}
 		this.currentTile = 10;
+		inJail = true;
 	}
+	
+	public boolean checkInJail() {
+		return this.inJail;
+	}
+	
+	
 	private Color colour;
 	private int  balance;
 	private String name;
+	private Boolean inJail = false;
 	
 	public int playerNumber;
 	public int currentTile;

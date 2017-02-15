@@ -53,7 +53,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public Dice dice = new Dice();
 	public RenderPanel rp = new RenderPanel();
 	public PropertyImages propertyCards = new PropertyImages();
-	public int ticks, tileIndex = 0, mouseX, mouseY, currentTile, numberOfPlayers, maxNumberOfPlayers = 6, minNumberOfPlayers = 2,currentPlayer=1, doubleCount=0;
+	public int ticks, tileIndex = 0, mouseX, mouseY, currentTile, numberOfPlayers, maxNumberOfPlayers = 6;
+	public int minNumberOfPlayers = 2,currentPlayer=1, doubleCount=0, startingBal = 1500;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
@@ -85,6 +86,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		timer.start();
 
 	}
+	
 	//Adds Components to screen (JFrame pane)
 	private void addComponentsToPane(Container pane) {
 		pane.setLayout(new BorderLayout());
@@ -146,7 +148,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
-			Players.add(new Player(0, i+1));
+			Players.add(new Player(0, i+1, startingBal));
 			
 			//Ask for player name
 			int pnum = i+1;
@@ -271,6 +273,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					}
 				} 
 			}
+			
+			
 			if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 				currentPlayer = 1;
 			} else { //Moves on to the next player
@@ -300,6 +304,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			currentTile = 100;
 		}
 	}
+	
+	
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	private void movePlayer() {
@@ -334,6 +340,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
+	
+	
 
 	@Override
 	public void mouseMoved(MouseEvent m) {//When mouse is moved
