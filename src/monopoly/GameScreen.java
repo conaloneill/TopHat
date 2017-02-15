@@ -247,12 +247,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					infoPanel.append("\nPlayer " + currentPlayer + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
 					if (dice.checkDouble() && doubleCount < 3) {
+						infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
 						doubleCount++;
 						continue;
 					}
 					
 					//move to jail on 3rd double roll check -- method not implemented yet.
 					if (doubleCount >= 2) {
+						infoPanel.append("Sent Player " + currentPlayer + " to jail!\n"); //add text to info pane
 						Players.get(currentPlayer).moveToJail();
 						break;
 					}
@@ -291,30 +293,37 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			mouseIsOnATile = false;
 			currentTile = 100;
 		}
-
 	}
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	private void movePlayer() {
 		for(int i = 1; i <= dice.getValue(); i++) {
-			if(Players.get(currentPlayer-1).currentTile <= 9) { //While on the bottom squares, players move to the left
+			//While on the bottom squares, players move to the left
+			if(Players.get(currentPlayer-1).currentTile <= 9) { 
 				Players.get(currentPlayer-1).xPosition -= TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
-			else if(Players.get(currentPlayer-1).currentTile > 9 && Players.get(currentPlayer-1).currentTile <= 19) {  //While along the left side of the board, players move upwards
+			//While along the left side of the board, players move upwards
+			else if(Players.get(currentPlayer-1).currentTile > 9 && Players.get(currentPlayer-1).currentTile <= 19) {  
 				Players.get(currentPlayer-1).yPosition -= TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
-			else if(Players.get(currentPlayer-1).currentTile > 19 && Players.get(currentPlayer-1).currentTile <= 29) {  //While along the top squares, players move to the right
+			//While along the top squares, players move to the right
+			else if(Players.get(currentPlayer-1).currentTile > 19 && Players.get(currentPlayer-1).currentTile <= 29) {  
 				Players.get(currentPlayer-1).xPosition += TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
-			else if(Players.get(currentPlayer-1).currentTile > 29 && Players.get(currentPlayer-1).currentTile <= 39) {  //While along the left side of the board, players move downwards
+			//While along the left side of the board, players move downwards
+			else if(Players.get(currentPlayer-1).currentTile > 29 && Players.get(currentPlayer-1).currentTile <= 39) { 
 				Players.get(currentPlayer-1).yPosition += TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 
-				if(Players.get(currentPlayer-1).currentTile >= Tiles.size()) {  //Resets their current tile number to zero when they reach the "go" square
+				//Resets their current tile number to zero when they reach the "go" square
+				if(Players.get(currentPlayer-1).currentTile >= Tiles.size()) {  
 					Players.get(currentPlayer-1).currentTile = 0;
+					
+					//Pass go, collect 200
+					Players.get(currentPlayer-1).deposit(200);
 				}
 			}
 		}

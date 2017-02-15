@@ -18,12 +18,19 @@ public class Player {
 	Player(int startingTile, int playerNum){
 		currentTile = startingTile;
 		playerNumber = playerNum;
+		balance = 0;
 	}
 	
 	public void setColour(Color color) {
 		this.colour = color;
 	}
 
+	public void deposit(int value) {
+		this.balance += value;
+	}
+	public int getBalcnce() {
+		return this.balance;
+	}
 	public Color getColour() {
 		return this.colour;
 	}
@@ -41,8 +48,10 @@ public class Player {
 		}else{
 			this.yPosition = 685;
 		}
+		this.currentTile = 10;
 	}
 	private Color colour;
+	private int  balance;
 
 	public int playerNumber;
 	public int currentTile;
