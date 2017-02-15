@@ -149,7 +149,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Players.add(new Player(0, i+1));
 		}
 
-		//Sets the starting position and colour for each individual player
+		//Sets the starting position and color for each individual player
 		Players.get(0).xPosition=650;
 		Players.get(0).yPosition=645;
 		Players.get(0).setColour(Color.magenta);
@@ -244,7 +244,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					movePlayer();
 
-					infoPanel.append("\nPlayer " + currentPlayer + " moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
+					infoPanel.append("\nPlayer " + currentPlayer + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
 					if (dice.checkDouble() && doubleCount < 3) {
 						doubleCount++;
@@ -253,7 +253,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					//move to jail on 3rd double roll check -- method not implemented yet.
 					if (doubleCount >= 2) {
-						moveToJail();
+						Players.get(currentPlayer).moveToJail();
 						break;
 					}
 					
@@ -294,27 +294,23 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	}
 
-	private void moveToJail() {
-		// TODO Auto-generated method stub
-
-	}
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	private void movePlayer() {
 		for(int i = 1; i <= dice.getValue(); i++) {
 			if(Players.get(currentPlayer-1).currentTile <= 9) { //While on the bottom squares, players move to the left
-				Players.get(currentPlayer-1).xPosition = Players.get(currentPlayer-1).xPosition - 64;
+				Players.get(currentPlayer-1).xPosition -= TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
 			else if(Players.get(currentPlayer-1).currentTile > 9 && Players.get(currentPlayer-1).currentTile <= 19) {  //While along the left side of the board, players move upwards
-				Players.get(currentPlayer-1).yPosition = Players.get(currentPlayer-1).yPosition - 64;
+				Players.get(currentPlayer-1).yPosition -= TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
 			else if(Players.get(currentPlayer-1).currentTile > 19 && Players.get(currentPlayer-1).currentTile <= 29) {  //While along the top squares, players move to the right
-				Players.get(currentPlayer-1).xPosition = Players.get(currentPlayer-1).xPosition + 64;
+				Players.get(currentPlayer-1).xPosition += TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 			}
 			else if(Players.get(currentPlayer-1).currentTile > 29 && Players.get(currentPlayer-1).currentTile <= 39) {  //While along the left side of the board, players move downwards
-				Players.get(currentPlayer-1).yPosition = Players.get(currentPlayer-1).yPosition + 64;
+				Players.get(currentPlayer-1).yPosition += TILESIZE;
 				Players.get(currentPlayer-1).currentTile++;
 
 				if(Players.get(currentPlayer-1).currentTile >= Tiles.size()) {  //Resets their current tile number to zero when they reach the "go" square
@@ -324,10 +320,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-
-	@Override
-	public void mouseDragged(MouseEvent m) {
-	}
 	@Override
 	public void mouseMoved(MouseEvent m) {//When mouse is moved
 		mouseX = m.getX() - 2;//Get mouse Location
@@ -342,6 +334,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		System.out.println(key.getKeyCode());
 	}
+	@Override
+	public void mouseDragged(MouseEvent m) {}
 	@Override
 	public void keyReleased(KeyEvent e) {}
 	@Override

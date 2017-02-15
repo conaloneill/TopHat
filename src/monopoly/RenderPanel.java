@@ -26,7 +26,6 @@ public class RenderPanel extends JPanel {
 	public boolean firstTime = true;
 	private PropertyImages propertyImages = new PropertyImages();
 
-	private Color backGreen = Color.WHITE;//198, 255, 181);
 	public Color insideGreen = new Color(165, 255, 137);
 
 	private int dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
@@ -38,7 +37,7 @@ public class RenderPanel extends JPanel {
 		super.paintComponent(g);
 
 		//Draw green background
-		g.setColor(backGreen);
+		g.setColor(Color.WHITE);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11 ,GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH, GameScreen.BOARD_WIDTH);
 		g.setColor(insideGreen);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_WIDTH  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2);
@@ -48,13 +47,14 @@ public class RenderPanel extends JPanel {
 			firstTime = false;
 		}
 
-		if(screen.mouseIsOnATile){
+		//Check if mouse is on a property Tile
+		if(screen.mouseIsOnATile && screen.Tiles.get(screen.currentTile).getInfoImage() != null){
 			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
 		}else{
 			g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
 		}
 
-		//loop to go through all tiles and draw the image and the black outline.
+		//Loop to go through all tiles and draw the image and the black outline.
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image
 			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
@@ -73,8 +73,8 @@ public class RenderPanel extends JPanel {
 			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 			g.drawString("P" + p.playerNumber, p.xPosition+3, p.yPosition + 12);
 		}
-		//Mouse tracker red dot
+		/*//Mouse tracker red dot
 		g.setColor(Color.red);
-		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
+		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);*/
 	}
 }

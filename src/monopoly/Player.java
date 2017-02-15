@@ -28,6 +28,20 @@ public class Player {
 		return this.colour;
 	}
 
+	public void moveToJail(){
+		if(this.playerNumber == 0 || this.playerNumber == 2 || this.playerNumber == 4){
+			this.xPosition = 10;
+		}else{
+			this.xPosition = 35;
+		}
+		if(this.playerNumber == 0 || this.playerNumber == 1){
+			this.yPosition = 645;
+		}else if (this.playerNumber == 2 || this.playerNumber == 3){
+			this.yPosition = 665;
+		}else{
+			this.yPosition = 685;
+		}
+	}
 	private Color colour;
 
 	public int playerNumber;

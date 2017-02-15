@@ -15,6 +15,11 @@ public class Dice {
 	public int getValue(){
 		return this.valueDice1 + this.valueDice2 ;
 	}
+	public int getDice1(){
+		return this.valueDice1;
+	}public int getDice2(){
+		return this.valueDice2;
+	}
 	private int valueDice1;
 	private int valueDice2;
 }
