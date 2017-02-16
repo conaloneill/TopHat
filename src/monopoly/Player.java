@@ -62,7 +62,6 @@ public class Player {
 		return this.inJail;
 	}
 	
-	
 	private Color colour;
 	private int  balance;
 	private String name;

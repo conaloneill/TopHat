@@ -208,6 +208,7 @@ public class PropertyImages {
 			case 1:
 				o.setImage(oldKentRoadTile);
 				o.setInfoImage(oldKentRoad);
+				o.setName("Old Kent Road");
 				break;
 			case 2:
 				o.setImage(comchest);
@@ -215,6 +216,7 @@ public class PropertyImages {
 			case 3:
 				o.setImage(whitechapelRdTile);
 				o.setInfoImage(whitechapelRd);
+				o.setName("White Chapel Road");
 				break;
 			case 4:
 				o.setImage(incometax);
@@ -222,10 +224,12 @@ public class PropertyImages {
 			case 5:
 				o.setImage(kingsCrossTile);
 				o.setInfoImage(kingsCross);
+				o.setName("Kings Cross Station");
 				break;
 			case 6:
 				o.setImage(angelIslingtonTile);
 				o.setInfoImage(angelIslington);
+				o.setName("The Angel Islington");
 				break;
 			case 7:
 				o.setImage(chance);
@@ -233,10 +237,12 @@ public class PropertyImages {
 			case 8:
 				o.setImage(eustonRoadTile);
 				o.setInfoImage(eustonRoad);
+				o.setName("Euston Road");
 				break;
 			case 9:
 				o.setImage(pentonvilleRdTile);
 				o.setInfoImage(pentonvilleRd);
+				o.setName("Pentonville Road");
 				break;
 			case 10:
 				o.setImage(injail);
@@ -244,26 +250,32 @@ public class PropertyImages {
 			case 11:
 				o.setImage(pallMallTile);
 				o.setInfoImage(pallMall);
+				o.setName("Pall Mall");
 				break;
 			case 12:
 				o.setImage(electricCoTile);
 				o.setInfoImage(electricCo);
+				o.setName("Electric Company");
 				break;
 			case 13:
 				o.setImage(whitehallTile);
 				o.setInfoImage(whitehall);
+				o.setName("Whitehall");
 				break;
 			case 14:
 				o.setImage(northumberlandAvTile);
 				o.setInfoImage(northumberlandAv);
+				o.setName("Northumberland Avenue");
 				break;
 			case 15:
 				o.setImage(maryleboneStationTile);
 				o.setInfoImage(maryboyleStation);
+				o.setName("Marylebone Station");
 				break;
 			case 16:
 				o.setImage(bowStreetTile);
 				o.setInfoImage(bowStreet);
+				o.setName("Bow Street");
 				break;
 			case 17:
 				o.setImage(comchestleft);
@@ -271,10 +283,12 @@ public class PropertyImages {
 			case 18:
 				o.setImage(marlboroughStTile);
 				o.setInfoImage(marlboroughSt);
+				o.setName("Marlborough Street");
 				break;
 			case 19:
 				o.setImage(vineStreetTile);
 				o.setInfoImage(vineStreet);
+				o.setName("Vine Street");
 				break;
 			case 20:
 				o.setImage(freepark);
@@ -282,6 +296,7 @@ public class PropertyImages {
 			case 21:
 				o.setImage(strandTile);
 				o.setInfoImage(strand);
+				o.setName("Strand");
 				break;
 			case 22:
 				o.setImage(chancetop);
@@ -289,30 +304,37 @@ public class PropertyImages {
 			case 23:
 				o.setImage(fleetStreetTile);
 				o.setInfoImage(fleetStreet);
+				o.setName("Fleet Street");
 				break;
 			case 24:
 				o.setImage(trafalgarSqTile);
 				o.setInfoImage(trafalgarSq);
+				o.setName("Trafalgar Square");
 				break;
 			case 25:
 				o.setImage(fenchurchStStationTile);
 				o.setInfoImage(fenchurchStStation);
+				o.setName("Fenchurch Station");
 				break;
 			case 26:
 				o.setImage(leicesterSqTile);
 				o.setInfoImage(leicesterSq);
+				o.setName("Leicester Square");
 				break;
 			case 27:
 				o.setImage(coventryStreetTile);
 				o.setInfoImage(coventryStreet);
+				o.setName("Coventry Street");
 				break;
 			case 28:
 				o.setImage(waterWorksTile);
 				o.setInfoImage(waterWorks);
+				o.setName("Water Works");
 				break;
 			case 29:
 				o.setImage(piccadillyTile);
 				o.setInfoImage(piccadilly);
+				o.setName("Picadilly");
 				break;
 			case 30:
 				o.setImage(gotojail);
@@ -320,10 +342,12 @@ public class PropertyImages {
 			case 31:
 				o.setImage(regentStreetTile);
 				o.setInfoImage(regentStreet);
+				o.setName("Regent Street");
 				break;
 			case 32:
 				o.setImage(oxfordStreetTile);
 				o.setInfoImage(oxfordStreet);
+				o.setName("Oxford Street");
 				break;
 			case 33:
 				o.setImage(comchestright);
@@ -331,10 +355,12 @@ public class PropertyImages {
 			case 34:
 				o.setImage(bondStreetTile);
 				o.setInfoImage(bondStreet);
+				o.setName("Bond Street");
 				break;
 			case 35: 
 				o.setImage(liverpoolStStationTile);
 				o.setInfoImage(liverpoolStStation);
+				o.setName("Liverpool Station");
 				break;
 			case 36:
 				o.setImage(chanceright);
@@ -342,6 +368,7 @@ public class PropertyImages {
 			case 37:
 				o.setImage(parkLaneTile);
 				o.setInfoImage(parkLane);
+				o.setName("Park Lane");
 				break;
 			case 38:
 				o.setImage(luxurytax);
@@ -349,6 +376,7 @@ public class PropertyImages {
 			case 39:
 				o.setImage(mayfairTile);
 				o.setInfoImage(mayfair);
+				o.setName("Mayfair");
 				break;
 			default:
 				break;

@@ -108,7 +108,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
-		infoPanel.setText("INFO PANEL\ncommands: type \"roll\" to move each Player a random number of spaces\nclick space when typing to enter command\n");
+		infoPanel.setText("INFO PANEL\n" + helpString + "\n");
 		infoPanel.setEditable(false);
 
 		//lines now wrap to next line so only vertical scrolling needed
@@ -249,7 +249,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
-			Player player = Players.get(currentPlayer-1);
+			
+			Player playerName = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
@@ -257,39 +258,46 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if (choice.equalsIgnoreCase("help")) {
 				infoPanel.append(helpString);
 			}
-			//allowing roll to be inputted more than once per turn even if no doubles rolled
 			else if (choice.equalsIgnoreCase("roll")) {
 				dice.roll();
+				doubleCount = 0;
 				if (doubleCount < 2) {
 					movePlayer();
 				}
 			}
 			else if (choice.equalsIgnoreCase("balance")) {
-				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
+				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
 			}
 			else if (choice.equalsIgnoreCase("buy")) {
 				//implement buying current tile + error handling for non-buyable tile
 				infoPanel.append("buy condition, but no method yet");
 			}
 			else if (choice.equalsIgnoreCase("property")) {
+				String properties = "Property owned by " + playerName.getName() + " :";
+				for(Tile o : Tiles){
+					if(o.getOwnerNumber() == currentPlayer){
+						properties += o.getName() + ", ";
+					}
+				}
 				//implement showing all properties owned by player
-				infoPanel.append("property condition, but no method yet");
+				infoPanel.append(properties);
 			}
 			else if (choice.equalsIgnoreCase("pay rent")) {
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
 			}
-			//choice needs to be inputted twice for current player to increase for some reason
+			
+			//choice 
 			else if (choice.equalsIgnoreCase("done")) {
 				if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 					currentPlayer = 1;
+					playerName = Players.get(currentPlayer-1);
 				} else { //Moves on to the next player
 					currentPlayer++;
-					//update player to point to correct element in Player list
-					player = Players.get(currentPlayer-1);
+					playerName = Players.get(currentPlayer-1);
 				}
 			}
-			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
+			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
 		}
 
 
@@ -360,10 +368,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		if (doubleCount > 2) {
 			infoPanel.append("Sent " + Players.get(currentPlayer-1).getName() + " to jail!\n"); //add text to info pane
 			Players.get(currentPlayer-1).moveToJail();
-		}
-
-		if (!dice.checkDouble()) {
-			doubleCount = 0;
 		}
 
 	}

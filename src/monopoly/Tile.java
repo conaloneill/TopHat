@@ -18,9 +18,9 @@ public class Tile {
 		number = numberl;
 		this.type = type;
 		this.rent = rent;
-		hasPlayer = false;
 		x=posx;
 		y=posy;
+		ownedByPlayer = 100;
 	}
 
 	public void setImage(Image img) {
@@ -48,14 +48,28 @@ public class Tile {
 	public int getType() {
 		return this.type;
 	}
+	public void setOwnerNumber(int number) {
+		this.ownedByPlayer = number;
+	}
+	public int getOwnerNumber() {
+		return this.ownedByPlayer;
+	}
+	public String getName() {
+		return this.propertyName;
+	}
+	public void setName(String name) {
+		this.propertyName = name;
+	}
 	
+	private String propertyName;
 	
-	public boolean hasPlayer;
 	private int type;
 	private int rent;
+	private int ownedByPlayer;
 	private Image image;
 	private Image infoImage;
 	private int number;
+	
 	public int x;	//stores tile x position
 	public int y;	//stores tile y position 
 
