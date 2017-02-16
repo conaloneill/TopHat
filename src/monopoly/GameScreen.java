@@ -41,6 +41,8 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 
+
+
 import propertyImages.PropertyImages;
 import monopoly.RenderPanel;
 
@@ -54,7 +56,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public RenderPanel rp = new RenderPanel();
 	public PropertyImages propertyCards = new PropertyImages();
 	public int ticks, tileIndex = 0, mouseX, mouseY, currentTile, numberOfPlayers, maxNumberOfPlayers = 6;
-	public int minNumberOfPlayers = 2,currentPlayer=1, doubleCount=0, startingBal = 1500;
+	public int minNumberOfPlayers = 2,currentPlayer=1, doubleCount=0, startingBal = 1500, rollTurns = 0;
 	public static final int  TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 	public Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 	public RenderPanel boardGraphics = new RenderPanel();
@@ -62,7 +64,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public boolean mouseIsOnATile = false, playerNumberCheck = false;
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
-	private boolean firstTime = true;
+	private boolean firstTime = true, rollAgain = false;
+	private Player playerName;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
 			+ "roll : rolls both dice and moves player around the board \n"
@@ -231,7 +234,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
-		
+
 
 		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
 		//(slight lag in mouse tracking but performance improvements are worth it for now)
@@ -249,8 +252,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
-			
-			Player playerName = Players.get(currentPlayer-1);
+
+			playerName = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
@@ -260,9 +263,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			else if (choice.equalsIgnoreCase("roll")) {
 				dice.roll();
-				doubleCount = 0;
-				if (doubleCount < 2) {
+
+				if (rollTurns == 0) {
 					movePlayer();
+				}
+				else if (rollTurns < 3 && rollTurns > 0 && rollAgain) {
+					movePlayer();
+				}
+				else {
+					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
 				}
 			}
 			else if (choice.equalsIgnoreCase("balance")) {
@@ -287,16 +296,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				infoPanel.append("pay rent condition, but no method yet");
 			}
 			
-			//choice 
 			else if (choice.equalsIgnoreCase("done")) {
-				if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
-					currentPlayer = 1;
-					playerName = Players.get(currentPlayer-1);
-				} else { //Moves on to the next player
-					currentPlayer++;
-					playerName = Players.get(currentPlayer-1);
-				}
+				done();
 			}
+			else if (choice.equalsIgnoreCase("quit")) {
+				quitGame();
+				infoPanel.append("quit condition, method not written");
+			}
+			
 			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
 		}
 
@@ -320,12 +327,30 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
+	private void quitGame() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	private void done() {
+		if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
+			currentPlayer = 1;
+			playerName = Players.get(currentPlayer-1);
+		} else { //Moves on to the next player
+			currentPlayer++;
+			playerName = Players.get(currentPlayer-1);
+		}
+		rollTurns = 0;
+		rollAgain = false;
+	}
+
 
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	//game breaks when command panel gets set to null after reading roll to allow player a choice in between double roll moving.
 	private void movePlayer() {
-		
+
 		for(int i = 1; i <= dice.getValue(); i++) {
 			//While on the bottom squares, players move to the left
 			if(Players.get(currentPlayer-1).currentTile <= 9) { 
@@ -356,18 +381,20 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 			}
 		}
+		rollAgain = false;
 
 		infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
 		if (dice.checkDouble() && doubleCount < 3) {
 			infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
 			doubleCount++;
+			rollAgain = true;
+			rollTurns++;
 		}
-
-		//move to jail on 3rd double roll check -- method not implemented yet.
-		if (doubleCount > 2) {
-			infoPanel.append("Sent " + Players.get(currentPlayer-1).getName() + " to jail!\n"); //add text to info pane
-			Players.get(currentPlayer-1).moveToJail();
+		else {
+			rollTurns = 1;
+			rollAgain = false;
+			doubleCount = 0;
 		}
 
 	}

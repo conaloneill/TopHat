@@ -40,32 +40,11 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public void moveToJail(){
-		if(this.playerNumber == 0 || this.playerNumber == 2 || this.playerNumber == 4){
-			this.xPosition = 10;
-		}else{
-			this.xPosition = 35;
-		}
-		if(this.playerNumber == 0 || this.playerNumber == 1){
-			this.yPosition = 645;
-		}else if (this.playerNumber == 2 || this.playerNumber == 3){
-			this.yPosition = 665;
-		}else{
-			this.yPosition = 685;
-		}
-		this.currentTile = 10;
-		inJail = true;
-	}
-	
-	public boolean checkInJail() {
-		return this.inJail;
-	}
 	
 	private Color colour;
 	private int  balance;
 	private String name;
-	private Boolean inJail = false;
+
 	
 	public int playerNumber;
 	public int currentTile;
