@@ -231,16 +231,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31,0,100,x,y));
 			y+= TILESIZE;
 		}	
-
-		//find the player with the largest first roll
-		for (Player p : Players) {
-			if (p.firstRoll == firstTurn) {
-				currentPlayer = p.playerNumber;
-			}
-			//print for testing check
-			System.out.println("firstRoll, Player " + p.getName() + ": " + p.firstRoll);
-		}
-
 	}
 
 	public static void main(String[] args) {
@@ -262,9 +252,21 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//Only happens on first call of this method to have board drawn before players move
 		if (firstTime) {	
-			infoPanel.append(Players.get(currentPlayer-1).getName() + " :");
 			//Draw board before starting to move players
 			boardGraphics.repaint();
+			
+			//find the player with the largest first roll
+			for (Player p : Players) {
+				if (p.firstRoll == firstTurn) {
+					currentPlayer = p.playerNumber;
+				}
+				//print for testing check
+				infoPanel.append("Roll for first turn: Player " + p.getName() + ": " + p.firstRoll + "\n");
+			}
+
+			infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled highest and goes first.\n\n");
+			infoPanel.append(Players.get(currentPlayer-1).getName() + " :");
+
 			firstTime = false;
 		}
 
@@ -335,25 +337,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
 
-			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-			for(Tile o : Tiles) { //figure out what tile the mouse is on
-				if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-					mouseIsOnATile = true;
-					currentTile =  o.getTileNum();
-				}
-			}
-			//If mouse is in the center of the board ( not a tile )
-			if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-					mouseX <  BOARD_WIDTH - TILESIZE &&
-					mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-					mouseY < BOARD_WIDTH - TILESIZE ||
-					//or off the board
-					mouseX > BOARD_WIDTH - 10) {
-				mouseIsOnATile = false;
-				currentTile = 100;
+		}
+		
+		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
+		for(Tile o : Tiles) { //figure out what tile the mouse is on
+			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+				mouseIsOnATile = true;
+				currentTile =  o.getTileNum();
 			}
 		}
+		//If mouse is in the center of the board ( not a tile )
+		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+				mouseX <  BOARD_WIDTH - TILESIZE &&
+				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+				mouseY < BOARD_WIDTH - TILESIZE ||
+				//or off the board
+				mouseX > BOARD_WIDTH - 10) {
+			mouseIsOnATile = false;
+			currentTile = 100;
+		}
 	}
+
 
 	private String propertiesOwnedByCurrentPlayer() {
 		String properties = "Property owned by " + player.getName() + " :";
@@ -366,14 +370,25 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 	private String buy() {
-		//If Tile is not owned
-		if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
-			//Player spends price of property
-			player.spend(Tiles.get(player.currentTile).price);
-			Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
-			return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).price;
-		}else{
-			return "Unable to buy Tile";
+		//If Tile is a property
+		if(Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_STATION ||
+				Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_PROPERTY ||
+				Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_UTILITY){
+			//If Tile is not owned
+			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+				//Player spends price of property
+				player.spend(Tiles.get(player.currentTile).price);
+				Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+				return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).price;
+			}
+			//Tile is already owned by a player
+			else{
+				return "Unable to buy Tile. Tile is already owned by a player.";
+			}
+		}
+		//Tile isn't a property
+		else{
+			return "Unable to buy Tile. Not a property";
 		}
 	}
 
@@ -451,8 +466,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 	}
-
-
 
 	@Override
 	public void mouseMoved(MouseEvent m) {//When mouse is moved

@@ -73,8 +73,8 @@ public class RenderPanel extends JPanel {
 			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 			g.drawString("P" + p.playerNumber, p.xPosition+3, p.yPosition + 12);
 		}
-		/*//Mouse tracker red dot
+		//Mouse tracker red dot
 		g.setColor(Color.red);
-		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);*/
+		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
 	}
 }
