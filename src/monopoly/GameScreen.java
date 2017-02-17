@@ -286,11 +286,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			case "roll":
 				dice.roll();
 
-				if (rollTurns == 0) {
+				if (rollTurns == 0 || (rollTurns < 3 && rollTurns > 0 && rollAgain)) {
 					movePlayer();
-				}
-				else if (rollTurns < 3 && rollTurns > 0 && rollAgain) {
-					movePlayer();
+					//If Tile landed on is owned
+					if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
+						//Set player debt amount to rent of tile
+						player.setDebt(Tiles.get(player.currentTile).getRent());
+						//Set which player is owed money
+						player.setPlayerOwed(Tiles.get(player.currentTile).getOwnerNumber());
+						//Tell player money is owed
+						infoPanel.append(player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
+					}
 				}
 				else {
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
@@ -313,8 +319,22 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				break;
 
 			case "pay rent":
-				//implement paying of rent of unmortaged properties to property owner
-				infoPanel.append("pay rent condition, but no method yet");
+				//Check if player has any rent due
+				if(player.getDebt() > 0){
+					//Check if player has enough money
+					if(player.getBalance() >= player.getDebt()){
+						infoPanel.append(payRent());
+					}
+					//Unable to pay debt. Not enough money.
+					else{
+						infoPanel.append("Unable to pay debt. Not enough money.");
+					}
+				}
+				//No rent due
+				else{
+					infoPanel.append("No rent is owed.");
+				}
+
 				break;
 
 			case "done":
@@ -334,7 +354,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			default:
 				infoPanel.append("\nError: Invalid command\n");
 				break;
-
 			}
 
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
@@ -360,6 +379,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
+	private String payRent() {
+		//Take money from player
+		player.spend(player.getDebt());
+		//Give money to player owed
+		Players.get(player.getPlayerOwed()).deposit(player.getDebt());
+		String s = player.getName() + " payed " + player.getDebt() + " to " + Players.get(player.getPlayerOwed()).getName() + ".";
+
+		//Set player Debt to 0
+		player.setDebt(0);
+		player.setPlayerOwed(-1);
+
+		return s;
+	}
 
 	private String propertiesOwnedByCurrentPlayer() {
 		String properties = "Property owned by " + player.getName() + " :";
@@ -378,6 +410,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_UTILITY){
 			//If Tile is not owned
 			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+				//If player has enough money
 				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
 					//Player spends price of property
 					player.spend(Tiles.get(player.currentTile).getPrice());
@@ -386,7 +419,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				//Not enough Money
 				else{
-					return "Unable to buy Tile. Player doesnt have enough money.";
+					return "Unable to buy Tile. Player doesn't have enough money.";
 				}
 			}
 			//Tile is already owned by a player
@@ -413,12 +446,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		Players.get(3).spend(900);
 		Players.get(5).spend(50);
 		Players.get(4).spend(1400);
-		
+
 		//calculate AssetValue for each player
 		for (Player player : Players) {
 			player.calculateAssetValue(Tiles);
 		}
-		
+
 		//sort Players array based on assetValue property
 		Collections.sort(Players, new Comparator<Player>() {
 			@Override public int compare(Player p1, Player p2) {
@@ -426,19 +459,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 
 		});
-		
+
 		//print all asset Values to console for safety checks
 		for (Player player : Players) {
 			System.out.println("Player " + player.playerNumber + " has : " + player.getAssetValue());
 		}
-		
+
 		//sort is in ascending order
 		Player winner = Players.get(numberOfPlayers-1);
-		
-		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
-		
-		
 
+		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
 	}
 
 

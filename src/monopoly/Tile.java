@@ -87,9 +87,18 @@ public class Tile {
 	public int getPrice() {
 		return this.price;
 	}
-	
+	public void setRent(int amount) {
+		this.rent = amount;
+	}
+	public int getRent() {
+		return this.rent;
+	}
+
 	public boolean checkMortaged() {
 		return mortaged;
 	}
 
+	public void setMortaged(boolean mortaged) {
+		this.mortaged = mortaged;
+	}
 }

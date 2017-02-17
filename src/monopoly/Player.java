@@ -22,6 +22,8 @@ public class Player {
 	private int  balance;
 	private String name;
 	private int assetValue = 0;
+	private int debt;
+	private int playerNumberOwed;
 	
 	public int playerNumber;
 	public int currentTile;
@@ -35,6 +37,7 @@ public class Player {
 		currentTile = startingTile;
 		playerNumber = playerNum;
 		this.balance = balance;
+		this.debt = 0;
 	}
 	
 	public void setColour(Color color) {
@@ -77,4 +80,18 @@ public class Player {
 			}
 		}
 	}
+
+	public void setDebt(int amount) {
+		this.debt = amount;
+	}
+	public int getDebt() {
+		return this.debt;
+	}
+	public void setPlayerOwed(int playerNum) {
+		this.playerNumberOwed = playerNum;
+	}
+	public int getPlayerOwed() {
+		return this.playerNumberOwed;
+	}
+
 }
