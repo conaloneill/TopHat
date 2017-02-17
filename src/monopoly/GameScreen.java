@@ -321,6 +321,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				quitGame();
 				infoPanel.append("quit condition, method not written");
 			}
+			else {
+				infoPanel.append("\nError: Invalid command\n");
+			}
 			
 			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
 		}
