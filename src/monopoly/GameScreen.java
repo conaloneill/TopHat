@@ -65,7 +65,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
 	private boolean firstTime = true, rollAgain = false;
-	private Player playerName;
+	private Player player;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
 			+ "roll : rolls both dice and moves player around the board \n"
@@ -166,7 +166,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			int pnum = i+1;
 			String pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
 			Players.get(i).setName(pname);
-			
+
 			//roll dice and assign to the players
 			dice.roll();
 			Players.get(i).firstRoll = dice.getValue();
@@ -231,7 +231,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31,0,100,x,y));
 			y+= TILESIZE;
 		}	
-		
+
 		//find the player with the largest first roll
 		for (Player p : Players) {
 			if (p.firstRoll == firstTurn) {
@@ -240,7 +240,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//print for testing check
 			System.out.println("firstRoll, Player " + p.getName() + ": " + p.firstRoll);
 		}
-		
+
 	}
 
 	public static void main(String[] args) {
@@ -271,7 +271,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
 
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
 			choice = choice.toLowerCase();
 			infoPanel.append(choice + "\n"); //add text to info panel
@@ -295,19 +295,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				break;
 			case "balance":
-				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
+				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
 				break;
 			case "buy":
 				//implement buying current tile + error handling for non-buyable tile
 				infoPanel.append("buy condition, but no method yet");
 				break;
 			case "property":
-				String properties = "Property owned by " + playerName.getName() + " :";
-				for(Tile o : Tiles){
-					if(o.getOwnerNumber() == currentPlayer){
-						properties += o.getName() + ", ";
-					}
-				}
+				String properties = "Property owned by " + player.getName() + " :";
 				//implement showing all properties owned by player
 				infoPanel.append(properties);
 				break;
@@ -324,54 +319,53 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				break;
 			case "quit":
-				quitGame();
-				infoPanel.append("quit condition, method not written");
 				break;
 			default:
 				infoPanel.append("\nError: Invalid command\n");
 				break;
 			
 			}
-			
-			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
-		}
+
+			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
 
 
-		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles) { //figure out what tile the mouse is on
-			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-				mouseIsOnATile = true;
-				currentTile =  o.getTileNum();
+
+			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
+			for(Tile o : Tiles) { //figure out what tile the mouse is on
+				if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+					mouseIsOnATile = true;
+					currentTile =  o.getTileNum();
+				}
 			}
-		}
-		//If mouse is in the center of the board ( not a tile )
-		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-				mouseX <  BOARD_WIDTH - TILESIZE &&
-				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-				mouseY < BOARD_WIDTH - TILESIZE ||
-				//or off the board
-				mouseX > BOARD_WIDTH - 10) {
-			mouseIsOnATile = false;
-			currentTile = 100;
+			//If mouse is in the center of the board ( not a tile )
+			if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+					mouseX <  BOARD_WIDTH - TILESIZE &&
+					mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+					mouseY < BOARD_WIDTH - TILESIZE ||
+					//or off the board
+					mouseX > BOARD_WIDTH - 10) {
+				mouseIsOnATile = false;
+				currentTile = 100;
+			}
 		}
 	}
 
 	private void quitGame() {
 		// TODO Auto-generated method stub
-		
+
 		//balances into array and sort array(only ascending with API - descending with custom implementation) and reverse take. 
 		//how to get player num in order as well.
-		
+
 	}
-	
-	
+
+
 	private void done() {
 		if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 			currentPlayer = 1;
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 		} else { //Moves on to the next player
 			currentPlayer++;
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 		}
 		rollTurns = 0;
 		rollAgain = false;
