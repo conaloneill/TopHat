@@ -64,7 +64,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public boolean mouseIsOnATile = false, playerNumberCheck = false;
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
-	private boolean firstTime = true, rollAgain = false;
+	private boolean rollAgain = false;
 	private Player player;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
@@ -243,7 +243,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
 
-
 		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
 		//(slight lag in mouse tracking but performance improvements are worth it for now)
 		if (ticks%6==0) {
@@ -251,7 +250,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 		//Only happens on first call of this method to have board drawn before players move
-		if (firstTime) {	
+		if (ticks==1) {	
 			//Draw board before starting to move players
 			boardGraphics.repaint();
 			
@@ -267,7 +266,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled highest and goes first.\n\n");
 			infoPanel.append(Players.get(currentPlayer-1).getName() + " :");
 
-			firstTime = false;
 		}
 
 		//If button is pushed, add command panel text to the info panel
@@ -376,10 +374,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_UTILITY){
 			//If Tile is not owned
 			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
 				//Player spends price of property
-				player.spend(Tiles.get(player.currentTile).price);
+				player.spend(Tiles.get(player.currentTile).getPrice());
 				Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
-				return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).price;
+				return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
+				}
+				//Not enough Money
+				else{
+					return "Unable to buy Tile. Player doesnt have enough money.";
+				}
 			}
 			//Tile is already owned by a player
 			else{
