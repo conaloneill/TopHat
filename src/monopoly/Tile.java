@@ -19,6 +19,7 @@ public class Tile {
 	
 	private int type;
 	private int rent;
+	private int[] possibleRents;
 	private int ownedByPlayer;
 	private Image image;
 	private Image infoImage;
@@ -87,11 +88,20 @@ public class Tile {
 	public int getPrice() {
 		return this.price;
 	}
-	public void setRent(int amount) {
-		this.rent = amount;
+	public void setRent() {
+		//this.rent =;
 	}
 	public int getRent() {
 		return this.rent;
+	}
+	
+	public void setPossibleRents(int[] a) {
+		this.possibleRents = a;
+		this.rent = possibleRents[0];
+	}
+	
+	public void updateRent(int i) {
+		this.rent = possibleRents[i];
 	}
 
 	public boolean checkMortaged() {

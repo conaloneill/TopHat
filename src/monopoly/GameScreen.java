@@ -67,7 +67,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public boolean mouseIsOnATile = false, playerNumberCheck = false;
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
-	private boolean rollAgain = false;
+	private boolean rollAgain = true;
 	private Player player;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
@@ -245,6 +245,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
+		
 
 		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
 		//(slight lag in mouse tracking but performance improvements are worth it for now)
@@ -274,90 +275,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
 
-			player = Players.get(currentPlayer-1);
-			String choice = commandPanel.getText();
-			choice = choice.toLowerCase();
-			infoPanel.append(choice + "\n"); //add text to info panel
-
-
-			switch(choice) {
-			case "help":
-				infoPanel.append(helpString);
-				break;
-			case "roll":
-				dice.roll();
-
-				if (rollTurns == 0 || (rollTurns < 3 && rollTurns > 0 && rollAgain)) {
-					movePlayer();
-					//If Tile landed on is owned
-					if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
-						//Set player debt amount to rent of tile
-						player.setDebt(Tiles.get(player.currentTile).getRent());
-						//Set which player is owed money
-						player.setPlayerOwed(Tiles.get(player.currentTile).getOwnerNumber());
-						//Tell player money is owed
-						infoPanel.append(player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
-					}
-				}
-				else {
-					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
-				}
-				break;
-
-			case "balance":
-				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
-				break;
-
-			case "buy":
-				String buy = buy();
-				infoPanel.append(buy);
-				break;
-
-			case "property":
-				String properties = propertiesOwnedByCurrentPlayer();
-				//implement showing all properties owned by player
-				infoPanel.append(properties);
-				break;
-
-			case "pay rent":
-				//Check if player has any rent due
-				if(player.getDebt() > 0){
-					//Check if player has enough money
-					if(player.getBalance() >= player.getDebt()){
-						infoPanel.append(payRent());
-					}
-					//Unable to pay debt. Not enough money.
-					else{
-						infoPanel.append("Unable to pay debt. Not enough money.");
-					}
-				}
-				//No rent due
-				else{
-					infoPanel.append("No rent is owed.");
-				}
-
-				break;
-
-			case "done":
-				if(rollTurns>0 && doubleCount == 0) {
-					done();
-				}
-				else {
-					infoPanel.append("\nError: Must roll before turn can end\n");
-					doubleCount = 0;
-				}
-				break;
-
-			case "quit":
-				quitGame();
-				break;
-
-			default:
-				infoPanel.append("\nError: Invalid command\n");
-				break;
-			}
-
-			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
+			userInput();
 
 		}
 
@@ -380,7 +298,102 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-	private String payRent() {
+	
+//END OF GAME RUNNING METHODS
+	
+	
+	
+	
+	
+	
+	
+	//METHODS
+	private void userInput() {
+		player = Players.get(currentPlayer-1);
+		String choice = commandPanel.getText();
+		choice = choice.toLowerCase();
+		infoPanel.append(choice + "\n"); //add text to info panel
+
+
+		switch(choice) {
+		case "help":
+			infoPanel.append(helpString);
+			break;
+		case "roll":
+			dice.roll();
+
+			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
+				movePlayer();
+				//If Tile landed on is owned
+				if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
+					//Set player debt amount to rent of tile
+					player.setDebt(Tiles.get(player.currentTile).getRent());
+					//Set which player is owed money
+					player.setPlayerOwed(Tiles.get(player.currentTile).getOwnerNumber());
+					//Tell player money is owed
+					infoPanel.append(player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
+				}
+			}
+			else {
+				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
+			}
+			break;
+
+		case "balance":
+			infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
+			break;
+
+		case "buy":
+			String buy = buy();
+			infoPanel.append(buy);
+			break;
+
+		case "property":
+			//implement showing all properties owned by player
+			propertiesOwnedByCurrentPlayer();
+			break;
+
+		case "pay rent":
+			//Check if player has any rent due
+			if(player.getDebt() > 0){
+				//Check if player has enough money
+				if(player.getBalance() >= player.getDebt()){
+					payRent();
+				}
+				//Unable to pay debt. Not enough money.
+				else{
+					infoPanel.append("Unable to pay debt. Not enough money.");
+				}
+			}
+			//No rent due
+			else{
+				infoPanel.append("No rent is owed.");
+			}
+
+			break;
+
+		case "done":
+			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
+				done();
+			}
+			else {
+				infoPanel.append("\nError: Must roll before turn can end\n");
+			}
+			break;
+
+		case "quit":
+			quitGame();
+			break;
+
+		default:
+			infoPanel.append("\nError: Invalid command\n");
+			break;
+		}
+
+		infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
+	}
+
+	private void payRent() {
 		//Take money from player
 		player.spend(player.getDebt());
 		//Give money to player owed
@@ -391,17 +404,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		player.setDebt(0);
 		player.setPlayerOwed(-1);
 
-		return s;
+		infoPanel.append(s);
 	}
 
-	private String propertiesOwnedByCurrentPlayer() {
+	private void propertiesOwnedByCurrentPlayer() {
 		String properties = "Property owned by " + player.getName() + " :";
 		for(Tile o : Tiles){
 			if(o.getOwnerNumber() == currentPlayer-1){
 				properties += o.getName() + ", ";
 			}
 		}
-		return properties;
+		infoPanel.append(properties);
 	}
 
 	private String buy() {
@@ -435,11 +448,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 	private void quitGame() {
-		// TODO Auto-generated method stub
-
-		//balances into array and sort array(only ascending with API - descending with custom implementation) and reverse take. 
-		//how to get player num in order as well.
-
 		//used for testing before rents/mortages are implement as all balances will be equal otherwise.
 		
 		for(Player p : Players){
@@ -480,7 +488,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			player = Players.get(currentPlayer-1);
 		}
 		rollTurns = 0;
-		rollAgain = false;
+		rollAgain = true;
+		doubleCount = 0;
 	}
 
 
@@ -523,15 +532,22 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
 
-		if (dice.checkDouble() && doubleCount < 3) {
+		if (dice.checkDouble() && doubleCount < 4) {
 			infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
 			doubleCount++;
 			rollAgain = true;
 			rollTurns++;
-		}
+		} 
 		else {
 			rollTurns = 1;
 			rollAgain = false;
+			doubleCount = 0;
+		}
+		
+
+		if (doubleCount == 3) {
+			rollAgain = false;
+			rollTurns = 1;
 			doubleCount = 0;
 		}
 

@@ -112,6 +112,20 @@ public class PropertyImages {
 	public static final int TYPE_GOTO_JAIL = 8; 
 	public static final int TYPE_TAX = 9;
 
+	
+	//Property rent constants
+	private static final int[][] SITE_RENTS = { {2,10,30,90,160,250},
+			{4,20,60,180,320,450},{25,50,100,200,200,200},{6,30,90,270,400,550},{6,30,90,270,400,550},
+			{8,40,100,300,450,600},{10,50,150,450,625,750},{4,10,0,0,0,0},{10,50,150,450,625,750},
+			{12,60,180,500,700,900},{25,50,100,200,200,200},{14,70,200,550,750,950},
+			{14,70,200,550,750,950},{16,80,220,600,800,1000},{18,90,250,700,875,1050},
+			{18,90,250,700,875,1050},{20,100,300,750,925,1100},{25,50,100,200,200,200},
+			{22,110,330,800,975,1150},{22,110,330,800,975,1150},{4,10,0,0,0,0},
+			{22,120,360,850,1025,1200},{26,130,390,900,1100,1275},
+			{26,130,390,900,1100,1275},{28,150,450,1000,1200,1400},{25,50,100,200,200,200},
+			{35,175,500,1100,1300,1500}, {50,200,600,1400,1700,2000}};
+	
+	
 	//Function to retrieve images from their path in the drawable folder
 	public Image getImage(String path){ 
 		Image temp = null;
@@ -212,6 +226,7 @@ public class PropertyImages {
 			whitehall = getImage("drawable/Whitehall.png");
 		}
 
+
 		//Assign Images to their correct Tile
 		for (Tile o : screen.Tiles) {
 			switch (o.getTileNum()) {
@@ -225,6 +240,7 @@ public class PropertyImages {
 				o.setName("Old Kent Road");
 				o.setPrice(60);
 				o.setType(TYPE_PROPERTY);
+				o.setPossibleRents(SITE_RENTS[0]);
 				break;
 			case 2:
 				o.setImage(comchest);
@@ -236,6 +252,7 @@ public class PropertyImages {
 				o.setName("White Chapel Road");
 				o.setPrice(60);
 				o.setType(TYPE_PROPERTY);
+				o.setPossibleRents(SITE_RENTS[1]);
 				break;
 			case 4:
 				o.setImage(incometax);
@@ -248,6 +265,7 @@ public class PropertyImages {
 				o.setName("Kings Cross Station");
 				o.setPrice(200);
 				o.setType(TYPE_STATION);
+				o.setPossibleRents(SITE_RENTS[2]);
 				break;
 			case 6:
 				o.setImage(angelIslingtonTile);
@@ -255,6 +273,7 @@ public class PropertyImages {
 				o.setName("The Angel Islington");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(100);
+				o.setPossibleRents(SITE_RENTS[3]);
 				break;
 			case 7:
 				o.setImage(chance);
@@ -266,6 +285,7 @@ public class PropertyImages {
 				o.setName("Euston Road");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(100);
+				o.setPossibleRents(SITE_RENTS[4]);
 				break;
 			case 9:
 				o.setImage(pentonvilleRdTile);
@@ -273,6 +293,7 @@ public class PropertyImages {
 				o.setName("Pentonville Road");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(120);
+				o.setPossibleRents(SITE_RENTS[5]);
 				break;
 			case 10:
 				o.setImage(injail);
@@ -284,6 +305,7 @@ public class PropertyImages {
 				o.setName("Pall Mall");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(150);
+				o.setPossibleRents(SITE_RENTS[6]);
 				break;
 			case 12:
 				o.setImage(electricCoTile);
@@ -291,6 +313,7 @@ public class PropertyImages {
 				o.setName("Electric Company");
 				o.setType(TYPE_UTILITY);
 				o.setPrice(150);
+				o.setPossibleRents(SITE_RENTS[7]);
 				break;
 			case 13:
 				o.setImage(whitehallTile);
@@ -298,6 +321,7 @@ public class PropertyImages {
 				o.setName("Whitehall");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(150);
+				o.setPossibleRents(SITE_RENTS[8]);
 				break;
 			case 14:
 				o.setImage(northumberlandAvTile);
@@ -305,6 +329,7 @@ public class PropertyImages {
 				o.setName("Northumberland Avenue");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(160);
+				o.setPossibleRents(SITE_RENTS[9]);
 				break;
 			case 15:
 				o.setImage(maryleboneStationTile);
@@ -312,6 +337,7 @@ public class PropertyImages {
 				o.setName("Marylebone Station");
 				o.setType(TYPE_STATION);
 				o.setPrice(200);
+				o.setPossibleRents(SITE_RENTS[10]);
 				break;
 			case 16:
 				o.setImage(bowStreetTile);
@@ -319,6 +345,7 @@ public class PropertyImages {
 				o.setName("Bow Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(180);
+				o.setPossibleRents(SITE_RENTS[11]);
 				break;
 			case 17:
 				o.setImage(comchestleft);
@@ -330,6 +357,7 @@ public class PropertyImages {
 				o.setName("Marlborough Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(180);
+				o.setPossibleRents(SITE_RENTS[12]);
 				break;
 			case 19:
 				o.setImage(vineStreetTile);
@@ -337,6 +365,7 @@ public class PropertyImages {
 				o.setName("Vine Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(200);
+				o.setPossibleRents(SITE_RENTS[13]);
 				break;
 			case 20:
 				o.setImage(freepark);
@@ -348,6 +377,7 @@ public class PropertyImages {
 				o.setName("Strand");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(220);
+				o.setPossibleRents(SITE_RENTS[14]);
 				break;
 			case 22:
 				o.setImage(chancetop);
@@ -359,6 +389,7 @@ public class PropertyImages {
 				o.setName("Fleet Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(220);
+				o.setPossibleRents(SITE_RENTS[15]);
 				break;
 			case 24:
 				o.setImage(trafalgarSqTile);
@@ -366,6 +397,7 @@ public class PropertyImages {
 				o.setName("Trafalgar Square");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(240);
+				o.setPossibleRents(SITE_RENTS[16]);
 				break;
 			case 25:
 				o.setImage(fenchurchStStationTile);
@@ -373,6 +405,7 @@ public class PropertyImages {
 				o.setName("Fenchurch Station");
 				o.setType(TYPE_STATION);
 				o.setPrice(200);
+				o.setPossibleRents(SITE_RENTS[17]);
 				break;
 			case 26:
 				o.setImage(leicesterSqTile);
@@ -380,6 +413,7 @@ public class PropertyImages {
 				o.setName("Leicester Square");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(260);
+				o.setPossibleRents(SITE_RENTS[18]);
 				break;
 			case 27:
 				o.setImage(coventryStreetTile);
@@ -387,6 +421,7 @@ public class PropertyImages {
 				o.setName("Coventry Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(260);
+				o.setPossibleRents(SITE_RENTS[19]);
 				break;
 			case 28:
 				o.setImage(waterWorksTile);
@@ -394,6 +429,7 @@ public class PropertyImages {
 				o.setName("Water Works");
 				o.setType(TYPE_UTILITY);
 				o.setPrice(150);
+				o.setPossibleRents(SITE_RENTS[20]);
 				break;
 			case 29:
 				o.setImage(piccadillyTile);
@@ -401,6 +437,7 @@ public class PropertyImages {
 				o.setName("Picadilly");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(280);
+				o.setPossibleRents(SITE_RENTS[21]);
 				break;
 			case 30:
 				o.setImage(gotojail);
@@ -412,6 +449,7 @@ public class PropertyImages {
 				o.setName("Regent Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(300);
+				o.setPossibleRents(SITE_RENTS[22]);
 				break;
 			case 32:
 				o.setImage(oxfordStreetTile);
@@ -419,6 +457,7 @@ public class PropertyImages {
 				o.setName("Oxford Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(300);
+				o.setPossibleRents(SITE_RENTS[23]);
 				break;
 			case 33:
 				o.setImage(comchestright);
@@ -430,6 +469,7 @@ public class PropertyImages {
 				o.setName("Bond Street");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(320);
+				o.setPossibleRents(SITE_RENTS[24]);
 				break;
 			case 35: 
 				o.setImage(liverpoolStStationTile);
@@ -437,6 +477,7 @@ public class PropertyImages {
 				o.setName("Liverpool Station");
 				o.setType(TYPE_STATION);
 				o.setPrice(200);
+				o.setPossibleRents(SITE_RENTS[25]);
 				break;
 			case 36:
 				o.setImage(chanceright);
@@ -448,6 +489,7 @@ public class PropertyImages {
 				o.setName("Park Lane");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(350);
+				o.setPossibleRents(SITE_RENTS[26]);
 				break;
 			case 38:
 				o.setImage(luxurytax);
@@ -460,12 +502,11 @@ public class PropertyImages {
 				o.setName("Mayfair");
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(400);
+				o.setPossibleRents(SITE_RENTS[27]);
 				break;
 			default:
 				break;
 			}
 		}
 	}
-
-
 }
