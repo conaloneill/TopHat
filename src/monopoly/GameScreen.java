@@ -317,14 +317,22 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				break;
 
 			case "pay rent":
-				//Check if player has enough money
-				if(player.getBalance() >= player.getDebt()){
-					infoPanel.append(payRent());
+				//Check if player has any rent due
+				if(player.getDebt() > 0){
+					//Check if player has enough money
+					if(player.getBalance() >= player.getDebt()){
+						infoPanel.append(payRent());
+					}
+					//Unable to pay debt. Not enough money.
+					else{
+						infoPanel.append("Unable to pay debt. Not enough money.");
+					}
 				}
-				//Unable to pay debt. Not enough money.
+				//No rent due
 				else{
-					infoPanel.append("Unable to pay debt. Not enough money.");
+					infoPanel.append("No rent is owed.");
 				}
+				
 				break;
 
 			case "done":
@@ -342,7 +350,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			default:
 				infoPanel.append("\nError: Invalid command\n");
 				break;
-
 			}
 
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
@@ -401,10 +408,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
 				//If player has enough money
 				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
-				//Player spends price of property
-				player.spend(Tiles.get(player.currentTile).getPrice());
-				Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
-				return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
+					//Player spends price of property
+					player.spend(Tiles.get(player.currentTile).getPrice());
+					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+					return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
 				}
 				//Not enough Money
 				else{
