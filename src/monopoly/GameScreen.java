@@ -273,13 +273,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			playerName = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
+			choice = choice.toLowerCase();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
 
-			if (choice.equalsIgnoreCase("help")) {
+			switch(choice) {
+			case "help":
 				infoPanel.append(helpString);
-			}
-			else if (choice.equalsIgnoreCase("roll")) {
+				break;
+			case "roll":
 				dice.roll();
 
 				if (rollTurns == 0) {
@@ -291,15 +293,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				else {
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
 				}
-			}
-			else if (choice.equalsIgnoreCase("balance")) {
+				break;
+			case "balance":
 				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
-			}
-			else if (choice.equalsIgnoreCase("buy")) {
+				break;
+			case "buy":
 				//implement buying current tile + error handling for non-buyable tile
 				infoPanel.append("buy condition, but no method yet");
-			}
-			else if (choice.equalsIgnoreCase("property")) {
+				break;
+			case "property":
 				String properties = "Property owned by " + playerName.getName() + " :";
 				for(Tile o : Tiles){
 					if(o.getOwnerNumber() == currentPlayer){
@@ -308,21 +310,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				//implement showing all properties owned by player
 				infoPanel.append(properties);
-			}
-			else if (choice.equalsIgnoreCase("pay rent")) {
+				break;
+			case "pay rent":
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
-			}
-			
-			else if (choice.equalsIgnoreCase("done")) {
-				done();
-			}
-			else if (choice.equalsIgnoreCase("quit")) {
+				break;
+			case "done":
+				if(rollTurns>0) {
+					done();
+				}
+				else {
+					infoPanel.append("\nError: Must roll before turn can end\n");
+				}
+				break;
+			case "quit":
 				quitGame();
 				infoPanel.append("quit condition, method not written");
-			}
-			else {
+				break;
+			default:
 				infoPanel.append("\nError: Invalid command\n");
+				break;
+			
 			}
 			
 			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
