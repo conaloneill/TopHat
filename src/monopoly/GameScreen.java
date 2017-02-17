@@ -414,7 +414,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
 					//Player spends price of property
 					player.spend(Tiles.get(player.currentTile).getPrice());
-					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer);
 					return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
 				}
 				//Not enough Money
