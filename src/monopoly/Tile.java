@@ -14,6 +14,23 @@ package monopoly;
 import java.awt.Image;
 
 public class Tile {
+	
+	private String propertyName;
+	
+	private int type;
+	private int rent;
+	private int ownedByPlayer;
+	private Image image;
+	private Image infoImage;
+	private int number;
+	private boolean mortaged;
+	private int price;
+	
+	
+	public int x;	//stores tile x position
+	public int y;	//stores tile y position 
+
+	
 	public Tile(int numberl, int type, int rent,int posx, int posy){
 		number = numberl;
 		this.type = type;
@@ -71,18 +88,8 @@ public class Tile {
 		return this.price;
 	}
 	
-	private String propertyName;
-	
-	private int type;
-	private int rent;
-	private int ownedByPlayer;
-	private Image image;
-	private Image infoImage;
-	private int number;
-	
-	private int price;
-	public int x;	//stores tile x position
-	public int y;	//stores tile y position 
-
+	public boolean checkMortaged() {
+		return mortaged;
+	}
 
 }

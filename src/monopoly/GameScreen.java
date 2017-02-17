@@ -32,6 +32,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -253,7 +255,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		if (ticks==1) {	
 			//Draw board before starting to move players
 			boardGraphics.repaint();
-			
+
 			//find the player with the largest first roll
 			for (Player p : Players) {
 				if (p.firstRoll == firstTurn) {
@@ -316,15 +318,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				break;
 
 			case "done":
-				if(rollTurns>0) {
+				if(rollTurns>0 && doubleCount == 0) {
 					done();
 				}
 				else {
 					infoPanel.append("\nError: Must roll before turn can end\n");
+					doubleCount = 0;
 				}
 				break;
 
 			case "quit":
+				quitGame();
 				break;
 
 			default:
@@ -336,7 +340,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
 
 		}
-		
+
 		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
 		for(Tile o : Tiles) { //figure out what tile the mouse is on
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
@@ -360,7 +364,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private String propertiesOwnedByCurrentPlayer() {
 		String properties = "Property owned by " + player.getName() + " :";
 		for(Tile o : Tiles){
-			if(o.getOwnerNumber() == currentPlayer){
+			if(o.getOwnerNumber() == currentPlayer-1){
 				properties += o.getName() + ", ";
 			}
 		}
@@ -375,10 +379,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//If Tile is not owned
 			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
 				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
-				//Player spends price of property
-				player.spend(Tiles.get(player.currentTile).getPrice());
-				Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
-				return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
+					//Player spends price of property
+					player.spend(Tiles.get(player.currentTile).getPrice());
+					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+					return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).getPrice();
 				}
 				//Not enough Money
 				else{
@@ -401,6 +405,39 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//balances into array and sort array(only ascending with API - descending with custom implementation) and reverse take. 
 		//how to get player num in order as well.
+
+		//used for testing before rents/mortages are implement as all balances will be equal otherwise.
+		Players.get(0).spend(500);
+		Players.get(1).spend(300);
+		Players.get(2).spend(400);
+		Players.get(3).spend(900);
+		Players.get(5).spend(50);
+		Players.get(4).spend(1400);
+		
+		//calculate AssetValue for each player
+		for (Player player : Players) {
+			player.calculateAssetValue(Tiles);
+		}
+		
+		//sort Players array based on assetValue property
+		Collections.sort(Players, new Comparator<Player>() {
+			@Override public int compare(Player p1, Player p2) {
+				return p1.getAssetValue() - p2.getAssetValue(); // Ascending
+			}
+
+		});
+		
+		//print all asset Values to console for safety checks
+		for (Player player : Players) {
+			System.out.println("Player " + player.playerNumber + " has : " + player.getAssetValue());
+		}
+		
+		//sort is in ascending order
+		Player winner = Players.get(numberOfPlayers-1);
+		
+		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
+		
+		
 
 	}
 

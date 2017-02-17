@@ -12,9 +12,25 @@ package monopoly;
  * 
  * */
 import java.awt.Color;
+import java.util.ArrayList;
+
+import monopoly.Tile;
 
 public class Player {
+	
+	private Color colour;
+	private int  balance;
+	private String name;
+	private int assetValue = 0;
+	
+	public int playerNumber;
+	public int currentTile;
+	public int firstRoll;
+	public int xPosition;  //Stores current x position
+	public int yPosition;  //Stores current y position
+	
 
+	
 	Player(int startingTile, int playerNum, int balance){
 		currentTile = startingTile;
 		playerNumber = playerNum;
@@ -43,15 +59,22 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	private Color colour;
-	private int  balance;
-	private String name;
 
-	
-	public int playerNumber;
-	public int currentTile;
-	public int firstRoll;
-	public int xPosition;  //Stores current x position
-	public int yPosition;  //Stores current y position
+	public int getAssetValue() {
+		return assetValue;
+	}
+
+	public void calculateAssetValue(ArrayList<Tile> Tiles) {
+		assetValue = balance;
+		for (Tile o : Tiles) {
+			if (o.getOwnerNumber() == playerNumber-1) {
+				if (!o.checkMortaged()) {
+					assetValue += o.getPrice();
+				}
+				else {
+					assetValue += o.getPrice()/2;
+				}
+			}
+		}
+	}
 }
