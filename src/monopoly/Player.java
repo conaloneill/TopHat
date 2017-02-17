@@ -28,6 +28,9 @@ public class Player {
 	public void deposit(int value) {
 		this.balance += value;
 	}
+	public void spend(int value) {
+		this.balance -= value;
+	}
 	public int getBalance() {
 		return this.balance;
 	}

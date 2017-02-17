@@ -65,7 +65,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
 	private boolean firstTime = true, rollAgain = false;
-	private Player playerName;
+	private Player player;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
 			+ "roll : rolls both dice and moves player around the board \n"
@@ -271,7 +271,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
 
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
@@ -293,14 +293,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 			}
 			else if (choice.equalsIgnoreCase("balance")) {
-				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
+				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
 			}
 			else if (choice.equalsIgnoreCase("buy")) {
-				//implement buying current tile + error handling for non-buyable tile
+				//If Tile is not owned
+				if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+					//Player spends price of property
+					player.spend(Tiles.get(player.currentTile).price);
+					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+				}
 				infoPanel.append("buy condition, but no method yet");
 			}
 			else if (choice.equalsIgnoreCase("property")) {
-				String properties = "Property owned by " + playerName.getName() + " :";
+				String properties = "Property owned by " + player.getName() + " :";
 				for(Tile o : Tiles){
 					if(o.getOwnerNumber() == currentPlayer){
 						properties += o.getName() + ", ";
@@ -325,7 +330,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				infoPanel.append("\nError: Invalid command\n");
 			}
 			
-			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
+			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
 		}
 
 
@@ -360,10 +365,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private void done() {
 		if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 			currentPlayer = 1;
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 		} else { //Moves on to the next player
 			currentPlayer++;
-			playerName = Players.get(currentPlayer-1);
+			player = Players.get(currentPlayer-1);
 		}
 		rollTurns = 0;
 		rollAgain = false;
