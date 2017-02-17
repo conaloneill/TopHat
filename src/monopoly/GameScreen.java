@@ -294,27 +294,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
 				}
 				break;
-				
+
 			case "balance":
 				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
 				break;
-				
+
 			case "buy":
 				String buy = buy();
 				infoPanel.append(buy);
 				break;
-				
+
 			case "property":
 				String properties = propertiesOwnedByCurrentPlayer();
 				//implement showing all properties owned by player
 				infoPanel.append(properties);
 				break;
-				
+
 			case "pay rent":
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
 				break;
-				
+
 			case "done":
 				if(rollTurns>0) {
 					done();
@@ -323,19 +323,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					infoPanel.append("\nError: Must roll before turn can end\n");
 				}
 				break;
-				
+
 			case "quit":
 				break;
-				
+
 			default:
 				infoPanel.append("\nError: Invalid command\n");
 				break;
-			
+
 			}
 
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
-
-
 
 			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
 			for(Tile o : Tiles) { //figure out what tile the mouse is on
@@ -375,7 +373,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
 			return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).price;
 		}else{
-		return "Unable to buy Tile";
+			return "Unable to buy Tile";
 		}
 	}
 
