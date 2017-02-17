@@ -277,10 +277,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			infoPanel.append(choice + "\n"); //add text to info panel
 
 
-			if (choice.equalsIgnoreCase("help")) {
+			switch(choice) {
+			case "help":
 				infoPanel.append(helpString);
-			}
-			else if (choice.equalsIgnoreCase("roll")) {
+				break;
+			case "roll":
 				dice.roll();
 
 				if (rollTurns == 0) {
@@ -292,33 +293,44 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				else {
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
 				}
-			}
-			else if (choice.equalsIgnoreCase("balance")) {
+				break;
+				
+			case "balance":
 				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
-			}
-			else if (choice.equalsIgnoreCase("buy")) {
+				break;
+				
+			case "buy":
 				String buy = buy();
 				infoPanel.append(buy);
-			}
-			else if (choice.equalsIgnoreCase("property")) {
+				break;
+				
+			case "property":
 				String properties = propertiesOwnedByCurrentPlayer();
 				//implement showing all properties owned by player
 				infoPanel.append(properties);
-			}
-			else if (choice.equalsIgnoreCase("pay rent")) {
+				break;
+				
+			case "pay rent":
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
-			}
-
-			else if (choice.equalsIgnoreCase("done")) {
-				done();
-			}
-			else if (choice.equalsIgnoreCase("quit")) {
-				quitGame();
-				infoPanel.append("quit condition, method not written");
-			}
-			else {
+				break;
+				
+			case "done":
+				if(rollTurns>0) {
+					done();
+				}
+				else {
+					infoPanel.append("\nError: Must roll before turn can end\n");
+				}
+				break;
+				
+			case "quit":
+				break;
+				
+			default:
 				infoPanel.append("\nError: Invalid command\n");
+				break;
+			
 			}
 
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
