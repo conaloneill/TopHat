@@ -297,21 +297,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				infoPanel.append("Player " + player.getName() + " has a balance of: " + player.getBalance());
 			}
 			else if (choice.equalsIgnoreCase("buy")) {
-				//If Tile is not owned
-				if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
-					//Player spends price of property
-					player.spend(Tiles.get(player.currentTile).price);
-					Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
-				}
-				infoPanel.append("buy condition, but no method yet");
+				String buy = buy();
+				infoPanel.append(buy);
 			}
 			else if (choice.equalsIgnoreCase("property")) {
-				String properties = "Property owned by " + player.getName() + " :";
-				for(Tile o : Tiles){
-					if(o.getOwnerNumber() == currentPlayer){
-						properties += o.getName() + ", ";
-					}
-				}
+				String properties = propertiesOwnedByCurrentPlayer();
 				//implement showing all properties owned by player
 				infoPanel.append(properties);
 			}
@@ -352,6 +342,28 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				mouseIsOnATile = false;
 				currentTile = 100;
 			}
+		}
+	}
+
+	private String propertiesOwnedByCurrentPlayer() {
+		String properties = "Property owned by " + player.getName() + " :";
+		for(Tile o : Tiles){
+			if(o.getOwnerNumber() == currentPlayer){
+				properties += o.getName() + ", ";
+			}
+		}
+		return properties;
+	}
+
+	private String buy() {
+		//If Tile is not owned
+		if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+			//Player spends price of property
+			player.spend(Tiles.get(player.currentTile).price);
+			Tiles.get(player.currentTile).setOwnerNumber(currentPlayer-1);
+			return player.getName() + " bought " + Tiles.get(player.currentTile).getName() + " for " + Tiles.get(player.currentTile).price;
+		}else{
+		return "Unable to buy Tile";
 		}
 	}
 
