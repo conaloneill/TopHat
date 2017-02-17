@@ -48,6 +48,7 @@ public class Player {
 	
 	public int playerNumber;
 	public int currentTile;
+	public int firstRoll;
 	public int xPosition;  //Stores current x position
 	public int yPosition;  //Stores current y position
 }

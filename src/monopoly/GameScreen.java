@@ -74,6 +74,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "property : shows a list of the all the properties owned by the player \n"
 			+ "balance : shows the bank balance of the player \n"
 			+ "done : ends the players turn and allows the next player to start their turn \n";
+	private int firstTurn = 0;
 
 	GameScreen() {
 		init();
@@ -165,6 +166,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			int pnum = i+1;
 			String pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
 			Players.get(i).setName(pname);
+			
+			//roll dice and assign to the players
+			dice.roll();
+			Players.get(i).firstRoll = dice.getValue();
+			if (Players.get(i).firstRoll > firstTurn ) {
+				firstTurn = Players.get(i).firstRoll;
+			}
 		}
 
 		//Sets the starting position and color for each individual player
@@ -223,6 +231,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31,0,100,x,y));
 			y+= TILESIZE;
 		}	
+		
+		//find the player with the largest first roll
+		for (Player p : Players) {
+			if (p.firstRoll == firstTurn) {
+				currentPlayer = p.playerNumber;
+			}
+			//print for testing check
+			System.out.println("firstRoll, Player " + p.getName() + ": " + p.firstRoll);
+		}
+		
 	}
 
 	public static void main(String[] args) {
@@ -329,6 +347,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private void quitGame() {
 		// TODO Auto-generated method stub
+		
+		//balances into array and sort array(only ascending with API - descending with custom implementation) and reverse take. 
+		//how to get player num in order as well.
 		
 	}
 	
