@@ -273,6 +273,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			playerName = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
+			choice = choice.toLowerCase();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
 
@@ -292,7 +293,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
 				}
 			}
-			else if (choice.equalsIgnoreCase("balance")) {
+			else if (choice.equals("balance")) {
 				infoPanel.append("Player " + playerName.getName() + " has a balance of: " + playerName.getBalance());
 			}
 			else if (choice.equalsIgnoreCase("buy")) {
@@ -326,6 +327,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			
 			infoPanel.append("\n" + playerName.getName() + " :");  //Asks the next player for input
+		
 		}
 
 
