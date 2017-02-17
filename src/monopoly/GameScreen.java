@@ -166,7 +166,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			int pnum = i+1;
 			String pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
 			Players.get(i).setName(pname);
-			
+
 			//roll dice and assign to the players
 			dice.roll();
 			Players.get(i).firstRoll = dice.getValue();
@@ -231,7 +231,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31,0,100,x,y));
 			y+= TILESIZE;
 		}	
-		
+
 		//find the player with the largest first roll
 		for (Player p : Players) {
 			if (p.firstRoll == firstTurn) {
@@ -240,7 +240,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//print for testing check
 			System.out.println("firstRoll, Player " + p.getName() + ": " + p.firstRoll);
 		}
-		
+
 	}
 
 	public static void main(String[] args) {
@@ -273,6 +273,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			player = Players.get(currentPlayer-1);
 			String choice = commandPanel.getText();
+			choice = choice.toLowerCase();
 			infoPanel.append(choice + "\n"); //add text to info panel
 
 
@@ -318,7 +319,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//implement paying of rent of unmortaged properties to property owner
 				infoPanel.append("pay rent condition, but no method yet");
 			}
-			
+
 			else if (choice.equalsIgnoreCase("done")) {
 				done();
 			}
@@ -329,39 +330,40 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			else {
 				infoPanel.append("\nError: Invalid command\n");
 			}
-			
+
 			infoPanel.append("\n" + player.getName() + " :");  //Asks the next player for input
-		}
 
 
-		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles) { //figure out what tile the mouse is on
-			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-				mouseIsOnATile = true;
-				currentTile =  o.getTileNum();
+
+			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
+			for(Tile o : Tiles) { //figure out what tile the mouse is on
+				if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+					mouseIsOnATile = true;
+					currentTile =  o.getTileNum();
+				}
 			}
-		}
-		//If mouse is in the center of the board ( not a tile )
-		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-				mouseX <  BOARD_WIDTH - TILESIZE &&
-				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-				mouseY < BOARD_WIDTH - TILESIZE ||
-				//or off the board
-				mouseX > BOARD_WIDTH - 10) {
-			mouseIsOnATile = false;
-			currentTile = 100;
+			//If mouse is in the center of the board ( not a tile )
+			if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+					mouseX <  BOARD_WIDTH - TILESIZE &&
+					mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+					mouseY < BOARD_WIDTH - TILESIZE ||
+					//or off the board
+					mouseX > BOARD_WIDTH - 10) {
+				mouseIsOnATile = false;
+				currentTile = 100;
+			}
 		}
 	}
 
 	private void quitGame() {
 		// TODO Auto-generated method stub
-		
+
 		//balances into array and sort array(only ascending with API - descending with custom implementation) and reverse take. 
 		//how to get player num in order as well.
-		
+
 	}
-	
-	
+
+
 	private void done() {
 		if (currentPlayer >= numberOfPlayers) { //If every player has had a turn, resets to player 1
 			currentPlayer = 1;

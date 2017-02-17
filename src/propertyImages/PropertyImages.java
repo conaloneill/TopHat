@@ -98,6 +98,19 @@ public class PropertyImages {
 	private Image comchestright;
 	private Image chancetop;
 	private Image chanceright;
+	
+	
+	//Property Types
+	public static final int TYPE_GO = 0;
+	public static final int TYPE_PROPERTY = 1; 
+	public static final int TYPE_STATION = 2; 
+	public static final int TYPE_UTILITY = 3; 
+	public static final int TYPE_COMMUNITY = 4; 
+	public static final int TYPE_CHANCE = 5; 
+	public static final int TYPE_JAIL = 6; 
+	public static final int TYPE_PARKING = 7; 
+	public static final int TYPE_GOTO_JAIL = 8; 
+	public static final int TYPE_TAX = 9;
 
 	//Function to retrieve images from their path in the drawable folder
 	public Image getImage(String path){ 
@@ -204,179 +217,219 @@ public class PropertyImages {
 			switch (o.getTileNum()) {
 			case 0:
 				o.setImage(go);
+				o.setType(TYPE_GO);
 				break;
 			case 1:
 				o.setImage(oldKentRoadTile);
 				o.setInfoImage(oldKentRoad);
 				o.setName("Old Kent Road");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 2:
 				o.setImage(comchest);
+				o.setType(TYPE_COMMUNITY);
 				break;
 			case 3:
 				o.setImage(whitechapelRdTile);
 				o.setInfoImage(whitechapelRd);
 				o.setName("White Chapel Road");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 4:
 				o.setImage(incometax);
+				o.setType(TYPE_TAX);
 				break;
 			case 5:
 				o.setImage(kingsCrossTile);
 				o.setInfoImage(kingsCross);
 				o.setName("Kings Cross Station");
+				o.setType(TYPE_STATION);
 				break;
 			case 6:
 				o.setImage(angelIslingtonTile);
 				o.setInfoImage(angelIslington);
 				o.setName("The Angel Islington");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 7:
 				o.setImage(chance);
+				o.setType(TYPE_CHANCE);
 				break;
 			case 8:
 				o.setImage(eustonRoadTile);
 				o.setInfoImage(eustonRoad);
 				o.setName("Euston Road");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 9:
 				o.setImage(pentonvilleRdTile);
 				o.setInfoImage(pentonvilleRd);
 				o.setName("Pentonville Road");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 10:
 				o.setImage(injail);
+				o.setType(TYPE_JAIL);
 				break;
 			case 11:
 				o.setImage(pallMallTile);
 				o.setInfoImage(pallMall);
 				o.setName("Pall Mall");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 12:
 				o.setImage(electricCoTile);
 				o.setInfoImage(electricCo);
 				o.setName("Electric Company");
+				o.setType(TYPE_UTILITY);
 				break;
 			case 13:
 				o.setImage(whitehallTile);
 				o.setInfoImage(whitehall);
 				o.setName("Whitehall");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 14:
 				o.setImage(northumberlandAvTile);
 				o.setInfoImage(northumberlandAv);
 				o.setName("Northumberland Avenue");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 15:
 				o.setImage(maryleboneStationTile);
 				o.setInfoImage(maryboyleStation);
 				o.setName("Marylebone Station");
+				o.setType(TYPE_STATION);
 				break;
 			case 16:
 				o.setImage(bowStreetTile);
 				o.setInfoImage(bowStreet);
 				o.setName("Bow Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 17:
 				o.setImage(comchestleft);
+				o.setType(TYPE_COMMUNITY);
 				break;
 			case 18:
 				o.setImage(marlboroughStTile);
 				o.setInfoImage(marlboroughSt);
 				o.setName("Marlborough Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 19:
 				o.setImage(vineStreetTile);
 				o.setInfoImage(vineStreet);
 				o.setName("Vine Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 20:
 				o.setImage(freepark);
+				o.setType(TYPE_PARKING);
 				break;
 			case 21:
 				o.setImage(strandTile);
 				o.setInfoImage(strand);
 				o.setName("Strand");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 22:
 				o.setImage(chancetop);
+				o.setType(TYPE_CHANCE);
 				break;
 			case 23:
 				o.setImage(fleetStreetTile);
 				o.setInfoImage(fleetStreet);
 				o.setName("Fleet Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 24:
 				o.setImage(trafalgarSqTile);
 				o.setInfoImage(trafalgarSq);
 				o.setName("Trafalgar Square");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 25:
 				o.setImage(fenchurchStStationTile);
 				o.setInfoImage(fenchurchStStation);
 				o.setName("Fenchurch Station");
+				o.setType(TYPE_STATION);
 				break;
 			case 26:
 				o.setImage(leicesterSqTile);
 				o.setInfoImage(leicesterSq);
 				o.setName("Leicester Square");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 27:
 				o.setImage(coventryStreetTile);
 				o.setInfoImage(coventryStreet);
 				o.setName("Coventry Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 28:
 				o.setImage(waterWorksTile);
 				o.setInfoImage(waterWorks);
 				o.setName("Water Works");
+				o.setType(TYPE_UTILITY);
 				break;
 			case 29:
 				o.setImage(piccadillyTile);
 				o.setInfoImage(piccadilly);
 				o.setName("Picadilly");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 30:
 				o.setImage(gotojail);
+				o.setType(TYPE_GOTO_JAIL);
 				break;
 			case 31:
 				o.setImage(regentStreetTile);
 				o.setInfoImage(regentStreet);
 				o.setName("Regent Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 32:
 				o.setImage(oxfordStreetTile);
 				o.setInfoImage(oxfordStreet);
 				o.setName("Oxford Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 33:
 				o.setImage(comchestright);
+				o.setType(TYPE_COMMUNITY);
 				break;
 			case 34:
 				o.setImage(bondStreetTile);
 				o.setInfoImage(bondStreet);
 				o.setName("Bond Street");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 35: 
 				o.setImage(liverpoolStStationTile);
 				o.setInfoImage(liverpoolStStation);
 				o.setName("Liverpool Station");
+				o.setType(TYPE_STATION);
 				break;
 			case 36:
 				o.setImage(chanceright);
+				o.setType(TYPE_CHANCE);
 				break;
 			case 37:
 				o.setImage(parkLaneTile);
 				o.setInfoImage(parkLane);
 				o.setName("Park Lane");
+				o.setType(TYPE_PROPERTY);
 				break;
 			case 38:
 				o.setImage(luxurytax);
+				o.setType(TYPE_TAX);
 				break;
 			case 39:
 				o.setImage(mayfairTile);
 				o.setInfoImage(mayfair);
 				o.setName("Mayfair");
+				o.setType(TYPE_PROPERTY);
 				break;
 			default:
 				break;
