@@ -70,6 +70,12 @@ public class Tile {
 	public int getPrice() {
 		return this.price;
 	}
+	public void setRent(int amount) {
+		this.rent = amount;
+	}
+	public int getRent() {
+		return this.rent;
+	}
 	
 	private String propertyName;
 	
@@ -79,8 +85,8 @@ public class Tile {
 	private Image image;
 	private Image infoImage;
 	private int number;
-	
 	private int price;
+	
 	public int x;	//stores tile x position
 	public int y;	//stores tile y position 
 

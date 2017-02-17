@@ -284,11 +284,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			case "roll":
 				dice.roll();
 
-				if (rollTurns == 0) {
+				if (rollTurns == 0 || (rollTurns < 3 && rollTurns > 0 && rollAgain)) {
 					movePlayer();
-				}
-				else if (rollTurns < 3 && rollTurns > 0 && rollAgain) {
-					movePlayer();
+					//If Tile landed on is owned
+					if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
+						//Set player debt amount to rent of tile
+						player.setDebt(Tiles.get(player.currentTile).getRent());
+						//Set which player is owed money
+						player.setPlayerOwed(Tiles.get(player.currentTile).getOwnerNumber());
+						//Tell player money is owed
+						infoPanel.append(player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
+					}
 				}
 				else {
 					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
@@ -311,8 +317,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				break;
 
 			case "pay rent":
-				//implement paying of rent of unmortaged properties to property owner
-				infoPanel.append("pay rent condition, but no method yet");
+				//Check if player has enough money
+				if(player.getBalance() >= player.getDebt()){
+					infoPanel.append(payRent());
+				}
+				//Unable to pay debt. Not enough money.
+				else{
+					infoPanel.append("Unable to pay debt. Not enough money.");
+				}
 				break;
 
 			case "done":
@@ -356,6 +368,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
+	private String payRent() {
+		//Take money from player
+		player.spend(player.getDebt());
+		//Give money to player owed
+		Players.get(player.getPlayerOwed()).deposit(player.getDebt());
+		String s = player.getName() + " payed " + player.getDebt() + " to " + Players.get(player.getPlayerOwed()).getName() + ".";
+		
+		//Set player Debt to 0
+		player.setDebt(0);
+		player.setPlayerOwed(-1);
+		
+		return s;
+	}
 
 	private String propertiesOwnedByCurrentPlayer() {
 		String properties = "Property owned by " + player.getName() + " :";
@@ -374,6 +399,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				Tiles.get(player.currentTile).getType() == PropertyImages.TYPE_UTILITY){
 			//If Tile is not owned
 			if(Tiles.get(player.currentTile).getOwnerNumber() == -1){
+				//If player has enough money
 				if(player.getBalance() >= Tiles.get(player.currentTile).getPrice()){
 				//Player spends price of property
 				player.spend(Tiles.get(player.currentTile).getPrice());
@@ -382,7 +408,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				//Not enough Money
 				else{
-					return "Unable to buy Tile. Player doesnt have enough money.";
+					return "Unable to buy Tile. Player doesn't have enough money.";
 				}
 			}
 			//Tile is already owned by a player

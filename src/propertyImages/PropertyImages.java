@@ -240,6 +240,7 @@ public class PropertyImages {
 			case 4:
 				o.setImage(incometax);
 				o.setType(TYPE_TAX);
+				o.setPrice(200);
 				break;
 			case 5:
 				o.setImage(kingsCrossTile);
@@ -282,7 +283,7 @@ public class PropertyImages {
 				o.setInfoImage(pallMall);
 				o.setName("Pall Mall");
 				o.setType(TYPE_PROPERTY);
-				o.setPrice(140);
+				o.setPrice(150);
 				break;
 			case 12:
 				o.setImage(electricCoTile);
@@ -296,7 +297,7 @@ public class PropertyImages {
 				o.setInfoImage(whitehall);
 				o.setName("Whitehall");
 				o.setType(TYPE_PROPERTY);
-				o.setPrice(140);
+				o.setPrice(150);
 				break;
 			case 14:
 				o.setImage(northumberlandAvTile);
@@ -451,6 +452,7 @@ public class PropertyImages {
 			case 38:
 				o.setImage(luxurytax);
 				o.setType(TYPE_TAX);
+				o.setPrice(100);
 				break;
 			case 39:
 				o.setImage(mayfairTile);
