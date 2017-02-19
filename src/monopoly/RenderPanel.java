@@ -23,7 +23,7 @@ import propertyImages.PropertyImages;
 @SuppressWarnings("serial")
 public class RenderPanel extends JPanel {
 
-	public boolean firstTime = true;
+	private boolean firstTime = true;
 	private PropertyImages propertyImages = new PropertyImages();
 
 	public Color insideGreen = new Color(165, 255, 137);

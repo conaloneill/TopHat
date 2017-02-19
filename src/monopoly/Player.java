@@ -33,8 +33,8 @@ public class Player {
 	
 
 	
-	Player(int startingTile, int playerNum, int balance){
-		currentTile = startingTile;
+	Player(int playerNum, int balance){
+		currentTile = 0;
 		playerNumber = playerNum;
 		this.balance = balance;
 		this.debt = 0;

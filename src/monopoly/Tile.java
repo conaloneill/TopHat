@@ -32,10 +32,8 @@ public class Tile {
 	public int y;	//stores tile y position 
 
 	
-	public Tile(int numberl, int type, int rent,int posx, int posy){
+	public Tile(int numberl,int posx, int posy){
 		number = numberl;
-		this.type = type;
-		this.rent = rent;
 		this.price = 0;
 		x=posx;
 		y=posy;
