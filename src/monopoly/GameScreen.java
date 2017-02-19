@@ -312,6 +312,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		player = Players.get(currentPlayer-1);
 		String choice = commandPanel.getText();
 		choice = choice.toLowerCase();
+		choice = choice.trim();
 		infoPanel.append(choice + "\n"); //add text to info panel
 
 
@@ -331,7 +332,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					//Set which player is owed money
 					player.setPlayerOwed(Tiles.get(player.currentTile).getOwnerNumber());
 					//Tell player money is owed
-					infoPanel.append(player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
+					infoPanel.append("\n" + player.getName() + " owes " + Players.get(Tiles.get(player.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(player.currentTile).getRent() + ".");
 				}
 			}
 			else {
@@ -373,8 +374,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		case "done":
+			//Check if player must roll again
 			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
-				done();
+				//Check if player still owes money
+				if(player.getDebt() == 0){
+					done();
+				}
+				//Debt hasn't been paid
+				else{
+					infoPanel.append("You must pay your rent before ending your turn. Use the \"pay rent\" command");
+				}
 			}
 			else {
 				infoPanel.append("\nError: Must roll before turn can end\n");
@@ -530,7 +539,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		rollAgain = false;
 
-		infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares\n"); //Says how many squares a player has moved
+		infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
 
 		if (dice.checkDouble() && doubleCount < 4) {
 			infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
