@@ -36,6 +36,7 @@ public class Tile {
 		number = numberl;
 		this.type = type;
 		this.rent = rent;
+		this.price = 0;
 		x=posx;
 		y=posy;
 		ownedByPlayer = -1;

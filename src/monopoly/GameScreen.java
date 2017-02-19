@@ -325,8 +325,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
 				movePlayer();
+				//Info about Tile player landed on:
+				infoPanel.append("\n" + player.getName() + " landed on " + Tiles.get(player.currentTile).getName());
+				//If property can be bought
+				if(Tiles.get(player.currentTile).getPrice() > 0 && Tiles.get(player.currentTile).getOwnerNumber() == -1){
+					infoPanel.append("\nThis property may be bought for " + Tiles.get(player.currentTile).getPrice() + ".");
+				}
 				//If Tile landed on is owned
-				if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
+				else if(Tiles.get(player.currentTile).getOwnerNumber() != -1){
 					//Set player debt amount to rent of tile
 					player.setDebt(Tiles.get(player.currentTile).getRent());
 					//Set which player is owed money
@@ -542,7 +548,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(Players.get(currentPlayer-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
 
 		if (dice.checkDouble() && doubleCount < 4) {
-			infoPanel.append("Doubles! Roll again!\n"); //add text to info pane
+			infoPanel.append("\nDoubles! Roll again!\n"); //add text to info pane
 			doubleCount++;
 			rollAgain = true;
 			rollTurns++;
