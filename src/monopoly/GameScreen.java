@@ -277,46 +277,46 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		}
 
-		//If button is pushed, add command panel text to the info panel
+		//If button is pushed
 		if ("ENTER".equals(e.getActionCommand())) {
 			
+			//If more than 1 Player left and 'quit' command hasnt been called 
 			if (!checkGameOver() && !gameOver) {
 				userInput();
 			}
+			//If Game has ended
 			else {
-				
+				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
+
 				String choiceString = commandPanel.getText().trim().toLowerCase();
 				
 				switch (choiceString) {
 				case "exit":
-				System.exit(0);
+					System.exit(0);
 					break;
 
 				default:
-					infoPanel.append("Error cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
 					break;
-				}
-				
-				
+				}	
 			}
-
-			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-			for(Tile o : Tiles) { //figure out what tile the mouse is on
-				if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-					mouseIsOnATile = true;
-					currentTile =  o.getTileNum();
-				}
+		}
+		
+		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
+		for(Tile o : Tiles) { //figure out what tile the mouse is on
+			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+				mouseIsOnATile = true;
+				currentTile =  o.getTileNum();
 			}
-			//If mouse is in the center of the board ( not a tile )
-			if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-					mouseX <  BOARD_WIDTH - TILESIZE &&
-					mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-					mouseY < BOARD_WIDTH - TILESIZE ||
-					//or off the board
-					mouseX > BOARD_WIDTH - 10) {
-				mouseIsOnATile = false;
-				currentTile = 100;
-			}
+		}
+		//If mouse is in the center of the board ( not a tile )
+		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+				mouseX <  BOARD_WIDTH - TILESIZE &&
+				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+				mouseY < BOARD_WIDTH - TILESIZE ||
+				//or off the board
+				mouseX > BOARD_WIDTH - 10) {
+			mouseIsOnATile = false;
+			currentTile = 100;
 		}
 	}
 
@@ -515,7 +515,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		Player winner = Players.get(numberOfPlayers-1);
 
 		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
-		
+		infoPanel.append("\nEnter \"exit\" to end the program\n");
 		gameOver = true;
 	}
 
