@@ -34,7 +34,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,7 +51,7 @@ import monopoly.RenderPanel;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener {
-	
+
 	private Timer timer;
 	private JFrame frame;
 	private JTextArea infoPanel, commandPanel;
@@ -62,16 +62,18 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private RenderPanel boardGraphics = new RenderPanel();
 	private Player currentPlayer;
 	public static GameScreen screen;
-	
+
 	public int mouseX, mouseY, currentTile, numberOfPlayers;
 	private int ticks, firstTurn = 0, currentPlayerNumber, doubleCount=0 , rollTurns = 0;
 	public static final int  STARTINGBAL = 1500, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
-	
-	public boolean mouseIsOnATile = false, playerNumberCheck = false, rollAgain = true;
-	
+
+	public boolean mouseIsOnATile = false, playerNumberCheck = false, rollAgain = true, gameOver = false;
+
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
 	
+	
+	private String choice;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
 			+ "roll : rolls both dice and moves player around the board \n"
@@ -80,6 +82,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "property : shows a list of the all the properties owned by the player \n"
 			+ "balance : shows the bank balance of the player \n"
 			+ "done : ends the players turn and allows the next player to start their turn \n";
+
 
 	GameScreen() {
 		init();
@@ -241,13 +244,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public static void main(String[] args) {
 		//Create an instance of our main class
 		screen = new GameScreen();
-	}
 
+	}
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
 		ticks++;
-		
+
 
 		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
 		//(slight lag in mouse tracking but performance improvements are worth it for now)
@@ -276,47 +279,71 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//If button is pushed, add command panel text to the info panel
 		if ("ENTER".equals(e.getActionCommand())) {
-
-			userInput();
-
-		}
-
-		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles) { //figure out what tile the mouse is on
-			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
-				mouseIsOnATile = true;
-				currentTile =  o.getTileNum();
+			
+			if (!checkGameOver() && !gameOver) {
+				userInput();
 			}
-		}
-		//If mouse is in the center of the board ( not a tile )
-		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
-				mouseX <  BOARD_WIDTH - TILESIZE &&
-				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
-				mouseY < BOARD_WIDTH - TILESIZE ||
-				//or off the board
-				mouseX > BOARD_WIDTH - 10) {
-			mouseIsOnATile = false;
-			currentTile = 100;
+			else {
+				
+				String choiceString = commandPanel.getText().trim().toLowerCase();
+				
+				switch (choiceString) {
+				case "exit":
+				System.exit(0);
+					break;
+
+				default:
+					infoPanel.append("Error cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
+					break;
+				}
+				
+				
+			}
+
+			//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
+			for(Tile o : Tiles) { //figure out what tile the mouse is on
+				if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
+					mouseIsOnATile = true;
+					currentTile =  o.getTileNum();
+				}
+			}
+			//If mouse is in the center of the board ( not a tile )
+			if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
+					mouseX <  BOARD_WIDTH - TILESIZE &&
+					mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+					mouseY < BOARD_WIDTH - TILESIZE ||
+					//or off the board
+					mouseX > BOARD_WIDTH - 10) {
+				mouseIsOnATile = false;
+				currentTile = 100;
+			}
 		}
 	}
 
-	
-//END OF GAME RUNNING METHODS
-	
-	
-	
-	
-	
-	
-	
+
+
+
+	//END OF GAME RUNNING METHODS
+
+
+
+
 	//METHODS
+
+	private boolean checkGameOver() {
+		if (Players.size() <= 1 || choice == "quit") {
+			infoPanel.append("Game Over! Only one player remaining.\n Winner is " + Players.get(Players.size()-1).getName()
+					+ "\nwith assests worth " + Players.get(Players.size()-1).getAssetValue());
+			return true;
+		}
+		return false;
+	}
+
+
 	private void userInput() {
 		currentPlayer = Players.get(currentPlayerNumber-1);
-		String choice = commandPanel.getText();
-		choice = choice.toLowerCase();
-		choice = choice.trim();
+		choice = commandPanel.getText().trim().toLowerCase();
 		infoPanel.append(choice + "\n"); //add text to info panel
-
 
 		switch(choice) {
 		case "help":
@@ -465,11 +492,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 	private void quitGame() {
-		//used for testing before rents/mortages are implement as all balances will be equal otherwise.
-		
-		for(Player p : Players){
-			p.spend(ThreadLocalRandom.current().nextInt(1, 1500));
-		}
 
 		//calculate AssetValue for each player
 		for (Player player : Players) {
@@ -493,6 +515,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		Player winner = Players.get(numberOfPlayers-1);
 
 		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
+		
+		gameOver = true;
 	}
 
 
@@ -550,7 +574,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(Players.get(currentPlayerNumber-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
 
 		if (dice.checkDouble() && doubleCount < 4) {
-			infoPanel.append("\nDoubles! Roll again!\n"); //add text to info pane
+			infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
 			doubleCount++;
 			rollAgain = true;
 			rollTurns++;
@@ -560,7 +584,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			rollAgain = false;
 			doubleCount = 0;
 		}
-		
+
 
 		if (doubleCount == 3) {
 			rollAgain = false;

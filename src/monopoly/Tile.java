@@ -24,7 +24,7 @@ public class Tile {
 	private Image image;
 	private Image infoImage;
 	private int number;
-	private boolean mortaged;
+	private boolean mortaged = false;
 	private int price;
 	
 	
