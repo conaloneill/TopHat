@@ -371,7 +371,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 			}
 			else {
-				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options\n");
+				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options");
 			}
 			break;
 
@@ -393,13 +393,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//Check if player has any rent due
 			if(currentPlayer.getDebt() > 0){
 				//Check if player has enough money
-				if(currentPlayer.getBalance() >= currentPlayer.getDebt()){
+				//if(currentPlayer.getBalance() >= currentPlayer.getDebt()){
 					payRent();
-				}
+				//}
 				//Unable to pay debt. Not enough money.
-				else{
-					infoPanel.append("Unable to pay debt. Not enough money.");
-				}
+				//else{
+				//	infoPanel.append("Unable to pay debt. Not enough money.");
+				//}
 			}
 			//No rent due
 			else{
@@ -411,8 +411,22 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "done":
 			//Check if player must roll again
 			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
+				
 				//Check if player still owes money
 				if(currentPlayer.getDebt() == 0){
+					
+					//Check if player has negative balance and remove them
+					if(currentPlayer.getBalance() < 0){
+						Players.remove(currentPlayerNumber);
+						infoPanel.append(currentPlayer.getName() + " is bankrupt!");
+						
+						//Decrement player number to account for deletion
+						if(currentPlayerNumber > 0){
+							currentPlayerNumber--;
+						}else{
+							currentPlayerNumber = Players.size();
+						}
+					}
 					done();
 				}
 				//Debt hasn't been paid
@@ -430,7 +444,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		default:
-			infoPanel.append("\nError: Invalid command\n");
+			infoPanel.append("Error: Invalid command");
 			break;
 		}
 
@@ -469,16 +483,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//If Tile is not owned
 			if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 				//If player has enough money
-				if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
+				//if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
 					//Player spends price of property
 					currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
 					Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
 					return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
-				}
+				//}
 				//Not enough Money
-				else{
-					return "Unable to buy Tile. Player doesn't have enough money.";
-				}
+				//else{
+				//	return "Unable to buy Tile. Player doesn't have enough money.";
+				//}
 			}
 			//Tile is already owned by a player
 			else{
