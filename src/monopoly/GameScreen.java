@@ -51,8 +51,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
-
-
+import javax.swing.text.DefaultCaret;
 
 import propertyImages.PropertyImages;
 import monopoly.RenderPanel;
@@ -83,13 +82,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private String choice;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
-			+ "help : gives list of all available commands \n"
-			+ "roll : rolls both dice and moves player around the board \n"
-			+ "buy : allows player to buy the property they are on if it can be bought \n"
-			+ "pay rent : allows player to pay owed rent to the owner of the property they are on \n"
-			+ "property : shows a list of the all the properties owned by the player \n"
-			+ "balance : shows the bank balance of the player \n"
-			+ "done : ends the players turn and allows the next player to start their turn \n";
+			+ "-help : gives list of all available commands \n"
+			+ "-roll : rolls both dice and moves player around the board \n"
+			+ "-buy : allows player to buy the property they are on if it can be bought \n"
+			+ "-pay rent : allows player to pay owed rent to the owner of the property they are on \n"
+			+ "-property : shows a list of the all the properties owned by the player \n"
+			+ "-balance : shows the bank balance of the player \n"
+			+ "-done : ends the players turn and allows the next player to start their turn \n"
+			+ "-quit : ends the game and display the winne\n";
 
 
 	GameScreen() {
@@ -128,6 +128,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
+		//set info panel to auto scroll to end of newly appended text
+		DefaultCaret caret = (DefaultCaret)infoPanel.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		
 		infoPanel.setText("INFO PANEL\n" + helpString + "\n");
 		infoPanel.setEditable(false);
 
@@ -139,6 +143,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//adding a JScrollPane to the info panel to allow it to vertically scroll through all the commands
 		JScrollPane infoScrollPane = new JScrollPane(infoPanel);
+
+		infoScrollPane.add(infoPanel);
+		infoScrollPane.setViewportView(infoPanel);
 		infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);
