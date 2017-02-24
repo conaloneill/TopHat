@@ -8,8 +8,8 @@ public class Dice {
 		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
 		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
 		//testing double rolls
-//		valueDice1=4;
-//		valueDice2=4;
+		valueDice1=5;
+		valueDice2=3;
 	}
 
 	public boolean checkDouble() {

@@ -417,8 +417,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					//Check if player has negative balance and remove them
 					if(currentPlayer.getBalance() < 0){
+						setPropertyUnowned(currentPlayer);
 						Players.remove(currentPlayerNumber-1);
-						infoPanel.append(currentPlayer.getName() + " is bankrupt!");
+						
+						infoPanel.append(currentPlayer.getName() + " has a negative balance and cant continue the game!\nAll properties will be given back to bank.\n");
 						
 						//Decrement player number to account for deletion
 						if(currentPlayerNumber-1 > 0){
@@ -449,6 +451,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  //Asks the next player for input
+	}
+
+	private void setPropertyUnowned(Player p) {
+		for (Tile tile : Tiles) {
+			if (tile.getOwnerNumber() ==  p.playerNumber) {
+				tile.setOwnerNumber(-1);
+			}
+		}
 	}
 
 	private void payRent() {
