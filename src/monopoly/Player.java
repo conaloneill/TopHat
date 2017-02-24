@@ -17,29 +17,29 @@ import java.util.ArrayList;
 import monopoly.Tile;
 
 public class Player {
-	
+
 	private Color colour;
 	private int  balance;
 	private String name;
 	private int assetValue = 0;
 	private int debt;
 	private int playerNumberOwed;
-	
+
 	public int playerNumber;
 	public int currentTile;
 	public int firstRoll;
 	public int xPosition;  //Stores current x position
 	public int yPosition;  //Stores current y position
-	
 
-	
+
+
 	Player(int playerNum, int balance){
 		currentTile = 0;
 		playerNumber = playerNum;
 		this.balance = balance;
 		this.debt = 0;
 	}
-	
+
 	public void setColour(Color color) {
 		this.colour = color;
 	}
@@ -71,12 +71,7 @@ public class Player {
 		assetValue = balance;
 		for (Tile o : Tiles) {
 			if (o.getOwnerNumber() == playerNumber-1) {
-				if (!o.checkMortaged()) {
-					assetValue += o.getPrice();
-				}
-				else {
-					assetValue += o.getPrice()/2;
-				}
+				assetValue += o.getPrice();
 			}
 		}
 	}

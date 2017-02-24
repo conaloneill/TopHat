@@ -18,8 +18,16 @@ package monopoly;
  * This class also implements a KeyListener which we intend to use as an alternative way
  * of entering commands via our 'ENTER' button. This is still a work in process, but works 
  * using the space bar.
+ * 
+ * 
+ * 
+ * currentPlayer is the current player based on the index position in the Players array (i.e: 0-5)
+ * currentPlayerNumber is the human defined number of the Player (i.e: 1-6)
+ *
  *
  *  */
+
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -71,8 +79,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
-	
-	
+
+
 	private String choice;
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "help : gives list of all available commands \n"
@@ -279,7 +287,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//If button is pushed
 		if ("ENTER".equals(e.getActionCommand())) {
-			
+
 			//If more than 1 Player left and 'quit' command hasnt been called 
 			if (!checkGameOver() && !gameOver) {
 				userInput();
@@ -289,7 +297,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
 
 				String choiceString = commandPanel.getText().trim().toLowerCase();
-				
+
 				switch (choiceString) {
 				case "exit":
 					System.exit(0);
@@ -300,7 +308,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}	
 			}
 		}
-		
+
 		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
 		for(Tile o : Tiles) { //figure out what tile the mouse is on
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
@@ -357,6 +365,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 				//If property can be bought
+				System.out.println("current player: " + currentPlayer.playerNumber);
+				System.out.println("current Tile: " + currentPlayer.currentTile);
+				System.out.println("current Tile owner: " + Tiles.get(currentPlayer.currentTile).getOwnerNumber());
+
 				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 					infoPanel.append("\nThis property may be bought for " + Tiles.get(currentPlayer.currentTile).getPrice() + ".");
 				}
@@ -394,7 +406,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(currentPlayer.getDebt() > 0){
 				//Check if player has enough money
 				//if(currentPlayer.getBalance() >= currentPlayer.getDebt()){
-					payRent();
+				payRent();
 				//}
 				//Unable to pay debt. Not enough money.
 				//else{
@@ -411,17 +423,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "done":
 			//Check if player must roll again
 			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
-				
+
 				//Check if player still owes money
 				if(currentPlayer.getDebt() == 0){
-					
+
 					//Check if player has negative balance and remove them
 					if(currentPlayer.getBalance() < 0){
-						setPropertyUnowned(currentPlayer);
+						setPropertyUnowned();
 						Players.remove(currentPlayerNumber-1);
-						
+
 						infoPanel.append(currentPlayer.getName() + " has a negative balance and cant continue the game!\nAll properties will be given back to bank.\n");
-						
+
 						//Decrement player number to account for deletion
 						if(currentPlayerNumber-1 > 0){
 							currentPlayerNumber--;
@@ -453,9 +465,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  //Asks the next player for input
 	}
 
-	private void setPropertyUnowned(Player p) {
+	private void setPropertyUnowned() {
 		for (Tile tile : Tiles) {
-			if (tile.getOwnerNumber() ==  p.playerNumber) {
+			if (tile.getOwnerNumber() ==  currentPlayerNumber-1) {
 				tile.setOwnerNumber(-1);
 			}
 		}
@@ -494,10 +506,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 				//If player has enough money
 				//if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
-					//Player spends price of property
-					currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
-					Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
-					return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
+				//Player spends price of property
+				currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
+				Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
+				return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
 				//}
 				//Not enough Money
 				//else{
@@ -517,18 +529,20 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private void quitGame() {
 
-		//calculate AssetValue for each player
-		for (Player player : Players) {
-			player.calculateAssetValue(Tiles);
-		}
-
-		//sort Players array based on assetValue property
-		Collections.sort(Players, new Comparator<Player>() {
-			@Override public int compare(Player p1, Player p2) {
-				return p1.getAssetValue() - p2.getAssetValue(); // Ascending
+		if (Players.size() > 1) {
+			//calculate AssetValue for each player
+			for (Player player : Players) {
+				player.calculateAssetValue(Tiles);
 			}
 
-		});
+			//sort Players array based on assetValue property
+			Collections.sort(Players, new Comparator<Player>() {
+				@Override public int compare(Player p1, Player p2) {
+					return p1.getAssetValue() - p2.getAssetValue(); // Ascending
+				}
+
+			});
+		}
 
 		//print all asset Values to console for safety checks
 		for (Player player : Players) {
