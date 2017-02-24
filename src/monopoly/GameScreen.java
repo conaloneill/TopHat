@@ -89,7 +89,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-property : shows a list of the all the properties owned by the player \n"
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
-			+ "-quit : ends the game and display the winne\n";
+			+ "-quit : ends the game and display the winner\n";
 
 
 	GameScreen() {
@@ -132,7 +132,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		DefaultCaret caret = (DefaultCaret)infoPanel.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
-		infoPanel.setText("INFO PANEL\n" + helpString + "\n");
+		infoPanel.setText("INFO PANEL\n" + helpString + "\nMouse over property tile spaces for more info on the property\n\n");
 		infoPanel.setEditable(false);
 
 		//lines now wrap to next line so only vertical scrolling needed
@@ -365,6 +365,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private void userInput() {
 		currentPlayer = Players.get(currentPlayerNumber-1);
 		choice = commandPanel.getText().trim().toLowerCase();
+		commandPanel.setText(null);
 		infoPanel.append(choice + "\n"); //add text to info panel
 
 		switch(choice) {
