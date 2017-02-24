@@ -65,7 +65,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	public int mouseX, mouseY, currentTile, numberOfPlayers;
 	private int ticks, firstTurn = 0, currentPlayerNumber, doubleCount=0 , rollTurns = 0;
-	public static final int  STARTINGBAL = 1500, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
+	public static final int  STARTINGBAL = 50, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 
 	public boolean mouseIsOnATile = false, playerNumberCheck = false, rollAgain = true, gameOver = false;
 
@@ -417,11 +417,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					
 					//Check if player has negative balance and remove them
 					if(currentPlayer.getBalance() < 0){
-						Players.remove(currentPlayerNumber);
+						Players.remove(currentPlayerNumber-1);
 						infoPanel.append(currentPlayer.getName() + " is bankrupt!");
 						
 						//Decrement player number to account for deletion
-						if(currentPlayerNumber > 0){
+						if(currentPlayerNumber-1 > 0){
 							currentPlayerNumber--;
 						}else{
 							currentPlayerNumber = Players.size();
@@ -526,7 +526,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 		//sort is in ascending order
-		Player winner = Players.get(numberOfPlayers-1);
+		Player winner = Players.get(Players.size()-1);
 
 		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
 		infoPanel.append("\nEnter \"exit\" to end the program\n");
@@ -535,7 +535,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 
 	private void done() {
-		if (currentPlayerNumber >= numberOfPlayers) { //If every player has had a turn, resets to player 1
+		if (currentPlayerNumber >= Players.size()) { //If every player has had a turn, resets to player 1
 			currentPlayerNumber = 1;
 			currentPlayer = Players.get(currentPlayerNumber-1);
 		} else { //Moves on to the next player
