@@ -341,13 +341,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-
-
-
 	//END OF GAME RUNNING METHODS
-
-
-
 
 	//METHODS
 
@@ -378,10 +372,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 				//If property can be bought
-				System.out.println("current player: " + currentPlayer.playerNumber);
-				System.out.println("current Tile: " + currentPlayer.currentTile);
-				System.out.println("current Tile owner: " + Tiles.get(currentPlayer.currentTile).getOwnerNumber());
-
 				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 					infoPanel.append("\nThis property may be bought for " + Tiles.get(currentPlayer.currentTile).getPrice() + ".");
 				}
@@ -529,10 +519,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 				//If player has enough money
 				//if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
+				
 				//Player spends price of property
 				currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
 				Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
 				return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
+				
 				//}
 				//Not enough Money
 				//else{
@@ -570,9 +562,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 		//print all asset Values to console for safety checks
-		for (Player player : Players) {
+		/*for (Player player : Players) {
 			System.out.println("Player " + player.playerNumber + " has : " + player.getAssetValue());
-		}
+		}*/
 
 		//sort is in ascending order
 		Player winner = Players.get(Players.size()-1);
