@@ -71,7 +71,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private Player currentPlayer;
 	public static GameScreen screen;
 
-	public int mouseX, mouseY, currentTile, numberOfPlayers;
+	public int mouseX, mouseY, currentTile, numberOfPlayers = 0;
 	private int ticks, firstTurn = 0, currentPlayerNumber, doubleCount=0 , rollTurns = 0;
 	public static final int  STARTINGBAL = 50, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 
@@ -168,7 +168,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
-			numberOfPlayers = Integer.parseInt(n);
+			
+			//Check if int. Else throw error and try again
+			try {
+				numberOfPlayers = Integer.parseInt(n);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				System.out.println("Error. Number expected");
+			}
+			
 			//Check number of players is acceptable
 			if(numberOfPlayers >= MINPLAYERS && numberOfPlayers <= MAXPLAYERS){
 				playerNumberCheck = true;
@@ -180,12 +188,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			//Ask for player name
 			int pnum = i+1;
-			String pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
+			String pname = "";
+			//Check that something has been entered
+			while(pname.equals("")){
+				pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
+			}
 			Players.get(i).setName(pname);
 
 			//roll dice and assign to the players
 			dice.roll();
 			Players.get(i).firstRoll = dice.getValue();
+			//Find highest first roll
 			if (Players.get(i).firstRoll > firstTurn ) {
 				firstTurn = Players.get(i).firstRoll;
 			}
@@ -295,7 +308,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//If Game has ended
 			else {
 				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
-
+				//checkGameOver();
 				String choiceString = commandPanel.getText().trim().toLowerCase();
 
 				switch (choiceString) {
@@ -341,7 +354,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private boolean checkGameOver() {
 		if (Players.size() <= 1 || choice == "quit") {
 			infoPanel.append("Game Over! Only one player remaining.\n Winner is " + Players.get(Players.size()-1).getName()
-					+ "\nwith assests worth " + Players.get(Players.size()-1).getAssetValue());
+					+ " with assets worth " + Players.get(Players.size()-1).getAssetValue());
 			return true;
 		}
 		return false;
@@ -374,12 +387,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				//If Tile landed on is owned
 				else if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() != -1){
-					//Set player debt amount to rent of tile
-					currentPlayer.setDebt(Tiles.get(currentPlayer.currentTile).getRent());
-					//Set which player is owed money
-					currentPlayer.setPlayerOwed(Tiles.get(currentPlayer.currentTile).getOwnerNumber());
-					//Tell player money is owed
-					infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(Tiles.get(currentPlayer.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(currentPlayer.currentTile).getRent() + ".");
+					//Check for Tile isn't mortgaged
+					if(!Tiles.get(currentPlayer.currentTile).checkMortaged()){
+						//Set player debt amount to rent of tile
+						currentPlayer.setDebt(Tiles.get(currentPlayer.currentTile).getRent());
+						//Set which player is owed money
+						currentPlayer.setPlayerOwed(Tiles.get(currentPlayer.currentTile).getOwnerNumber());
+						//Tell player money is owed
+						infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(Tiles.get(currentPlayer.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(currentPlayer.currentTile).getRent() + ".");
+					}
+					//Unreachable code as mortgages not implemented
+					else{
+						infoPanel.append("\nProperty is mortgaged");
+					}
 				}
 			}
 			else {
@@ -442,6 +462,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 						}
 					}
 					done();
+					if (Players.size() <= 1){
+						quitGame();
+					}
 				}
 				//Debt hasn't been paid
 				else{
@@ -542,6 +565,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 
 			});
+		}else{
+			Players.get(Players.size()-1).calculateAssetValue(Tiles);
 		}
 
 		//print all asset Values to console for safety checks
@@ -603,6 +628,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					Players.get(currentPlayerNumber-1).currentTile = 0;
 
 					//Pass go, collect 200
+					infoPanel.append("Player " + currentPlayer.getName() + " passed Go and received 200!\n");
 					Players.get(currentPlayerNumber-1).deposit(200);
 				}
 			}
