@@ -410,8 +410,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		case "buy":
-			String buy = buy();
-			infoPanel.append(buy);
+			if(rollTurns==0) {
+				infoPanel.append("Error you must roll before you can buy a property");	
+			}
+			else {
+				String buy = buy();
+				infoPanel.append(buy);
+			}
 			break;
 
 		case "property":
