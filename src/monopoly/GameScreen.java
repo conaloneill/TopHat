@@ -72,7 +72,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	public int mouseX, mouseY, currentTile, numberOfPlayers = 0;
 	private int ticks, firstTurn = 0, currentPlayerNumber, doubleCount=0 , rollTurns = 0;
-	public static final int  STARTINGBAL = 50, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
+	public static final int  STARTINGBAL = 1500, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 
 	public boolean mouseIsOnATile = false, playerNumberCheck = false, rollAgain = true, gameOver = false;
 
@@ -380,7 +380,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 				//If property can be bought
-				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1 && Tiles.get(currentPlayer.currentTile).getType() == 1){
+				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1 && Tiles.get(currentPlayer.currentTile).getType() != 9){
 					infoPanel.append("\nThis property may be bought for " + Tiles.get(currentPlayer.currentTile).getPrice() + ".");
 				}
 				//If Tile landed on is owned
@@ -405,12 +405,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			break;
 
-		case "balance":
+		case "balance":  //Returns the players current balance
 			infoPanel.append("Player " + currentPlayer.getName() + " has a balance of: " + currentPlayer.getBalance());
 			break;
 
 		case "buy":
-			if(rollTurns==0) {
+			if(rollTurns==0) {  //Checks to make sure the player has rolled before allowing them to buy a property
 				infoPanel.append("Error you must roll before you can buy a property");	
 			}
 			else {
