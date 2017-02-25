@@ -380,7 +380,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 				//If property can be bought
-				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
+				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1 && Tiles.get(currentPlayer.currentTile).getType() == 1){
 					infoPanel.append("\nThis property may be bought for " + Tiles.get(currentPlayer.currentTile).getPrice() + ".");
 				}
 				//If Tile landed on is owned
