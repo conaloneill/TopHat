@@ -8,7 +8,7 @@ package monopoly;
  * This class is used to create Player objects. Each player currently has its
  * own color, number and x,y position. These are used by our 'RenderPanel' class
  * to draw each player. 
- * In future Sprints, 'Player' objects will contain their own balances, owned properties etc.
+ * 'Player' objects contain their own balances, owned properties, debt owed and to who, and their asset value
  * 
  * */
 import java.awt.Color;
@@ -66,7 +66,8 @@ public class Player {
 	public int getAssetValue() {
 		return assetValue;
 	}
-
+	
+	//used to calculate the total value of the Players assets, both cash and properties
 	public void calculateAssetValue(ArrayList<Tile> Tiles) {
 		assetValue = balance;
 		for (Tile o : Tiles) {
@@ -75,13 +76,15 @@ public class Player {
 			}
 		}
 	}
-
+	
+	//getter and setter for debt (used in paying rent)
 	public void setDebt(int amount) {
 		this.debt = amount;
 	}
 	public int getDebt() {
 		return this.debt;
 	}
+	//getter and setter for who the player owes rent to
 	public void setPlayerOwed(int playerNum) {
 		this.playerNumberOwed = playerNum;
 	}

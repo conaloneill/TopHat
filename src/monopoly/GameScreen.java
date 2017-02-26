@@ -14,7 +14,7 @@ package monopoly;
  * every time the Timer ticks. We use this method to redraw the board on a loop
  * and show objects moving on the board.
  * We also increment a counter called 'ticks' every loop and use this as
- * a reference to move our tokens every 15 'ticks' of the timer.
+ * a reference to redraw the board for mouse tracking and player movement, and to check for the enter key  
  * This class also implements a KeyListener which we intend to use as an alternative way
  * of entering commands via our 'ENTER' button. This is still a work in process, but works 
  * using the space bar.
@@ -80,7 +80,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Player> Players = new ArrayList<Player>();
 
 
-	private String choice;
+	private String choice; //contains user's input throughout the game 
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "-help : gives list of all available commands \n"
 			+ "-roll : rolls both dice and moves player around the board \n"
@@ -170,6 +170,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		pane.add(INFOAREA, BorderLayout.LINE_END);
 	}
+	
+	
 	//Called once on create. Used to setup game
 	private void init() {  
 
@@ -270,11 +272,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}	
 	}
 
+	
+	
 	public static void main(String[] args) {
 		//Create an instance of our main class
 		screen = new GameScreen();
 
 	}
+	
+	
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
@@ -314,7 +320,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Check user input and carry out command entered
 				userInput();
 			}
-			//If Game has ended
+			//If Game has ended exit the program on user command
 			else {
 				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
 				String choiceString = commandPanel.getText().trim().toLowerCase();
@@ -352,8 +358,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	//END OF GAME RUNNING METHODS
 
+	
+	
+	
 	//METHODS
-
+	
+	//method to check the game is over by checking if only 1 player left in the player 
+	//array or user enter's "quit". This also prints the winner.
 	private boolean checkGameOver() {
 		if (Players.size() <= 1 || choice == "quit") {
 			infoPanel.append("Game Over! Only one player remaining.\n Winner is " + Players.get(Players.size()-1).getName()
@@ -364,6 +375,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 
+	//method for all user inputs on a players turn. gets the input and calls methods to implement choice
 	private void userInput() {
 		//Set currentPlayer based on currentPlayerNumber
 		currentPlayer = Players.get(currentPlayerNumber-1);
@@ -379,11 +391,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "help":
 			infoPanel.append(helpString);
 			break;
+			
+			//case below rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
 		case "roll":
 			//Re-roll the dice to get new values
 			dice.roll();
 
-			//Check if player has rolled doubles 3 times
+			//Check if player has rolled doubles less than 3 times but is still allowed roll again
 			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
 				//Move currentPlayer the value of the dice
 				movePlayer();
@@ -404,7 +418,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 						//Tell player money is owed
 						infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(Tiles.get(currentPlayer.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(currentPlayer.currentTile).getRent() + ".");
 					}
-					//Unreachable code as mortgages not implemented
+					//Unreachable code as mortgages not implemented in this sprint
 					else{
 						infoPanel.append("\nProperty is mortgaged");
 					}
@@ -427,8 +441,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				infoPanel.append("Error you must roll before you can buy a property");	
 			}
 			else {
-				String buy = buy();
-				infoPanel.append(buy);
+				//calls buy method to buy tile
+				infoPanel.append(buy());
 			}
 			break;
 
@@ -457,7 +471,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		case "done":
-			//Check if player must roll again
+			//Check if player must roll again this turn
 			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
 
 				//Check if player still owes money
@@ -465,12 +479,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 					//Check if player has negative balance and remove them
 					if(currentPlayer.getBalance() < 0){
+						//returns all properties to bank for free as no auctions in this Sprint
 						setPropertyUnowned();
 						Players.remove(currentPlayerNumber-1);
 
 						infoPanel.append(currentPlayer.getName() + " has a negative balance and cant continue the game!\nAll properties will be given back to bank.\n");
 
-						//Decrement player number to account for deletion
+						//Decrement player number to account for deletion of player
 						if(currentPlayerNumber-1 > 0){
 							currentPlayerNumber--;
 						}else{
@@ -507,7 +522,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
 
-	//Sets all property owned by currentPlayer to have no owner
+	
+	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
 	private void setPropertyUnowned() {
 		for (Tile tile : Tiles) {
@@ -516,7 +532,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
-
+	
+	//method transfers money from 1 player to the other
 	private void payRent() {
 		//Take money from player
 		currentPlayer.spend(currentPlayer.getDebt());
@@ -531,7 +548,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(s);
 	}
 
-	//Loops through Tiles ArrayList and returns all Tiles owned by currentPlayer
+	
+	//Loops through Tiles ArrayList and displays all Tiles owned by currentPlayer
 	private void propertiesOwnedBycurrentPlayerNumber() {
 		String properties = "Property owned by " + currentPlayer.getName() + " :";
 		for(Tile o : Tiles){
@@ -542,6 +560,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(properties);
 	}
 
+	
 	private String buy() {
 		//If Tile is a property
 		if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_STATION ||
@@ -574,6 +593,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
+	
+	
 	private void quitGame() {
 
 		//Check if more than 1 Player left
@@ -583,10 +604,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				player.calculateAssetValue(Tiles);
 			}
 
-			//Sort Players array based on assetValue property
+			//Sort Players array based on assetValue property of Player objects
 			Collections.sort(Players, new Comparator<Player>() {
 				@Override public int compare(Player p1, Player p2) {
-					return p1.getAssetValue() - p2.getAssetValue(); // Ascending
+					return p1.getAssetValue() - p2.getAssetValue(); // Ascending order
 				}
 
 			});
@@ -604,6 +625,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 
+	//ends players turn and increments counter to the next player
 	private void done() {
 		if (currentPlayerNumber >= Players.size()) { //If every player has had a turn, resets to player 1
 			currentPlayerNumber = 1;

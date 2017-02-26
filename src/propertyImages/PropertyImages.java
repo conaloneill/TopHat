@@ -10,6 +10,11 @@ package propertyImages;
  * in the ArrayList 'Tiles' making references to our instance of our main class 'GameScreen'
  * called 'screen'. These images are drawn in the RenderPanel class.
  * 
+ * As this class is cycling through every tile and assigning info to those tiles, we 
+ * have added the rent, type, price and name of each tile inside the same loop.
+ * This was done to improve readability(everything is assigned together) and 
+ * code performance(only 1 loop through all tiles to assign information). 
+ * 
  * */
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -137,6 +142,8 @@ public class PropertyImages {
 		}
 		return temp;
 	}
+	
+	
 
 	public void assignTileImages() {
 		//Allow reference to our game screen
