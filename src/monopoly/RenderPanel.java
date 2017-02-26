@@ -33,7 +33,8 @@ public class RenderPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		GameScreen screen = GameScreen.screen; //enables use of info from screen
+		//Enables use of info from screen
+		GameScreen screen = GameScreen.screen; 
 		super.paintComponent(g);
 
 		//Draw green background
@@ -75,6 +76,6 @@ public class RenderPanel extends JPanel {
 		}
 		//Mouse tracker red dot
 		g.setColor(Color.red);
-		g.fillOval(screen.mouseX - 10/2, screen.mouseY - 10/2, 10, 10);
+		g.fillOval(screen.mouseX - 8/2, screen.mouseY - 8/2, 8, 8);
 	}
 }

@@ -21,8 +21,8 @@ package monopoly;
  * 
  * 
  * 
- * currentPlayer is the current player based on the index position in the Players array (i.e: 0-5)
- * currentPlayerNumber is the human defined number of the Player (i.e: 1-6)
+ * currentPlayer(Player) is the current player based on the index position in the Players array (i.e: 0-5)
+ * currentPlayerNumber(int) is the human defined number of the Player (i.e: 1-6)
  *
  *
  *  */
@@ -93,6 +93,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 
 	GameScreen() {
+		//Sets up Tiles and Players
 		init();
 		timer = new Timer(20, this);//Params are delay and actionListener
 
@@ -308,14 +309,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//If button is pushed
 		if ("ENTER".equals(e.getActionCommand())) {
 
-			//If more than 1 Player left and 'quit' command hasnt been called 
+			//If more than 1 Player left and 'quit' command hasn't been called 
 			if (!checkGameOver() && !gameOver) {
+				//Check user input and carry out command entered
 				userInput();
 			}
 			//If Game has ended
 			else {
 				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
-				//checkGameOver();
 				String choiceString = commandPanel.getText().trim().toLowerCase();
 
 				switch (choiceString) {
@@ -329,8 +330,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 
-		//Idea for a popup to appear on the screen containing tile information for whatever tile mouse is on
-		for(Tile o : Tiles) { //figure out what tile the mouse is on
+		//Idea for a pop-up to appear on the screen containing tile information for whatever tile mouse is on
+		//If mouse is on a tile, get tile number
+		for(Tile o : Tiles) { 
 			if(mouseX > o.x - TILESIZE/2 && mouseX < o.x + TILESIZE/2 && mouseY > o.y - TILESIZE/2 && mouseY < o.y + TILESIZE/2){
 				mouseIsOnATile = true;
 				currentTile =  o.getTileNum();
@@ -363,19 +365,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 
 	private void userInput() {
+		//Set currentPlayer based on currentPlayerNumber
 		currentPlayer = Players.get(currentPlayerNumber-1);
+		//Get user input
 		choice = commandPanel.getText().trim().toLowerCase();
+		//Remove text from command panel
 		commandPanel.setText(null);
-		infoPanel.append(choice + "\n"); //add text to info panel
+		//Add text to info panel
+		infoPanel.append(choice + "\n"); 
 
+		//Check user if input is one of our defined commands
 		switch(choice) {
 		case "help":
 			infoPanel.append(helpString);
 			break;
 		case "roll":
+			//Re-roll the dice to get new values
 			dice.roll();
 
+			//Check if player has rolled doubles 3 times
 			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
+				//Move currentPlayer the value of the dice
 				movePlayer();
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
@@ -400,17 +410,20 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					}
 				}
 			}
+			//Player has already rolled and didn't get doubles
 			else {
 				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options");
 			}
 			break;
 
-		case "balance":  //Returns the players current balance
+		case "balance": 
+			 //Returns the players current balance
 			infoPanel.append("Player " + currentPlayer.getName() + " has a balance of: " + currentPlayer.getBalance());
 			break;
 
 		case "buy":
-			if(rollTurns==0) {  //Checks to make sure the player has rolled before allowing them to buy a property
+			//Checks to make sure the player has rolled before allowing them to buy a property
+			if(rollTurns==0) {  
 				infoPanel.append("Error you must roll before you can buy a property");	
 			}
 			else {
@@ -420,7 +433,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		case "property":
-			//implement showing all properties owned by player
+			//Prints properties owned by currentPlayer
 			propertiesOwnedBycurrentPlayerNumber();
 			break;
 
@@ -464,7 +477,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							currentPlayerNumber = Players.size();
 						}
 					}
+					//Move on to next player
 					done();
+					//Check if only one Player left
 					if (Players.size() <= 1){
 						quitGame();
 					}
@@ -488,9 +503,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 		}
 
-		infoPanel.append("\n" + currentPlayer.getName() + " :");  //Asks the next player for input
+		//Asks the next player for input
+		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
 
+	//Sets all property owned by currentPlayer to have no owner
+	//Used when a player goes bankrupt
 	private void setPropertyUnowned() {
 		for (Tile tile : Tiles) {
 			if (tile.getOwnerNumber() ==  currentPlayerNumber-1) {
@@ -513,6 +531,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(s);
 	}
 
+	//Loops through Tiles ArrayList and returns all Tiles owned by currentPlayer
 	private void propertiesOwnedBycurrentPlayerNumber() {
 		String properties = "Property owned by " + currentPlayer.getName() + " :";
 		for(Tile o : Tiles){
@@ -557,13 +576,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private void quitGame() {
 
+		//Check if more than 1 Player left
 		if (Players.size() > 1) {
 			//calculate AssetValue for each player
 			for (Player player : Players) {
 				player.calculateAssetValue(Tiles);
 			}
 
-			//sort Players array based on assetValue property
+			//Sort Players array based on assetValue property
 			Collections.sort(Players, new Comparator<Player>() {
 				@Override public int compare(Player p1, Player p2) {
 					return p1.getAssetValue() - p2.getAssetValue(); // Ascending
@@ -571,15 +591,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 			});
 		}else{
+			//If only 1 Player, Calculate Players assets
 			Players.get(Players.size()-1).calculateAssetValue(Tiles);
 		}
 
-		//print all asset Values to console for safety checks
-		/*for (Player player : Players) {
-			System.out.println("Player " + player.playerNumber + " has : " + player.getAssetValue());
-		}*/
-
-		//sort is in ascending order
+		//Sort is in ascending order
 		Player winner = Players.get(Players.size()-1);
 
 		infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
@@ -604,7 +620,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
-	//game breaks when command panel gets set to null after reading roll to allow player a choice in between double roll moving.
 	private void movePlayer() {
 
 		for(int i = 1; i <= dice.getValue(); i++) {
@@ -642,6 +657,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		infoPanel.append(Players.get(currentPlayerNumber-1).getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
 
+		//Checks to keep track how many times Player rolls doubles
 		if (dice.checkDouble() && doubleCount < 4) {
 			infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
 			doubleCount++;
