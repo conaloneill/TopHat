@@ -21,8 +21,7 @@ public class Tile {
 	private String propertyShortname;
 	
 	private int type;
-	private int rent;
-	private int[] possibleRents;
+	private int[] rents;
 	private int ownedByPlayer;
 	private Image image;
 	private Image infoImage;
@@ -64,7 +63,7 @@ public class Tile {
 	}
 	
 	public String rentToString(){
-		String s = "" + rent;
+		String s = "" + rents[buildings];
 		return s;
 	}
 	
@@ -107,16 +106,11 @@ public class Tile {
 		//this.rent =;
 	}
 	public int getRent() {
-		return this.rent;
+		return this.rents[buildings];
 	}
 	
 	public void setPossibleRents(int[] a) {
-		this.possibleRents = a;
-		this.rent = possibleRents[0];
-	}
-	
-	public void updateRent(int i) {
-		this.rent = possibleRents[i];
+		this.rents = a;
 	}
 
 	public boolean checkMortaged() {
