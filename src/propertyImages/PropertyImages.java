@@ -138,6 +138,33 @@ public class PropertyImages {
 												280,300,300,320,200,350,400};
 	
 	
+	//Property house prices(hotels same price)
+	private static final int[] HOUSE_PRICES = 	{30, 30, 50, 50, 50,
+												100,100,100,100,100,100,
+												150,150,150,150,150,150,
+												150,150,160,200,200};
+	
+	//Property full names
+	private static final String[] SITE_NAMES = {
+			"Old Kent Rd","Whitechapel Rd","King's Cross Station","The Angel Islington",
+			"Euston Rd","Pentonville Rd","Pall Mall","Electric Company","Whitehall",
+			"Northumberland Avenue","Marylebone Station","Bow St","Marlborough St",
+			"Vine St","Strand","Fleet St","Trafalgar Sq","Fenchurch Station",
+			"Leicester Sq","Coventry St","Water Works","Piccadilly","Regent St",
+			"Oxford St","Bond St","Liverpool Station","Park Lane","Mayfair"};
+	
+	//Property short names
+	private static final String[] SITE_SHORT_NAMES = {
+			"kent","whitechapel","king","angel",
+			"euston","pentonville","mall","electric","whitehall",
+			"northumberland","marylebone","bow","marlborough",
+			"vine","strand","fleet","trafalgar","fenchurch",
+			"leicester","coventry","water","piccadilly","regent",
+			"oxford","bond","liverpool","park","mayfair"};
+	
+	
+	
+	
 	//Function to retrieve images from their path in the drawable folder
 	public Image getImage(String path){ 
 		Image temp = null;
@@ -252,8 +279,10 @@ public class PropertyImages {
 			case 1:
 				o.setImage(oldKentRoadTile);
 				o.setInfoImage(oldKentRoad);
-				o.setName("Old Kent Road");
+				o.setName(SITE_NAMES[0]);
+				o.setShortname(SITE_SHORT_NAMES[0]);
 				o.setPrice(SITE_PRICES[0]);
+				o.setHousePrice(HOUSE_PRICES[0]);
 				o.setType(TYPE_PROPERTY);
 				o.setPossibleRents(SITE_RENTS[0]);
 				break;
@@ -261,25 +290,30 @@ public class PropertyImages {
 				o.setImage(comchest);
 				o.setType(TYPE_COMMUNITY);
 				o.setName("Community Chest");
+				o.setShortname("chest");
 				break;
 			case 3:
 				o.setImage(whitechapelRdTile);
 				o.setInfoImage(whitechapelRd);
-				o.setName("White Chapel Road");
+				o.setName(SITE_NAMES[1]);
+				o.setShortname(SITE_SHORT_NAMES[1]);
 				o.setPrice(SITE_PRICES[1]);
+				o.setHousePrice(HOUSE_PRICES[1]);
 				o.setType(TYPE_PROPERTY);
 				o.setPossibleRents(SITE_RENTS[1]);
 				break;
 			case 4:
 				o.setImage(incometax);
 				o.setType(TYPE_TAX);
-				o.setPrice(SITE_PRICES[2]);
+				o.setPrice(SITE_PRICES[2]); // same price as stations(kings)
 				o.setName("Income Tax");
+				o.setShortname("income");
 				break;
 			case 5:
 				o.setImage(kingsCrossTile);
 				o.setInfoImage(kingsCross);
-				o.setName("Kings Cross Station");
+				o.setName(SITE_NAMES[2]);
+				o.setShortname(SITE_SHORT_NAMES[2]);
 				o.setPrice(SITE_PRICES[2]);
 				o.setType(TYPE_STATION);
 				o.setPossibleRents(SITE_RENTS[2]);
@@ -287,9 +321,11 @@ public class PropertyImages {
 			case 6:
 				o.setImage(angelIslingtonTile);
 				o.setInfoImage(angelIslington);
-				o.setName("The Angel Islington");
+				o.setName(SITE_NAMES[3]);
+				o.setShortname(SITE_SHORT_NAMES[3]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[3]);
+				o.setHousePrice(HOUSE_PRICES[2]);
 				o.setPossibleRents(SITE_RENTS[3]);
 				break;
 			case 7:
@@ -300,17 +336,21 @@ public class PropertyImages {
 			case 8:
 				o.setImage(eustonRoadTile);
 				o.setInfoImage(eustonRoad);
-				o.setName("Euston Road");
+				o.setName(SITE_NAMES[4]);
+				o.setShortname(SITE_SHORT_NAMES[4]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[4]);
+				o.setHousePrice(HOUSE_PRICES[3]);
 				o.setPossibleRents(SITE_RENTS[4]);
 				break;
 			case 9:
 				o.setImage(pentonvilleRdTile);
 				o.setInfoImage(pentonvilleRd);
-				o.setName("Pentonville Road");
+				o.setName(SITE_NAMES[5]);
+				o.setShortname(SITE_SHORT_NAMES[5]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[5]);
+				o.setHousePrice(HOUSE_PRICES[4]);
 				o.setPossibleRents(SITE_RENTS[5]);
 				break;
 			case 10:
@@ -321,15 +361,18 @@ public class PropertyImages {
 			case 11:
 				o.setImage(pallMallTile);
 				o.setInfoImage(pallMall);
-				o.setName("Pall Mall");
+				o.setName(SITE_NAMES[6]);
+				o.setShortname(SITE_SHORT_NAMES[6]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[6]);
+				o.setHousePrice(HOUSE_PRICES[5]);
 				o.setPossibleRents(SITE_RENTS[6]);
 				break;
 			case 12:
 				o.setImage(electricCoTile);
 				o.setInfoImage(electricCo);
-				o.setName("Electric Company");
+				o.setName(SITE_NAMES[7]);
+				o.setShortname(SITE_SHORT_NAMES[7]);
 				o.setType(TYPE_UTILITY);
 				o.setPrice(SITE_PRICES[7]);
 				o.setPossibleRents(SITE_RENTS[7]);
@@ -337,23 +380,28 @@ public class PropertyImages {
 			case 13:
 				o.setImage(whitehallTile);
 				o.setInfoImage(whitehall);
-				o.setName("Whitehall");
+				o.setName(SITE_NAMES[8]);
+				o.setShortname(SITE_SHORT_NAMES[8]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[8]);
+				o.setHousePrice(HOUSE_PRICES[6]);
 				o.setPossibleRents(SITE_RENTS[8]);
 				break;
 			case 14:
 				o.setImage(northumberlandAvTile);
 				o.setInfoImage(northumberlandAv);
-				o.setName("Northumberland Avenue");
+				o.setName(SITE_NAMES[9]);
+				o.setShortname(SITE_SHORT_NAMES[9]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[9]);
+				o.setHousePrice(HOUSE_PRICES[7]);
 				o.setPossibleRents(SITE_RENTS[9]);
 				break;
 			case 15:
 				o.setImage(maryleboneStationTile);
 				o.setInfoImage(maryboyleStation);
-				o.setName("Marylebone Station");
+				o.setName(SITE_NAMES[10]);
+				o.setShortname(SITE_SHORT_NAMES[10]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[10]);
 				o.setPossibleRents(SITE_RENTS[10]);
@@ -361,30 +409,37 @@ public class PropertyImages {
 			case 16:
 				o.setImage(bowStreetTile);
 				o.setInfoImage(bowStreet);
-				o.setName("Bow Street");
+				o.setName(SITE_NAMES[11]);
+				o.setShortname(SITE_SHORT_NAMES[11]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[11]);
+				o.setHousePrice(HOUSE_PRICES[8]);
 				o.setPossibleRents(SITE_RENTS[11]);
 				break;
 			case 17:
 				o.setImage(comchestleft);
 				o.setType(TYPE_COMMUNITY);
 				o.setName("Community Chest");
+				o.setShortname("chest");
 				break;
 			case 18:
 				o.setImage(marlboroughStTile);
 				o.setInfoImage(marlboroughSt);
-				o.setName("Marlborough Street");
+				o.setName(SITE_NAMES[12]);
+				o.setShortname(SITE_SHORT_NAMES[12]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[12]);
+				o.setHousePrice(HOUSE_PRICES[9]);
 				o.setPossibleRents(SITE_RENTS[12]);
 				break;
 			case 19:
 				o.setImage(vineStreetTile);
 				o.setInfoImage(vineStreet);
-				o.setName("Vine Street");
+				o.setName(SITE_NAMES[13]);
+				o.setShortname(SITE_SHORT_NAMES[13]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[13]);
+				o.setHousePrice(HOUSE_PRICES[10]);
 				o.setPossibleRents(SITE_RENTS[13]);
 				break;
 			case 20:
@@ -395,9 +450,11 @@ public class PropertyImages {
 			case 21:
 				o.setImage(strandTile);
 				o.setInfoImage(strand);
-				o.setName("Strand");
+				o.setName(SITE_NAMES[14]);
+				o.setShortname(SITE_SHORT_NAMES[14]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[14]);
+				o.setHousePrice(HOUSE_PRICES[11]);
 				o.setPossibleRents(SITE_RENTS[14]);
 				break;
 			case 22:
@@ -408,23 +465,28 @@ public class PropertyImages {
 			case 23:
 				o.setImage(fleetStreetTile);
 				o.setInfoImage(fleetStreet);
-				o.setName("Fleet Street");
+				o.setName(SITE_NAMES[15]);
+				o.setShortname(SITE_SHORT_NAMES[15]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[15]);
+				o.setHousePrice(HOUSE_PRICES[12]);
 				o.setPossibleRents(SITE_RENTS[15]);
 				break;
 			case 24:
 				o.setImage(trafalgarSqTile);
 				o.setInfoImage(trafalgarSq);
-				o.setName("Trafalgar Square");
+				o.setName(SITE_NAMES[16]);
+				o.setShortname(SITE_SHORT_NAMES[16]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[16]);
+				o.setHousePrice(HOUSE_PRICES[13]);
 				o.setPossibleRents(SITE_RENTS[16]);
 				break;
 			case 25:
 				o.setImage(fenchurchStStationTile);
 				o.setInfoImage(fenchurchStStation);
-				o.setName("Fenchurch Station");
+				o.setName(SITE_NAMES[17]);
+				o.setShortname(SITE_SHORT_NAMES[17]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[17]);
 				o.setPossibleRents(SITE_RENTS[17]);
@@ -432,23 +494,28 @@ public class PropertyImages {
 			case 26:
 				o.setImage(leicesterSqTile);
 				o.setInfoImage(leicesterSq);
-				o.setName("Leicester Square");
+				o.setName(SITE_NAMES[18]);
+				o.setShortname(SITE_SHORT_NAMES[18]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[18]);
+				o.setHousePrice(HOUSE_PRICES[14]);
 				o.setPossibleRents(SITE_RENTS[18]);
 				break;
 			case 27:
 				o.setImage(coventryStreetTile);
 				o.setInfoImage(coventryStreet);
-				o.setName("Coventry Street");
+				o.setName(SITE_NAMES[19]);
+				o.setShortname(SITE_SHORT_NAMES[19]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[19]);
+				o.setHousePrice(HOUSE_PRICES[15]);
 				o.setPossibleRents(SITE_RENTS[19]);
 				break;
 			case 28:
 				o.setImage(waterWorksTile);
 				o.setInfoImage(waterWorks);
-				o.setName("Water Works");
+				o.setName(SITE_NAMES[20]);
+				o.setShortname(SITE_SHORT_NAMES[20]);
 				o.setType(TYPE_UTILITY);
 				o.setPrice(SITE_PRICES[20]);
 				o.setPossibleRents(SITE_RENTS[20]);
@@ -456,9 +523,11 @@ public class PropertyImages {
 			case 29:
 				o.setImage(piccadillyTile);
 				o.setInfoImage(piccadilly);
-				o.setName("Picadilly");
+				o.setName(SITE_NAMES[21]);
+				o.setShortname(SITE_SHORT_NAMES[21]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[21]);
+				o.setHousePrice(HOUSE_PRICES[16]);
 				o.setPossibleRents(SITE_RENTS[21]);
 				break;
 			case 30:
@@ -469,38 +538,47 @@ public class PropertyImages {
 			case 31:
 				o.setImage(regentStreetTile);
 				o.setInfoImage(regentStreet);
-				o.setName("Regent Street");
+				o.setName(SITE_NAMES[22]);
+				o.setShortname(SITE_SHORT_NAMES[22]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[22]);
+				o.setHousePrice(HOUSE_PRICES[17]);
 				o.setPossibleRents(SITE_RENTS[22]);
 				break;
 			case 32:
 				o.setImage(oxfordStreetTile);
 				o.setInfoImage(oxfordStreet);
-				o.setName("Oxford Street");
+				o.setName(SITE_NAMES[23]);
+				o.setShortname(SITE_SHORT_NAMES[23]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[23]);
+				o.setHousePrice(HOUSE_PRICES[18]);
 				o.setPossibleRents(SITE_RENTS[23]);
 				break;
 			case 33:
 				o.setImage(comchestright);
 				o.setType(TYPE_COMMUNITY);
 				o.setName("Community Chest");
+				o.setShortname("chest");
 				break;
 			case 34:
 				o.setImage(bondStreetTile);
 				o.setInfoImage(bondStreet);
-				o.setName("Bond Street");
+				o.setName(SITE_NAMES[24]);
+				o.setShortname(SITE_SHORT_NAMES[24]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[24]);
+				o.setHousePrice(HOUSE_PRICES[19]);
 				o.setPossibleRents(SITE_RENTS[24]);
 				break;
 			case 35: 
 				o.setImage(liverpoolStStationTile);
 				o.setInfoImage(liverpoolStStation);
-				o.setName("Liverpool Station");
+				o.setName(SITE_NAMES[25]);
+				o.setShortname(SITE_SHORT_NAMES[25]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[25]);
+				
 				o.setPossibleRents(SITE_RENTS[25]);
 				break;
 			case 36:
@@ -511,9 +589,11 @@ public class PropertyImages {
 			case 37:
 				o.setImage(parkLaneTile);
 				o.setInfoImage(parkLane);
-				o.setName("Park Lane");
+				o.setName(SITE_NAMES[26]);
+				o.setShortname(SITE_SHORT_NAMES[26]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[26]);
+				o.setHousePrice(HOUSE_PRICES[20]);
 				o.setPossibleRents(SITE_RENTS[26]);
 				break;
 			case 38:
@@ -525,9 +605,11 @@ public class PropertyImages {
 			case 39:
 				o.setImage(mayfairTile);
 				o.setInfoImage(mayfair);
-				o.setName("Mayfair");
+				o.setName(SITE_NAMES[27]);
+				o.setShortname(SITE_SHORT_NAMES[27]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[27]);
+				o.setHousePrice(HOUSE_PRICES[21]);
 				o.setPossibleRents(SITE_RENTS[27]);
 				break;
 			default:

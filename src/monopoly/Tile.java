@@ -18,6 +18,7 @@ import java.awt.Image;
 public class Tile {
 	
 	private String propertyName;
+	private String propertyShortname;
 	
 	private int type;
 	private int rent;
@@ -28,6 +29,9 @@ public class Tile {
 	private int number;
 	private boolean mortaged = false;
 	private int price;
+	private int housePrice;
+	
+	private int buildings = 0;
 	
 	
 	public int x;	//stores tile x position
@@ -77,12 +81,22 @@ public class Tile {
 	public int getOwnerNumber() {
 		return this.ownedByPlayer;
 	}
+	
+	
 	public String getName() {
 		return this.propertyName;
 	}
 	public void setName(String name) {
 		this.propertyName = name;
 	}
+	public String getShortName() {
+		return this.propertyShortname;
+	}
+	public void setShortname(String name) {
+		this.propertyShortname = name;
+	}
+	
+	
 	public void setPrice(int value) {
 		this.price = value;
 	}
@@ -111,5 +125,28 @@ public class Tile {
 
 	public void setMortaged(boolean mortaged) {
 		this.mortaged = mortaged;
+	}
+
+	
+	//get num of building
+	public int getBuildings() {
+		return buildings;
+	}	// add x num of buildings
+	public void addBuildings(int num) {
+		this.buildings += num;
+	}	//remove x num of buildings
+	public void removeBuildings(int num) {
+		this.buildings -= num;
+	}	//remove all buildings (for bankruptcy/quick sale of all without knowing how many) 
+	public void removeAllBuilding() {
+		this.buildings = 0;
+	}
+
+	//set house and hotel price
+	public int getHousePrice() {
+		return housePrice;
+	}
+	public void setHousePrice(int housePrice) {
+		this.housePrice = housePrice;
 	}
 }

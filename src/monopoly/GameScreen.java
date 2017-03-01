@@ -85,11 +85,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-help : gives list of all available commands \n"
 			+ "-roll : rolls both dice and moves player around the board \n"
 			+ "-buy : allows player to buy the property they are on if it can be bought \n"
+			+ "-build <short name> <number> : build houses on the property using short name and number to build \n"
 			+ "-pay rent : allows player to pay owed rent to the owner of the property they are on \n"
 			+ "-property : shows a list of the all the properties owned by the player \n"
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
 			+ "-quit : ends the game and display the winner\n";
+	private String propertyName;
+	private int numBuildings;
 
 
 	GameScreen() {
@@ -132,7 +135,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//set info panel to auto scroll to end of newly appended text
 		DefaultCaret caret = (DefaultCaret)infoPanel.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		
+
 		infoPanel.setText("INFO PANEL\n" + helpString + "\nMouse over property tile spaces for more info on the property\n\n");
 		infoPanel.setEditable(false);
 
@@ -170,15 +173,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		pane.add(INFOAREA, BorderLayout.LINE_END);
 	}
-	
-	
+
+
 	//Called once on create. Used to setup game
 	private void init() {  
 
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
-			
+
 			//Check if int. Else throw error and try again
 			try {
 				numberOfPlayers = Integer.parseInt(n);
@@ -186,7 +189,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				e.printStackTrace();
 				System.out.println("Error. Number expected");
 			}
-			
+
 			//Check number of players is acceptable
 			if(numberOfPlayers >= MINPLAYERS && numberOfPlayers <= MAXPLAYERS){
 				playerNumberCheck = true;
@@ -272,15 +275,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}	
 	}
 
-	
-	
+
+
 	public static void main(String[] args) {
 		//Create an instance of our main class
 		screen = new GameScreen();
 
 	}
-	
-	
+
+
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
@@ -358,11 +361,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	//END OF GAME RUNNING METHODS
 
-	
-	
-	
+
+
+
 	//METHODS
-	
+
 	//method to check the game is over by checking if only 1 player left in the player 
 	//array or user enter's "quit". This also prints the winner.
 	private boolean checkGameOver() {
@@ -386,12 +389,36 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Add text to info panel
 		infoPanel.append(choice + "\n"); 
 
+
+		//switch case needs just build or demolish in the string to activate
+		//this if extracts the property name and number of buildings and sets choice to be build/demolish
+		if (choice.startsWith("build") || choice.startsWith("demolish")) {
+			String choiceCopy = choice;
+			numBuildings = Integer.parseInt(choiceCopy.replaceAll("\\D+",""));
+			choiceCopy = choiceCopy.replace("build ", "");
+			choiceCopy = choiceCopy.replace("demolish ", "");
+			choiceCopy = choiceCopy.replaceAll("\\d","").trim();
+
+			for (Tile tile : Tiles) {
+				if (choiceCopy.equals(tile.getShortName())){
+					propertyName = tile.getShortName();
+				}
+			}
+
+			if (choice.startsWith("build")) {
+				choice = "build";
+			}
+			else {
+				choice = "demolish";
+			}
+		}
+
 		//Check user if input is one of our defined commands
 		switch(choice) {
 		case "help":
 			infoPanel.append(helpString);
 			break;
-			
+
 			//case below rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
 		case "roll":
 			//Re-roll the dice to get new values
@@ -431,7 +458,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			break;
 
 		case "balance": 
-			 //Returns the players current balance
+			//Returns the players current balance
 			infoPanel.append("Player " + currentPlayer.getName() + " has a balance of: " + currentPlayer.getBalance());
 			break;
 
@@ -513,6 +540,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			quitGame();
 			break;
 
+			//build houses
+		case "build":
+			build(numBuildings, propertyName);
+			break;
+
+			//demolish houses
+		case "demolish":
+			demolish(numBuildings, propertyName);
+			break;
+
+
 		default:
 			infoPanel.append("Error: Invalid command");
 			break;
@@ -522,7 +560,59 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
 
-	
+
+
+
+	// removes x num of houses on the tile given by short name
+	private void demolish(int num, String name) {
+		for (Tile tile : Tiles) {
+			if (propertyName.equals(tile.getShortName())) {
+				//check player owns property
+				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
+					//check not trying to demolish more building than exists
+					if (numBuildings <= tile.getBuildings()) {
+						tile.removeBuildings(num);
+						int cost = (tile.getHousePrice()/2)*num;
+						Players.get(currentPlayerNumber-1).deposit(cost);
+						infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " removed " + num + " houses from " + tile.getName() +" for a gain of " + cost);
+					}
+					else {
+						infoPanel.append("Error cant demolish more buildings than are built on property!");
+					}
+				}
+				else {
+					infoPanel.append("Error get demolish houses on a property you dont own!");
+				}
+			}
+		}
+
+	}
+
+	//builds x num of houses on the tile given by short name
+	private void build(int num, String name) {
+		for (Tile tile : Tiles) {
+			if (propertyName.equals(tile.getShortName())) {
+				//check player owns property
+				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
+					//checks new amount of buildings plus existing wont be more than allowed
+					if ((numBuildings+tile.getBuildings()) <= 5) {
+						tile.addBuildings(num);
+						int cost = tile.getHousePrice()*num;
+						Players.get(currentPlayerNumber-1).spend(cost);
+						infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+					}
+					else {
+						infoPanel.append("Error max number of houses allowed is 5");
+					}
+				}
+				else {
+					infoPanel.append("Error get build houses on a property you dont own!");
+				}
+			}
+		}
+
+	}
+
 	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
 	private void setPropertyUnowned() {
@@ -532,7 +622,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
-	
+
 	//method transfers money from 1 player to the other
 	private void payRent() {
 		//Take money from player
@@ -548,7 +638,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(s);
 	}
 
-	
+
 	//Loops through Tiles ArrayList and displays all Tiles owned by currentPlayer
 	private void propertiesOwnedBycurrentPlayerNumber() {
 		String properties = "Property owned by " + currentPlayer.getName() + " :";
@@ -560,7 +650,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(properties);
 	}
 
-	
+
 	private String buy() {
 		//If Tile is a property
 		if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_STATION ||
@@ -570,12 +660,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
 				//If player has enough money
 				//if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
-				
+
 				//Player spends price of property
 				currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
 				Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
 				return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
-				
+
 				//}
 				//Not enough Money
 				//else{
@@ -593,8 +683,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-	
-	
+
+
 	private void quitGame() {
 
 		//Check if more than 1 Player left
