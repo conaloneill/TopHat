@@ -417,13 +417,18 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//this if statement extracts the name of the property to be mortgaged
 		if (choice.startsWith("mortgage")) {
 			String choiceCopy = choice;
-			choiceCopy = choiceCopy.replace("mortgage", "");
-			choiceCopy = choiceCopy.replaceAll("\\d","").trim();
+			boolean found = false;
+			choiceCopy = choiceCopy.replace("mortgage", "").trim();
 			
 			for (Tile tile : Tiles) {
 				if (choiceCopy.equals(tile.getShortName())){
+					found = true;
 					propertyName = tile.getShortName();
 				}
+			}
+			if (found == false) {
+				propertyName=null;
+				infoPanel.append("\nError invalid property name");
 			}
 			choice = "mortgage";
 		}
@@ -636,15 +641,28 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	
 	private void mortgage(String name) {
 		for (Tile tile : Tiles) {
-			if (propertyName.equals(tile.getShortName())) {
+			//Searches for the property with the name the player entered
+			if (name.equals(tile.getShortName())) {
 				//check player owns property
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					tile.setMortgaged(true);
-					currentPlayer.deposit(tile.getMortgageValue());
-					infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
+					//Checks if property has already been mortgaged
+					if (tile.checkMortgaged()==false) {
+					//Checks if property has buildings on it
+					if (tile.getBuildings()==0) {
+						tile.setMortgaged(true);
+						currentPlayer.deposit(tile.getMortgageValue());
+						infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
+						}
+					else {
+						infoPanel.append("\nError can't mortgage a property with buildings on it");
+						}
+					}
+					else {
+						infoPanel.append("\nError property already mortgaged");
+					}
 				}
 				else {
-					infoPanel.append("Error can't mortgage a property you dont own!");
+					infoPanel.append("\nError can't mortgage a property you dont own!");
 				}
 			}
 		}
