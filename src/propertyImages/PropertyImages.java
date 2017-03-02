@@ -144,6 +144,12 @@ public class PropertyImages {
 												150,150,150,150,150,150,
 												150,150,160,200,200};
 	
+	//Property mortgage constants
+	private static final int[] SITE_MORTGAGE_VALUE = {50,50,100,50,50,60,70,
+			                                          75,70,80,100,90,90,100,110,
+			                                          110,120,100,150,150,75,150,
+		                                           	  200,200,200,100,175,200};
+	
 	//Property full names
 	private static final String[] SITE_NAMES = {
 			"Old Kent Rd","Whitechapel Rd","King's Cross Station","The Angel Islington",
@@ -282,6 +288,7 @@ public class PropertyImages {
 				o.setName(SITE_NAMES[0]);
 				o.setShortname(SITE_SHORT_NAMES[0]);
 				o.setPrice(SITE_PRICES[0]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[0]);
 				o.setHousePrice(HOUSE_PRICES[0]);
 				o.setType(TYPE_PROPERTY);
 				o.setPossibleRents(SITE_RENTS[0]);
@@ -298,6 +305,7 @@ public class PropertyImages {
 				o.setName(SITE_NAMES[1]);
 				o.setShortname(SITE_SHORT_NAMES[1]);
 				o.setPrice(SITE_PRICES[1]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[1]);
 				o.setHousePrice(HOUSE_PRICES[1]);
 				o.setType(TYPE_PROPERTY);
 				o.setPossibleRents(SITE_RENTS[1]);
@@ -315,6 +323,7 @@ public class PropertyImages {
 				o.setName(SITE_NAMES[2]);
 				o.setShortname(SITE_SHORT_NAMES[2]);
 				o.setPrice(SITE_PRICES[2]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[2]);
 				o.setType(TYPE_STATION);
 				o.setPossibleRents(SITE_RENTS[2]);
 				break;
@@ -325,6 +334,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[3]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[3]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[3]);
 				o.setHousePrice(HOUSE_PRICES[2]);
 				o.setPossibleRents(SITE_RENTS[3]);
 				break;
@@ -340,6 +350,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[4]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[4]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[4]);
 				o.setHousePrice(HOUSE_PRICES[3]);
 				o.setPossibleRents(SITE_RENTS[4]);
 				break;
@@ -350,6 +361,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[5]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[5]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[5]);
 				o.setHousePrice(HOUSE_PRICES[4]);
 				o.setPossibleRents(SITE_RENTS[5]);
 				break;
@@ -365,6 +377,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[6]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[6]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[6]);
 				o.setHousePrice(HOUSE_PRICES[5]);
 				o.setPossibleRents(SITE_RENTS[6]);
 				break;
@@ -375,6 +388,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[7]);
 				o.setType(TYPE_UTILITY);
 				o.setPrice(SITE_PRICES[7]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[7]);
 				o.setPossibleRents(SITE_RENTS[7]);
 				break;
 			case 13:
@@ -384,6 +398,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[8]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[8]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[8]);
 				o.setHousePrice(HOUSE_PRICES[6]);
 				o.setPossibleRents(SITE_RENTS[8]);
 				break;
@@ -394,6 +409,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[9]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[9]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[9]);
 				o.setHousePrice(HOUSE_PRICES[7]);
 				o.setPossibleRents(SITE_RENTS[9]);
 				break;
@@ -404,6 +420,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[10]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[10]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[10]);
 				o.setPossibleRents(SITE_RENTS[10]);
 				break;
 			case 16:
@@ -413,6 +430,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[11]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[11]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[11]);
 				o.setHousePrice(HOUSE_PRICES[8]);
 				o.setPossibleRents(SITE_RENTS[11]);
 				break;
@@ -429,6 +447,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[12]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[12]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[12]);
 				o.setHousePrice(HOUSE_PRICES[9]);
 				o.setPossibleRents(SITE_RENTS[12]);
 				break;
@@ -439,6 +458,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[13]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[13]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[13]);
 				o.setHousePrice(HOUSE_PRICES[10]);
 				o.setPossibleRents(SITE_RENTS[13]);
 				break;
@@ -454,6 +474,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[14]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[14]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[14]);
 				o.setHousePrice(HOUSE_PRICES[11]);
 				o.setPossibleRents(SITE_RENTS[14]);
 				break;
@@ -469,6 +490,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[15]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[15]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[15]);
 				o.setHousePrice(HOUSE_PRICES[12]);
 				o.setPossibleRents(SITE_RENTS[15]);
 				break;
@@ -479,6 +501,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[16]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[16]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[16]);
 				o.setHousePrice(HOUSE_PRICES[13]);
 				o.setPossibleRents(SITE_RENTS[16]);
 				break;
@@ -489,6 +512,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[17]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[17]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[17]);
 				o.setPossibleRents(SITE_RENTS[17]);
 				break;
 			case 26:
@@ -498,6 +522,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[18]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[18]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[18]);
 				o.setHousePrice(HOUSE_PRICES[14]);
 				o.setPossibleRents(SITE_RENTS[18]);
 				break;
@@ -508,6 +533,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[19]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[19]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[19]);
 				o.setHousePrice(HOUSE_PRICES[15]);
 				o.setPossibleRents(SITE_RENTS[19]);
 				break;
@@ -518,6 +544,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[20]);
 				o.setType(TYPE_UTILITY);
 				o.setPrice(SITE_PRICES[20]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[20]);
 				o.setPossibleRents(SITE_RENTS[20]);
 				break;
 			case 29:
@@ -527,6 +554,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[21]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[21]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[21]);
 				o.setHousePrice(HOUSE_PRICES[16]);
 				o.setPossibleRents(SITE_RENTS[21]);
 				break;
@@ -542,6 +570,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[22]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[22]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[22]);
 				o.setHousePrice(HOUSE_PRICES[17]);
 				o.setPossibleRents(SITE_RENTS[22]);
 				break;
@@ -552,6 +581,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[23]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[23]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[23]);
 				o.setHousePrice(HOUSE_PRICES[18]);
 				o.setPossibleRents(SITE_RENTS[23]);
 				break;
@@ -568,6 +598,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[24]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[24]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[24]);
 				o.setHousePrice(HOUSE_PRICES[19]);
 				o.setPossibleRents(SITE_RENTS[24]);
 				break;
@@ -578,7 +609,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[25]);
 				o.setType(TYPE_STATION);
 				o.setPrice(SITE_PRICES[25]);
-				
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[25]);
 				o.setPossibleRents(SITE_RENTS[25]);
 				break;
 			case 36:
@@ -593,6 +624,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[26]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[26]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[26]);
 				o.setHousePrice(HOUSE_PRICES[20]);
 				o.setPossibleRents(SITE_RENTS[26]);
 				break;
@@ -609,6 +641,7 @@ public class PropertyImages {
 				o.setShortname(SITE_SHORT_NAMES[27]);
 				o.setType(TYPE_PROPERTY);
 				o.setPrice(SITE_PRICES[27]);
+				o.setMortgageValue(SITE_MORTGAGE_VALUE[27]);
 				o.setHousePrice(HOUSE_PRICES[21]);
 				o.setPossibleRents(SITE_RENTS[27]);
 				break;

@@ -28,6 +28,7 @@ public class Tile {
 	private int number;
 	private boolean mortaged = false;
 	private int price;
+	private int mortgageValue;
 	private int housePrice;
 	
 	private int buildings = 0;
@@ -98,6 +99,9 @@ public class Tile {
 	
 	public void setPrice(int value) {
 		this.price = value;
+	}
+	public void setMortgageValue(int value) {
+		this.mortgageValue = value;
 	}
 	public int getPrice() {
 		return this.price;
