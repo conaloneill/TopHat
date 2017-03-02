@@ -26,7 +26,7 @@ public class Tile {
 	private Image image;
 	private Image infoImage;
 	private int number;
-	private boolean mortaged = false;
+	private boolean mortgaged = false;
 	private int price;
 	private int mortgageValue;
 	private int housePrice;
@@ -100,11 +100,14 @@ public class Tile {
 	public void setPrice(int value) {
 		this.price = value;
 	}
+	public int getPrice() {
+		return this.price;
+	}
 	public void setMortgageValue(int value) {
 		this.mortgageValue = value;
 	}
-	public int getPrice() {
-		return this.price;
+	public int getMortgageValue() {
+		return this.mortgageValue;
 	}
 	public void setRent() {
 		//this.rent =;
@@ -117,12 +120,12 @@ public class Tile {
 		this.rents = a;
 	}
 
-	public boolean checkMortaged() {
-		return mortaged;
+	public boolean checkMortgaged() {
+		return mortgaged;
 	}
 
-	public void setMortaged(boolean mortaged) {
-		this.mortaged = mortaged;
+	public void setMortgaged(boolean mortgaged) {
+		this.mortgaged = mortgaged;
 	}
 
 	

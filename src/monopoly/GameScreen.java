@@ -412,6 +412,21 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				choice = "demolish";
 			}
 		}
+		
+		//switch case just needs mortgage to activate
+		//this if statement extracts the name of the property to be mortgaged
+		if (choice.startsWith("mortgage")) {
+			String choiceCopy = choice;
+			choiceCopy = choiceCopy.replace("mortgage", "");
+			choiceCopy = choiceCopy.replaceAll("\\d","").trim();
+			
+			for (Tile tile : Tiles) {
+				if (choiceCopy.equals(tile.getShortName())){
+					propertyName = tile.getShortName();
+				}
+			}
+			choice = "mortgage";
+		}
 
 		//Check user if input is one of our defined commands
 		switch(choice) {
@@ -437,7 +452,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//If Tile landed on is owned
 				else if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() != -1){
 					//Check for Tile isn't mortgaged
-					if(!Tiles.get(currentPlayer.currentTile).checkMortaged()){
+					if(!Tiles.get(currentPlayer.currentTile).checkMortgaged()){
 						//Set player debt amount to rent of tile
 						currentPlayer.setDebt(Tiles.get(currentPlayer.currentTile).getRent());
 						//Set which player is owed money
@@ -549,6 +564,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "demolish":
 			demolish(numBuildings, propertyName);
 			break;
+			
+			//mortgage an owned property
+		case "mortgage":
+			mortgage(propertyName);
+			break;
 
 
 		default:
@@ -612,6 +632,24 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 	}
+	
+	
+	private void mortgage(String name) {
+		for (Tile tile : Tiles) {
+			if (propertyName.equals(tile.getShortName())) {
+				//check player owns property
+				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
+					tile.setMortgaged(true);
+					currentPlayer.deposit(tile.getMortgageValue());
+					infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
+				}
+				else {
+					infoPanel.append("Error can't mortgage a property you dont own!");
+				}
+			}
+		}
+	}
+	
 
 	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
