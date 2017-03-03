@@ -1,4 +1,5 @@
 package propertyImages;
+import java.awt.Color;
 /*
  *---Tophat---
  * Brian O'Leary - 134775468
@@ -169,6 +170,9 @@ public class PropertyImages {
 			"oxford","bond","liverpool","park","mayfair"};
 	
 	
+	//Property Colours
+	private static final String[] COLOURS = {
+			"brown", "blue", "pink", "orange", "red", "yellow", "green", "navy" };
 	
 	
 	//Function to retrieve images from their path in the drawable folder
@@ -291,6 +295,7 @@ public class PropertyImages {
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[0]);
 				o.setHousePrice(HOUSE_PRICES[0]);
 				o.setType(TYPE_PROPERTY);
+				o.setColour(COLOURS[0]);
 				o.setPossibleRents(SITE_RENTS[0]);
 				break;
 			case 2:
@@ -308,6 +313,7 @@ public class PropertyImages {
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[1]);
 				o.setHousePrice(HOUSE_PRICES[1]);
 				o.setType(TYPE_PROPERTY);
+				o.setColour(COLOURS[0]);
 				o.setPossibleRents(SITE_RENTS[1]);
 				break;
 			case 4:
@@ -336,6 +342,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[3]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[3]);
 				o.setHousePrice(HOUSE_PRICES[2]);
+				o.setColour(COLOURS[1]);
 				o.setPossibleRents(SITE_RENTS[3]);
 				break;
 			case 7:
@@ -352,6 +359,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[4]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[4]);
 				o.setHousePrice(HOUSE_PRICES[3]);
+				o.setColour(COLOURS[1]);
 				o.setPossibleRents(SITE_RENTS[4]);
 				break;
 			case 9:
@@ -363,6 +371,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[5]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[5]);
 				o.setHousePrice(HOUSE_PRICES[4]);
+				o.setColour(COLOURS[1]);
 				o.setPossibleRents(SITE_RENTS[5]);
 				break;
 			case 10:
@@ -379,6 +388,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[6]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[6]);
 				o.setHousePrice(HOUSE_PRICES[5]);
+				o.setColour(COLOURS[2]);
 				o.setPossibleRents(SITE_RENTS[6]);
 				break;
 			case 12:
@@ -400,6 +410,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[8]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[8]);
 				o.setHousePrice(HOUSE_PRICES[6]);
+				o.setColour(COLOURS[2]);
 				o.setPossibleRents(SITE_RENTS[8]);
 				break;
 			case 14:
@@ -411,6 +422,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[9]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[9]);
 				o.setHousePrice(HOUSE_PRICES[7]);
+				o.setColour(COLOURS[2]);
 				o.setPossibleRents(SITE_RENTS[9]);
 				break;
 			case 15:
@@ -432,6 +444,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[11]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[11]);
 				o.setHousePrice(HOUSE_PRICES[8]);
+				o.setColour(COLOURS[3]);
 				o.setPossibleRents(SITE_RENTS[11]);
 				break;
 			case 17:
@@ -449,6 +462,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[12]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[12]);
 				o.setHousePrice(HOUSE_PRICES[9]);
+				o.setColour(COLOURS[3]);
 				o.setPossibleRents(SITE_RENTS[12]);
 				break;
 			case 19:
@@ -460,6 +474,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[13]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[13]);
 				o.setHousePrice(HOUSE_PRICES[10]);
+				o.setColour(COLOURS[3]);
 				o.setPossibleRents(SITE_RENTS[13]);
 				break;
 			case 20:
@@ -476,6 +491,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[14]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[14]);
 				o.setHousePrice(HOUSE_PRICES[11]);
+				o.setColour(COLOURS[4]);
 				o.setPossibleRents(SITE_RENTS[14]);
 				break;
 			case 22:
@@ -492,6 +508,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[15]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[15]);
 				o.setHousePrice(HOUSE_PRICES[12]);
+				o.setColour(COLOURS[4]);
 				o.setPossibleRents(SITE_RENTS[15]);
 				break;
 			case 24:
@@ -503,6 +520,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[16]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[16]);
 				o.setHousePrice(HOUSE_PRICES[13]);
+				o.setColour(COLOURS[4]);
 				o.setPossibleRents(SITE_RENTS[16]);
 				break;
 			case 25:
@@ -524,6 +542,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[18]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[18]);
 				o.setHousePrice(HOUSE_PRICES[14]);
+				o.setColour(COLOURS[5]);
 				o.setPossibleRents(SITE_RENTS[18]);
 				break;
 			case 27:
@@ -535,6 +554,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[19]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[19]);
 				o.setHousePrice(HOUSE_PRICES[15]);
+				o.setColour(COLOURS[5]);
 				o.setPossibleRents(SITE_RENTS[19]);
 				break;
 			case 28:
@@ -556,6 +576,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[21]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[21]);
 				o.setHousePrice(HOUSE_PRICES[16]);
+				o.setColour(COLOURS[5]);
 				o.setPossibleRents(SITE_RENTS[21]);
 				break;
 			case 30:
@@ -572,6 +593,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[22]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[22]);
 				o.setHousePrice(HOUSE_PRICES[17]);
+				o.setColour(COLOURS[6]);
 				o.setPossibleRents(SITE_RENTS[22]);
 				break;
 			case 32:
@@ -583,6 +605,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[23]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[23]);
 				o.setHousePrice(HOUSE_PRICES[18]);
+				o.setColour(COLOURS[6]);
 				o.setPossibleRents(SITE_RENTS[23]);
 				break;
 			case 33:
@@ -600,6 +623,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[24]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[24]);
 				o.setHousePrice(HOUSE_PRICES[19]);
+				o.setColour(COLOURS[6]);
 				o.setPossibleRents(SITE_RENTS[24]);
 				break;
 			case 35: 
@@ -626,6 +650,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[26]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[26]);
 				o.setHousePrice(HOUSE_PRICES[20]);
+				o.setColour(COLOURS[7]);
 				o.setPossibleRents(SITE_RENTS[26]);
 				break;
 			case 38:
@@ -643,6 +668,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[27]);
 				o.setMortgageValue(SITE_MORTGAGE_VALUE[27]);
 				o.setHousePrice(HOUSE_PRICES[21]);
+				o.setColour(COLOURS[7]);
 				o.setPossibleRents(SITE_RENTS[27]);
 				break;
 			default:

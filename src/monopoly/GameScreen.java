@@ -412,14 +412,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				choice = "demolish";
 			}
 		}
-		
+
 		//switch case just needs mortgage to activate
 		//this if statement extracts the name of the property to be mortgaged
 		if (choice.startsWith("mortgage")) {
 			String choiceCopy = choice;
 			boolean found = false;
 			choiceCopy = choiceCopy.replace("mortgage", "").trim();
-			
+
 			for (Tile tile : Tiles) {
 				if (choiceCopy.equals(tile.getShortName())){
 					found = true;
@@ -569,7 +569,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "demolish":
 			demolish(numBuildings, propertyName);
 			break;
-			
+
 			//mortgage an owned property
 		case "mortgage":
 			mortgage(propertyName);
@@ -637,8 +637,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 	}
-	
-	
+
+
 	private void mortgage(String name) {
 		for (Tile tile : Tiles) {
 			//Searches for the property with the name the player entered
@@ -647,14 +647,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
 					//Checks if property has already been mortgaged
 					if (tile.checkMortgaged()==false) {
-					//Checks if property has buildings on it
-					if (tile.getBuildings()==0) {
-						tile.setMortgaged(true);
-						currentPlayer.deposit(tile.getMortgageValue());
-						infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
+						//Checks if property has buildings on it
+						if (tile.getBuildings()==0) {
+							tile.setMortgaged(true);
+							currentPlayer.deposit(tile.getMortgageValue());
+							infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
 						}
-					else {
-						infoPanel.append("\nError can't mortgage a property with buildings on it");
+						else {
+							infoPanel.append("\nError can't mortgage a property with buildings on it");
 						}
 					}
 					else {
@@ -667,7 +667,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
-	
+
 
 	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
