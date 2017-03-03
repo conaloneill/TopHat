@@ -73,7 +73,7 @@ public class RenderPanel extends JPanel {
 						x = o.x - GameScreen.TILESIZE/2;
 						y = o.y - GameScreen.TILESIZE/2 - houseSize;
 						drawHouses(g, o, x, y, 10,0);
-					}else{
+					}else if(o.getBuildings() == 5){
 						x = o.x - GameScreen.TILESIZE/2;
 						y = o.y - GameScreen.TILESIZE/2 - hotelSize;
 						drawHotel(g, x, y);
@@ -85,7 +85,7 @@ public class RenderPanel extends JPanel {
 						x = o.x + GameScreen.TILESIZE/2;
 						y = o.y - GameScreen.TILESIZE/2;
 						drawHouses(g, o, x, y, 0, 10);
-					}else{
+					}else if(o.getBuildings() == 5){
 						x = o.x + GameScreen.TILESIZE/2;
 						y = o.y - GameScreen.TILESIZE/2;
 						drawHotel(g, x, y);
@@ -97,7 +97,7 @@ public class RenderPanel extends JPanel {
 						x = o.x + GameScreen.TILESIZE/2 - houseSize;
 						y = o.y + GameScreen.TILESIZE/2;
 						drawHouses(g, o, x, y, -10, 0);
-					}else{
+					}else if(o.getBuildings() == 5){
 						x = o.x + GameScreen.TILESIZE/2 - hotelSize;
 						y = o.y + GameScreen.TILESIZE/2;
 						drawHotel(g, x, y);
@@ -109,7 +109,7 @@ public class RenderPanel extends JPanel {
 						x = o.x - GameScreen.TILESIZE/2 - houseSize;
 						y = o.y + GameScreen.TILESIZE/2 - houseSize;
 						drawHouses(g, o, x, y, 0, -10);
-					}else{
+					}else if(o.getBuildings() == 5){
 						x = o.x - GameScreen.TILESIZE/2 - hotelSize;
 						y = o.y + GameScreen.TILESIZE/2 - hotelSize;
 						drawHotel(g, x, y);
