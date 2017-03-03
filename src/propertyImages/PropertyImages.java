@@ -1,5 +1,5 @@
 package propertyImages;
-import java.awt.Color;
+
 /*
  *---Tophat---
  * Brian O'Leary - 134775468

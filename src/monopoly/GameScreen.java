@@ -708,24 +708,41 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private String buy() {
 		//If Tile is a property
-		if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_STATION ||
-				Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_PROPERTY ||
-				Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_UTILITY){
+		Tile currTile = Tiles.get(currentPlayer.currentTile);
+		if(currTile.getType() == PropertyImages.TYPE_STATION ||
+				currTile.getType() == PropertyImages.TYPE_PROPERTY ||
+				currTile.getType() == PropertyImages.TYPE_UTILITY){
 			//If Tile is not owned
-			if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1){
+			if(currTile.getOwnerNumber() == -1){
 				//If player has enough money
-				//if(currentPlayer.getBalance() >= Tiles.get(currentPlayer.currentTile).getPrice()){
+				if(currentPlayer.getBalance() >= currTile.getPrice()){
 
-				//Player spends price of property
-				currentPlayer.spend(Tiles.get(currentPlayer.currentTile).getPrice());
-				Tiles.get(currentPlayer.currentTile).setOwnerNumber(currentPlayerNumber -1);
-				return currentPlayer.getName() + " bought " + Tiles.get(currentPlayer.currentTile).getName() + " for " + Tiles.get(currentPlayer.currentTile).getPrice();
+					//Player spends price of property
+					currentPlayer.spend(currTile.getPrice());
+					currTile.setOwnerNumber(currentPlayerNumber -1);
+					
+					if(currTile.getType() == PropertyImages.TYPE_STATION) {
+						currentPlayer.stationsOwned++;
+					}
 
-				//}
+
+					if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
+						int numProperties = 2;
+						setAllColoursOwned(currTile, numProperties);
+
+					}
+					else {
+						int numProperties = 3;
+						setAllColoursOwned(currTile, numProperties);
+					}
+
+					return currentPlayer.getName() + " bought " + currTile.getName() + " for " + currTile.getPrice();
+
+				}
 				//Not enough Money
-				//else{
-				//	return "Unable to buy Tile. Player doesn't have enough money.";
-				//}
+				else{
+					return "Unable to buy Tile. Player doesn't have enough money.";
+				}
 			}
 			//Tile is already owned by a player
 			else{
@@ -736,6 +753,26 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		else{
 			return "Unable to buy Tile. Not a property";
 		}
+	}
+
+
+	
+	//change to holding record of tile numbers and scrolling array of 2/3 size not arraylist of 40 tiles
+	private void setAllColoursOwned(Tile currTile, int numProperties) {
+		int i = 0;
+		for (Tile tile : Tiles) {
+			if (tile.getOwnerNumber() == currentPlayer.playerNumber && tile.getColour().equals(currTile.getColour())) {
+				i++; 
+				if (i == numProperties) {
+					for (Tile tile2 : Tiles) {
+						if (tile2.getColour().equals(currTile.getColour())) {
+							tile2.setAllColourOwned(true);
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 

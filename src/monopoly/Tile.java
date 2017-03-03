@@ -1,5 +1,5 @@
 package monopoly;
-import java.awt.Color;
+
 /*
  *---Tophat---
  * Brian O'Leary - 134775468
@@ -116,10 +116,14 @@ public class Tile {
 	
 	
 	public int getRent() {
-		if (buildings == 0 && allColourOwned) {
-			return this.rents[buildings] * 2;
+		if (buildings == 0 && isAllColourOwned()) {
+			return (this.rents[buildings] * 2);
 		}
 		return this.rents[buildings];
+	}
+	
+	public int getRentStation(int num) {
+		return this.rents[num - 1];
 	}
 	
 	public void setPossibleRents(int[] a) {
@@ -164,5 +168,13 @@ public class Tile {
 
 	public void setColour(String colour) {
 		this.colour = colour;
+	}
+
+	public boolean isAllColourOwned() {
+		return allColourOwned;
+	}
+
+	public void setAllColourOwned(boolean allColourOwned) {
+		this.allColourOwned = allColourOwned;
 	}
 }
