@@ -28,7 +28,7 @@ public class RenderPanel extends JPanel {
 
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
+	private int hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
 
 
 	@Override
@@ -62,6 +62,61 @@ public class RenderPanel extends JPanel {
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
+			
+			//Houses and Hotels
+			int x;
+			int y;
+			if(o.getType()==PropertyImages.TYPE_PROPERTY){
+				//BOT ROW
+				if(o.getTileNum() <= 9){
+					if(o.getBuildings() > 0 && o.getBuildings() <= 4){
+						x = o.x - GameScreen.TILESIZE/2;
+						y = o.y - GameScreen.TILESIZE/2 - houseSize;
+						drawHouses(g, o, x, y, 10,0);
+					}else if(o.getBuildings() == 5){
+						x = o.x - GameScreen.TILESIZE/2;
+						y = o.y - GameScreen.TILESIZE/2 - hotelSize;
+						drawHotel(g, x, y);
+					}
+				}
+				//LEFT COL
+				if(o.getTileNum() >= 11 && o.getTileNum() <= 19){
+					if(o.getBuildings() > 0 && o.getBuildings() <= 4){
+						x = o.x + GameScreen.TILESIZE/2;
+						y = o.y - GameScreen.TILESIZE/2;
+						drawHouses(g, o, x, y, 0, 10);
+					}else if(o.getBuildings() == 5){
+						x = o.x + GameScreen.TILESIZE/2;
+						y = o.y - GameScreen.TILESIZE/2;
+						drawHotel(g, x, y);
+					}
+				}
+				//TOP ROW
+				if(o.getTileNum() >= 21 && o.getTileNum() <= 29){
+					if(o.getBuildings() > 0 && o.getBuildings() <= 4){
+						x = o.x + GameScreen.TILESIZE/2 - houseSize;
+						y = o.y + GameScreen.TILESIZE/2;
+						drawHouses(g, o, x, y, -10, 0);
+					}else if(o.getBuildings() == 5){
+						x = o.x + GameScreen.TILESIZE/2 - hotelSize;
+						y = o.y + GameScreen.TILESIZE/2;
+						drawHotel(g, x, y);
+					}
+				}
+				//RIGHT COL
+				if(o.getTileNum() >= 31 && o.getTileNum() <= 39){
+					if(o.getBuildings() > 0 && o.getBuildings() <= 4){
+						x = o.x - GameScreen.TILESIZE/2 - houseSize;
+						y = o.y + GameScreen.TILESIZE/2 - houseSize;
+						drawHouses(g, o, x, y, 0, -10);
+					}else if(o.getBuildings() == 5){
+						x = o.x - GameScreen.TILESIZE/2 - hotelSize;
+						y = o.y + GameScreen.TILESIZE/2 - hotelSize;
+						drawHotel(g, x, y);
+					}
+				}
+			}
+			
 
 		}
 
@@ -77,5 +132,29 @@ public class RenderPanel extends JPanel {
 		//Mouse tracker red dot
 		g.setColor(Color.red);
 		g.fillOval(screen.mouseX - 8/2, screen.mouseY - 8/2, 8, 8);
+	}
+
+
+	private void drawHotel(Graphics g, int x, int y) {
+		//Draw Hotel
+		g.setColor(Color.red);
+		g.fillRect(x, y, hotelSize, hotelSize);
+		g.setColor(Color.black);
+		g.drawRect(x, y, hotelSize, hotelSize);
+	}
+
+
+	private void drawHouses(Graphics g, Tile o, int x, int y, int xInc, int yInc) {
+	
+		for(int i = 0;i<o.getBuildings();i++){
+			//Draw houses
+			g.setColor(Color.white);
+			g.fillRect(x, y, houseSize, houseSize);
+			g.setColor(Color.black);
+			g.drawRect(x, y, houseSize, houseSize);
+			
+			 x += xInc;
+			 y += yInc;
+		}
 	}
 }

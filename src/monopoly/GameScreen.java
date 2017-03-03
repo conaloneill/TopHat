@@ -79,7 +79,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
 
-
 	private String choice; //contains user's input throughout the game 
 	private String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
 			+ "-help : gives list of all available commands \n"
