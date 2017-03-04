@@ -395,7 +395,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//this if extracts the property name and number of buildings and sets choice to be build/demolish
 		if (choice.startsWith("build") || choice.startsWith("demolish")) {
 			String choiceCopy = choice;
-			numBuildings = Integer.parseInt(choiceCopy.replaceAll("\\D+",""));
+			try {
+				numBuildings = Integer.parseInt(choiceCopy.replaceAll("\\D+",""));
+			} catch (NumberFormatException e) {
+				System.out.println("Number expected");
+				e.printStackTrace();
+			}
 			choiceCopy = choiceCopy.replace("build ", "");
 			choiceCopy = choiceCopy.replace("demolish ", "");
 			choiceCopy = choiceCopy.replaceAll("\\d","").trim();
@@ -628,27 +633,34 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if (propertyName.equals(tile.getShortName())) {
 				//check player owns property
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					//check if property is currently mortgaged
-					if(tile.checkMortgaged()==false) {
-						//Check if all color group owned
-						if(tile.isAllColourOwned()){
-							//checks new amount of buildings plus existing wont be more than allowed
-							if ((numBuildings+tile.getBuildings()) <= 5) {
-								tile.addBuildings(num);
-								int cost = tile.getHousePrice()*num;
-								Players.get(currentPlayerNumber-1).spend(cost);
-								infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+					//Check if Tile is a property
+					if(tile.getType() == PropertyImages.TYPE_PROPERTY){
+						//check if property is currently mortgaged
+						if(tile.checkMortgaged()==false) {
+							//Check if all color group owned
+							if(tile.isAllColourOwned()){
+								//checks new amount of buildings plus existing wont be more than allowed
+								if ((numBuildings+tile.getBuildings()) <= 5) {
+									tile.addBuildings(num);
+									int cost = tile.getHousePrice()*num;
+									Players.get(currentPlayerNumber-1).spend(cost);
+									infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+								}
+								else {
+									infoPanel.append("Error max number of houses allowed is 5");
+								}
 							}
 							else {
-								infoPanel.append("Error max number of houses allowed is 5");
+								infoPanel.append("You must own a full color group before you can build houses.");
 							}
 						}
 						else {
-							infoPanel.append("You must own a full color group before you can build houses.");
+							infoPanel.append("Error can't build houses on mortgaged property");
 						}
 					}
-					else {
-						infoPanel.append("Error can't build houses on mortgaged property");
+					else{
+						infoPanel.append("You can't build on this type of property");
+
 					}
 				}
 				else {
@@ -766,8 +778,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 						currentPlayer.stationsOwned++;
 					}
 
-
-					if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
+					else if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
 						int numProperties = 2;
 						setAllColoursOwned(currTile, numProperties);
 
