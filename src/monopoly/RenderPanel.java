@@ -36,6 +36,7 @@ public class RenderPanel extends JPanel {
 		//Enables use of info from screen
 		GameScreen screen = GameScreen.screen; 
 		super.paintComponent(g);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 
 		//Draw green background
 		g.setColor(Color.WHITE);
@@ -126,7 +127,6 @@ public class RenderPanel extends JPanel {
 			g.fillOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws player token at current x,y coordinates
 			g.setColor(Color.BLACK);
 			g.drawOval(p.xPosition, p.yPosition, dotsize, dotsize);  //Draws black circle around token
-			g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 			g.drawString("P" + p.playerNumber, p.xPosition+3, p.yPosition + 12);
 		}
 		//Mouse tracker red dot
@@ -141,6 +141,7 @@ public class RenderPanel extends JPanel {
 		g.fillRect(x, y, hotelSize, hotelSize);
 		g.setColor(Color.black);
 		g.drawRect(x, y, hotelSize, hotelSize);
+		g.drawString("H", x+2, y + 10);
 	}
 
 

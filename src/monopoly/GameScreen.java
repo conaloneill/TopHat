@@ -581,7 +581,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "mortgage":
 			mortgage(propertyName);
 			break;
-			
+
 			//buy back a mortgaged property
 		case "redeem":
 			redeem(propertyName);
@@ -596,9 +596,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Asks the next player for input
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
-
-
-
 
 	// removes x num of houses on the tile given by short name
 	private void demolish(int num, String name) {
@@ -633,28 +630,33 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
 					//check if property is currently mortgaged
 					if(tile.checkMortgaged()==false) {
-						//checks new amount of buildings plus existing wont be more than allowed
-						if ((numBuildings+tile.getBuildings()) <= 5) {
-							tile.addBuildings(num);
-							int cost = tile.getHousePrice()*num;
-							Players.get(currentPlayerNumber-1).spend(cost);
-							infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+						//Check if all color group owned
+						if(tile.isAllColourOwned()){
+							//checks new amount of buildings plus existing wont be more than allowed
+							if ((numBuildings+tile.getBuildings()) <= 5) {
+								tile.addBuildings(num);
+								int cost = tile.getHousePrice()*num;
+								Players.get(currentPlayerNumber-1).spend(cost);
+								infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
 							}
-						else {
-							infoPanel.append("Error max number of houses allowed is 5");
+							else {
+								infoPanel.append("Error max number of houses allowed is 5");
 							}
 						}
+						else {
+							infoPanel.append("You must own a full color group before you can build houses.");
+						}
+					}
 					else {
 						infoPanel.append("Error can't build houses on mortgaged property");
-						}
-					}
-				else {
-					infoPanel.append("Error can't build houses on a property you dont own!");
 					}
 				}
+				else {
+					infoPanel.append("Error can't build houses on a property you dont own!");
+				}
 			}
+		}
 	}
-
 
 	private void mortgage(String name) {
 		for (Tile tile : Tiles) {
@@ -707,8 +709,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
-	
-	
+
+
 	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
 	private void setPropertyUnowned() {
@@ -734,7 +736,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append(s);
 	}
 
-
 	//Loops through Tiles ArrayList and displays all Tiles owned by currentPlayer
 	private void propertiesOwnedBycurrentPlayerNumber() {
 		String properties = "Property owned by " + currentPlayer.getName() + " :";
@@ -745,7 +746,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		infoPanel.append(properties);
 	}
-
 
 	private String buy() {
 		//If Tile is a property
@@ -761,7 +761,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					//Player spends price of property
 					currentPlayer.spend(currTile.getPrice());
 					currTile.setOwnerNumber(currentPlayerNumber -1);
-					
+
 					if(currTile.getType() == PropertyImages.TYPE_STATION) {
 						currentPlayer.stationsOwned++;
 					}
@@ -796,8 +796,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-
-	
 	//change to holding record of tile numbers and scrolling array of 2/3 size not arraylist of 40 tiles
 	private void setAllColoursOwned(Tile currTile, int numProperties) {
 		int i = 0;
@@ -815,8 +813,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 
 	}
-
-
 
 	private void quitGame() {
 
@@ -847,7 +843,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		gameOver = true;
 	}
 
-
 	//ends players turn and increments counter to the next player
 	private void done() {
 		if (currentPlayerNumber >= Players.size()) { //If every player has had a turn, resets to player 1
@@ -861,8 +856,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		rollAgain = true;
 		doubleCount = 0;
 	}
-
-
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	private void movePlayer() {
@@ -921,7 +914,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			rollTurns = 1;
 			doubleCount = 0;
 		}
-
 	}
 
 	@Override
