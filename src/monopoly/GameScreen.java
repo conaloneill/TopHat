@@ -86,6 +86,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-buy : allows player to buy the property they are on if it can be bought \n"
 			+ "-build <short name> <number> : build houses on the property using short name and number to build \n"
 			+ "-pay rent : allows player to pay owed rent to the owner of the property they are on \n"
+			+ "-mortgage <short name> : allows player to mortgage a property to the bank for the amount listed on it's card \n"
+			+ "-redeem <short name> : allows player to buy back a mortgaged property from the bank for the mortgage value + 10%"
 			+ "-property : shows a list of the all the properties owned by the player \n"
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
@@ -414,10 +416,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//switch case just needs mortgage to activate
 		//this if statement extracts the name of the property to be mortgaged
-		if (choice.startsWith("mortgage")) {
+		if (choice.startsWith("mortgage") || choice.startsWith("redeem")) {
 			String choiceCopy = choice;
 			boolean found = false;
 			choiceCopy = choiceCopy.replace("mortgage", "").trim();
+			choiceCopy = choiceCopy.replace("redeem", "").trim();
 
 			for (Tile tile : Tiles) {
 				if (choiceCopy.equals(tile.getShortName())){
@@ -429,7 +432,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				propertyName=null;
 				infoPanel.append("\nError invalid property name");
 			}
-			choice = "mortgage";
+			if (choice.startsWith("mortgage")) {
+				choice = "mortgage";
+			}
+			else {
+				choice = "redeem";
+			}
 		}
 
 		//Check user if input is one of our defined commands
@@ -573,6 +581,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		case "mortgage":
 			mortgage(propertyName);
 			break;
+			
+			//buy back a mortgaged property
+		case "redeem":
+			redeem(propertyName);
+			break;
 
 
 		default:
@@ -618,23 +631,28 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			if (propertyName.equals(tile.getShortName())) {
 				//check player owns property
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					//checks new amount of buildings plus existing wont be more than allowed
-					if ((numBuildings+tile.getBuildings()) <= 5) {
-						tile.addBuildings(num);
-						int cost = tile.getHousePrice()*num;
-						Players.get(currentPlayerNumber-1).spend(cost);
-						infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
-					}
+					//check if property is currently mortgaged
+					if(tile.checkMortgaged()==false) {
+						//checks new amount of buildings plus existing wont be more than allowed
+						if ((numBuildings+tile.getBuildings()) <= 5) {
+							tile.addBuildings(num);
+							int cost = tile.getHousePrice()*num;
+							Players.get(currentPlayerNumber-1).spend(cost);
+							infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+							}
+						else {
+							infoPanel.append("Error max number of houses allowed is 5");
+							}
+						}
 					else {
-						infoPanel.append("Error max number of houses allowed is 5");
+						infoPanel.append("Error can't build houses on mortgaged property");
+						}
 					}
-				}
 				else {
-					infoPanel.append("Error get build houses on a property you dont own!");
+					infoPanel.append("Error can't build houses on a property you dont own!");
+					}
 				}
 			}
-		}
-
 	}
 
 
@@ -667,7 +685,30 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-
+	private void redeem(String name) {
+		for (Tile tile : Tiles) {
+			//Searches for the property with the name the player entered
+			if (name.equals(tile.getShortName())) {
+				//check player owns property
+				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
+					//Checks if property has already been mortgaged
+					if (tile.checkMortgaged()==true) {
+						tile.setMortgaged(false);
+						currentPlayer.spend((tile.getMortgageValue()/10)*11);
+						infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " redeemed " +tile.getName()+" for "+(tile.getMortgageValue()/10)*11);
+					}
+					else {
+						infoPanel.append("\nError property isn't mortgaged");
+					}
+				}
+				else {
+					infoPanel.append("\nError can't redeem a property you dont own!");
+				}
+			}
+		}
+	}
+	
+	
 	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
 	private void setPropertyUnowned() {
