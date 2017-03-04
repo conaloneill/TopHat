@@ -636,7 +636,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					//Check if Tile is a property
 					if(tile.getType() == PropertyImages.TYPE_PROPERTY){
 						//check if property is currently mortgaged
-						if(tile.checkMortgaged()==false) {
+						if(!tile.checkMortgaged()) {
 							//Check if all color group owned
 							if(tile.isAllColourOwned()){
 								//checks new amount of buildings plus existing wont be more than allowed
@@ -774,20 +774,27 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					currentPlayer.spend(currTile.getPrice());
 					currTile.setOwnerNumber(currentPlayerNumber -1);
 
+					//Adds number of stations
 					if(currTile.getType() == PropertyImages.TYPE_STATION) {
 						currentPlayer.stationsOwned++;
 					}
-
-					else if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
-						int numProperties = 2;
-						setAllColoursOwned(currTile, numProperties);
-
+					//Adds number of utilities
+					if(currTile.getType() == PropertyImages.TYPE_UTILITY){
+						currentPlayer.utilitiesOwned++;
 					}
-					else {
-						int numProperties = 3;
-						setAllColoursOwned(currTile, numProperties);
+					
+					//Handles same color groups
+					if(currTile.getType() == PropertyImages.TYPE_PROPERTY){
+						if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
+							int numProperties = 2;
+							setAllColoursOwned(currTile, numProperties);
+	
+						}
+						else {
+							int numProperties = 3;
+							setAllColoursOwned(currTile, numProperties);
+						}
 					}
-
 					return currentPlayer.getName() + " bought " + currTile.getName() + " for " + currTile.getPrice();
 
 				}

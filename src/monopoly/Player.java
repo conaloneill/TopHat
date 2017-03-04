@@ -32,15 +32,18 @@ public class Player {
 	public int yPosition;  //Stores current y position
 	
 	
-	public int stationsOwned = 0;
+	public int stationsOwned;
+	public int utilitiesOwned;
 
 
 
 	Player(int playerNum, int balance){
-		currentTile = 0;
-		playerNumber = playerNum;
+		this.currentTile = 0;
+		this.playerNumber = playerNum;
 		this.balance = balance;
 		this.debt = 0;
+		this.utilitiesOwned = 0;
+		this.stationsOwned = 0;
 	}
 
 	public void setColour(Color color) {
