@@ -31,6 +31,7 @@ public class Tile {
 	private int price;
 	private int mortgageValue;
 	private int housePrice;
+	private int tax;
 	
 	private int buildings = 0;
 	
@@ -39,6 +40,7 @@ public class Tile {
 	
 	public int x;	//stores tile x position
 	public int y;	//stores tile y position 
+
 	
 
 	
@@ -122,7 +124,11 @@ public class Tile {
 		return this.rents[buildings];
 	}
 	
-	public int getRentStation(int num) {
+	public int getStationRent(int num) {
+		return this.rents[num - 1];
+	}
+	
+	public int getUtilityRentMultiplier(int num) {
 		return this.rents[num - 1];
 	}
 	
@@ -149,8 +155,11 @@ public class Tile {
 	public void removeBuildings(int num) {
 		this.buildings -= num;
 	}	//remove all buildings (for bankruptcy/quick sale of all without knowing how many) 
-	public void removeAllBuilding() {
+	public int removeAllBuildings() {
+		int gain = ((buildings * housePrice) / 2);
 		this.buildings = 0;
+		
+		return gain;
 	}
 
 	//set house and hotel price
@@ -176,5 +185,12 @@ public class Tile {
 
 	public void setAllColourOwned(boolean allColourOwned) {
 		this.allColourOwned = allColourOwned;
+	}
+
+	public void setTaxAmount(int tax) {
+		this.tax = tax;
+	}
+	public int getTaxAmount() {
+		return this.tax;
 	}
 }

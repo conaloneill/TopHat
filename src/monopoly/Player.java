@@ -78,7 +78,15 @@ public class Player {
 		assetValue = balance;
 		for (Tile o : Tiles) {
 			if (o.getOwnerNumber() == playerNumber-1) {
-				assetValue += o.getPrice();
+				if (!o.checkMortgaged()) {
+					assetValue += o.getPrice();
+				}
+				else {
+					assetValue += o.getMortgageValue();
+				}
+				if (o.getBuildings() > 0) {
+					assetValue += (o.getHousePrice()*o.getBuildings());
+				}
 			}
 		}
 	}

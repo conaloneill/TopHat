@@ -151,6 +151,9 @@ public class PropertyImages {
 			                                          110,120,100,150,150,75,150,
 		                                           	  200,200,200,100,175,200};
 	
+	//Income tax amounts
+	private static final int[] SITE_TAX_VALUES = {200,100};
+	
 	//Property full names
 	private static final String[] SITE_NAMES = {
 			"Old Kent Rd","Whitechapel Rd","King's Cross Station","The Angel Islington",
@@ -322,6 +325,7 @@ public class PropertyImages {
 				o.setPrice(SITE_PRICES[2]); // same price as stations(kings)
 				o.setName("Income Tax");
 				o.setShortname("income");
+				o.setTaxAmount(SITE_TAX_VALUES[0]);
 				break;
 			case 5:
 				o.setImage(kingsCrossTile);
@@ -658,6 +662,7 @@ public class PropertyImages {
 				o.setType(TYPE_TAX);
 				o.setPrice(SITE_PRICES[3]); //same price as angel Islington
 				o.setName("Luxury Tax");
+				o.setTaxAmount(SITE_TAX_VALUES[1]);
 				break;
 			case 39:
 				o.setImage(mayfairTile);

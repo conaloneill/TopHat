@@ -85,6 +85,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-roll : rolls both dice and moves player around the board \n"
 			+ "-buy : allows player to buy the property they are on if it can be bought \n"
 			+ "-build <short name> <number> : build houses on the property using short name and number to build \n"
+			+ "-demolish <short name <number> : demolish houses on the property using short name and number to demolish \n"
 			+ "-pay rent : allows player to pay owed rent to the owner of the property they are on \n"
 			+ "-mortgage <short name> : allows player to mortgage a property to the bank for the amount listed on it's card \n"
 			+ "-redeem <short name> : allows player to buy back a mortgaged property from the bank for the mortgage value + 10%"
@@ -92,6 +93,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
 			+ "-quit : ends the game and display the winner\n";
+
 	private String propertyName;
 	private int numBuildings;
 
@@ -466,21 +468,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				if(Tiles.get(currentPlayer.currentTile).getPrice() > 0 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() == -1 && Tiles.get(currentPlayer.currentTile).getType() != PropertyImages.TYPE_TAX){
 					infoPanel.append("\nThis property may be bought for " + Tiles.get(currentPlayer.currentTile).getPrice() + ".");
 				}
-				//If Tile landed on is owned
-				else if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() != -1){
-					//Check for Tile isn't mortgaged
-					if(!Tiles.get(currentPlayer.currentTile).checkMortgaged()){
-						//Set player debt amount to rent of tile
-						currentPlayer.setDebt(Tiles.get(currentPlayer.currentTile).getRent());
-						//Set which player is owed money
-						currentPlayer.setPlayerOwed(Tiles.get(currentPlayer.currentTile).getOwnerNumber());
-						//Tell player money is owed
-						infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(Tiles.get(currentPlayer.currentTile).getOwnerNumber()).getName() + " " + Tiles.get(currentPlayer.currentTile).getRent() + ".");
-					}
-					//Unreachable code as mortgages not implemented in this sprint
-					else{
-						infoPanel.append("\nProperty is mortgaged");
-					}
+				//If Tile landed on is owned and not by current player
+				else if(Tiles.get(currentPlayer.currentTile).getOwnerNumber() != -1 && Tiles.get(currentPlayer.currentTile).getOwnerNumber() != currentPlayerNumber - 1 ){
+					checkRentOwed();
+				}
+				else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_TAX) {
+					payTax();
 				}
 			}
 			//Player has already rolled and didn't get doubles
@@ -514,13 +507,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//Check if player has any rent due
 			if(currentPlayer.getDebt() > 0){
 				//Check if player has enough money
-				//if(currentPlayer.getBalance() >= currentPlayer.getDebt()){
-				payRent();
-				//}
+				if(currentPlayer.getBalance() >= currentPlayer.getDebt()){
+					payRent();
+				}
 				//Unable to pay debt. Not enough money.
-				//else{
-				//	infoPanel.append("Unable to pay debt. Not enough money.");
-				//}
+				else{
+					infoPanel.append("Unable to pay debt. Mortgage properties or demolish buildings to get money, or declare bankruptcy");
+				}
 			}
 			//No rent due
 			else{
@@ -592,6 +585,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			redeem(propertyName);
 			break;
 
+			//declare bankruptcy
+		case "bankrupt":
+			bankrupt();
+			break;
 
 		default:
 			infoPanel.append("Error: Invalid command");
@@ -602,21 +599,105 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
 
+
+
+
+	private void bankrupt() {
+		for (Tile tile : Tiles) {
+			if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
+				currentPlayer.deposit(tile.removeAllBuildings());
+			}
+		}
+
+		currentPlayer.calculateAssetValue(Tiles);
+		int assets = currentPlayer.getAssetValue();
+		setPropertyUnowned();
+
+		infoPanel.append("Player " + currentPlayer.getName() + " has declared bankruptcy and has left the game with assets of " 
+				+ assets + " and debts of " + currentPlayer.getDebt() + ". All properties and buildings have been returned to the bank");
+
+		Player prevPlayer = currentPlayer;
+		done();
+		Players.remove(prevPlayer);
+	}
+
+	//paying tax method for the two tax tiles. checks if enough balance and pays tax automatically to the bank.
+	private void payTax() {
+		Tile currTile = Tiles.get(currentPlayer.currentTile);
+		int tax = currTile.getTaxAmount(); 
+
+		if (currentPlayer.getBalance() >= tax) {
+			currentPlayer.spend(tax);
+			infoPanel.append(" and had to pay " + tax + " in tax to the Bank");
+		}
+		else {
+			infoPanel.append("Error Player does not have enough money to pay tax. Mortgage properties or demolish buildings to get money, or declare bankruptcy");
+		}
+
+	}
+
+	private void checkRentOwed() {
+		Tile currTile = Tiles.get(currentPlayer.currentTile);
+		//Check for Tile isn't mortgaged
+		if (!Tiles.get(currentPlayer.currentTile).checkMortgaged()) {
+			if (currTile.getType() == PropertyImages.TYPE_PROPERTY) {
+				//Set player debt amount to rent of tile
+				currentPlayer.setDebt(Tiles.get(currentPlayer.currentTile).getRent());
+
+			}
+			else if (currTile.getType() == PropertyImages.TYPE_STATION) {
+				int i = 0;
+				for (Tile tile : Tiles) {
+					if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
+						i++;
+					}
+				}
+				currentPlayer.setDebt(currTile.getStationRent(i));
+			}
+			else if (currTile.getType() == PropertyImages.TYPE_UTILITY) {
+				int j = 0;
+				for (Tile tile : Tiles) {
+					if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
+						j++;
+					}
+				}
+				currentPlayer.setDebt((dice.getValue() * currTile.getUtilityRentMultiplier(j)));
+			}
+
+			//Set which player is owed money
+			currentPlayer.setPlayerOwed(currTile.getOwnerNumber());
+			//Tell player money is owed
+			infoPanel.append("\n" + currentPlayer.getName() + " owes "
+					+ Players.get(Tiles.get(currentPlayer.currentTile).getOwnerNumber()).getName() + " "
+					+ currentPlayer.getDebt() + ".");
+		}
+		else {
+			infoPanel.append("\nProperty is mortgaged");
+		}
+	}
+
+
+
+
 	// removes x num of houses on the tile given by short name
 	private void demolish(int num, String name) {
 		for (Tile tile : Tiles) {
 			if (propertyName.equals(tile.getShortName())) {
 				//check player owns property
 				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					//check not trying to demolish more building than exists
-					if (numBuildings <= tile.getBuildings()) {
-						tile.removeBuildings(num);
-						int cost = (tile.getHousePrice()/2)*num;
-						Players.get(currentPlayerNumber-1).deposit(cost);
-						infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " removed " + num + " houses from " + tile.getName() +" for a gain of " + cost);
-					}
-					else {
-						infoPanel.append("Error cant demolish more buildings than are built on property!");
+					if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
+						//check not trying to demolish more building than exists
+						if (numBuildings <= tile.getBuildings()) {
+							tile.removeBuildings(num);
+							int cost = (tile.getHousePrice() / 2) * num;
+							Players.get(currentPlayerNumber - 1).deposit(cost);
+							infoPanel.append("Player " + Players.get(currentPlayerNumber - 1).getName() + " removed "
+									+ num + " houses from " + tile.getName() + " for a gain of " + cost);
+						} else {
+							infoPanel.append("Error cant demolish more buildings than are built on property!");
+						} 
+					} else {
+						infoPanel.append("Error cant demolish buildings as cant build on this type of property");
 					}
 				}
 				else {
@@ -631,40 +712,42 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private void build(int num, String name) {
 		for (Tile tile : Tiles) {
 			if (propertyName.equals(tile.getShortName())) {
-				//check player owns property
-				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					//Check if Tile is a property
-					if(tile.getType() == PropertyImages.TYPE_PROPERTY){
-						//check if property is currently mortgaged
-						if(!tile.checkMortgaged()) {
-							//Check if all color group owned
-							if(tile.isAllColourOwned()){
-								//checks new amount of buildings plus existing wont be more than allowed
-								if ((numBuildings+tile.getBuildings()) <= 5) {
-									tile.addBuildings(num);
-									int cost = tile.getHousePrice()*num;
-									Players.get(currentPlayerNumber-1).spend(cost);
-									infoPanel.append("Player " +Players.get(currentPlayerNumber-1).getName() + " put " + num + " houses on " + tile.getName() +" at a cost of " + cost);
+				//check if enough balance for building houses
+				if (currentPlayer.getBalance() > (tile.getHousePrice()*num)) {
+					//check player owns property
+					if (tile.getOwnerNumber() == currentPlayerNumber - 1) {
+						//Check if Tile is a property
+						if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
+							//check if property is currently mortgaged
+							if (!tile.checkMortgaged()) {
+								//Check if all color group owned
+								if (tile.isAllColourOwned()) {
+									//checks new amount of buildings plus existing wont be more than allowed
+									if ((numBuildings + tile.getBuildings()) <= 5) {
+										tile.addBuildings(num);
+										int cost = tile.getHousePrice() * num;
+										Players.get(currentPlayerNumber - 1).spend(cost);
+										infoPanel.append("Player " + Players.get(currentPlayerNumber - 1).getName()
+												+ " put " + num + " houses on " + tile.getName() + " at a cost of "
+												+ cost);
+									} else {
+										infoPanel.append("Error max number of houses allowed is 5");
+									}
+								} else {
+									infoPanel.append("You must own a full color group before you can build houses.");
 								}
-								else {
-									infoPanel.append("Error max number of houses allowed is 5");
-								}
+							} else {
+								infoPanel.append("Error can't build houses on mortgaged property");
 							}
-							else {
-								infoPanel.append("You must own a full color group before you can build houses.");
-							}
-						}
-						else {
-							infoPanel.append("Error can't build houses on mortgaged property");
-						}
-					}
-					else{
-						infoPanel.append("You can't build on this type of property");
+						} else {
+							infoPanel.append("You can't build on this type of property");
 
-					}
-				}
-				else {
-					infoPanel.append("Error can't build houses on a property you dont own!");
+						}
+					} else {
+						infoPanel.append("Error can't build houses on a property you dont own!");
+					} 
+				} else {
+					infoPanel.append("Error Player does not have enough money to build houses. Mortgage properties or demolish buildings to get money, or declare bankruptcy");
 				}
 			}
 		}
@@ -685,7 +768,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
 						}
 						else {
-							infoPanel.append("\nError can't mortgage a property with buildings on it");
+							infoPanel.append("\nError can't mortgage a property with buildings on it. \nPlease use 'demolish' command to remove buildings from this property before mortgaging");
 						}
 					}
 					else {
@@ -703,20 +786,23 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		for (Tile tile : Tiles) {
 			//Searches for the property with the name the player entered
 			if (name.equals(tile.getShortName())) {
-				//check player owns property
-				if (tile.getOwnerNumber() == currentPlayerNumber-1) {
-					//Checks if property has already been mortgaged
-					if (tile.checkMortgaged()==true) {
-						tile.setMortgaged(false);
-						currentPlayer.spend((tile.getMortgageValue()/10)*11);
-						infoPanel.append("\nPlayer " +Players.get(currentPlayerNumber-1).getName() + " redeemed " +tile.getName()+" for "+(tile.getMortgageValue()/10)*11);
-					}
-					else {
-						infoPanel.append("\nError property isn't mortgaged");
-					}
-				}
-				else {
-					infoPanel.append("\nError can't redeem a property you dont own!");
+				if (currentPlayer.getBalance() > ((tile.getMortgageValue()/10) *11 )) {
+					//check player owns property
+					if (tile.getOwnerNumber() == currentPlayerNumber - 1) {
+						//Checks if property has already been mortgaged
+						if (tile.checkMortgaged() == true) {
+							tile.setMortgaged(false);
+							currentPlayer.spend((tile.getMortgageValue() / 10) * 11);
+							infoPanel.append("\nPlayer " + Players.get(currentPlayerNumber - 1).getName() + " redeemed "
+									+ tile.getName() + " for " + (tile.getMortgageValue() / 10) * 11);
+						} else {
+							infoPanel.append("\nError property isn't mortgaged");
+						}
+					} else {
+						infoPanel.append("\nError can't redeem a property you dont own!");
+					} 
+				} else {
+					infoPanel.append("Error Player does not have enough money to redeem property. Mortgage properties or demolish buildings to get money, or declare bankruptcy");
 				}
 			}
 		}
@@ -782,13 +868,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					if(currTile.getType() == PropertyImages.TYPE_UTILITY){
 						currentPlayer.utilitiesOwned++;
 					}
-					
+
 					//Handles same color groups
 					if(currTile.getType() == PropertyImages.TYPE_PROPERTY){
 						if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
 							int numProperties = 2;
 							setAllColoursOwned(currTile, numProperties);
-	
+
 						}
 						else {
 							int numProperties = 3;
@@ -800,7 +886,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				}
 				//Not enough Money
 				else{
-					return "Unable to buy Tile. Player doesn't have enough money.";
+					return "Unable to buy Tile. Mortgage properties or demolish buildings to get money, or declare bankruptcy.";
 				}
 			}
 			//Tile is already owned by a player
