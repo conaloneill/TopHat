@@ -165,7 +165,7 @@ public class PropertyImages {
 	
 	//Property short names
 	private static final String[] SITE_SHORT_NAMES = {
-			"kent","whitechapel","king","angel",
+			"kent","whitechapel","kings","angel",
 			"euston","pentonville","mall","electric","whitehall",
 			"northumberland","marylebone","bow","marlborough",
 			"vine","strand","fleet","trafalgar","fenchurch",

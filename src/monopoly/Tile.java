@@ -41,9 +41,6 @@ public class Tile {
 	public int x;	//stores tile x position
 	public int y;	//stores tile y position 
 
-	
-
-	
 	public Tile(int numberl,int posx, int posy){
 		number = numberl;
 		this.price = 0;
@@ -154,7 +151,8 @@ public class Tile {
 	}	//remove x num of buildings
 	public void removeBuildings(int num) {
 		this.buildings -= num;
-	}	//remove all buildings (for bankruptcy/quick sale of all without knowing how many) 
+	}	
+	//remove all buildings (for bankruptcy/quick sale of all without knowing how many) 
 	public int removeAllBuildings() {
 		int gain = ((buildings * housePrice) / 2);
 		this.buildings = 0;
