@@ -288,6 +288,7 @@ public class PropertyImages {
 				o.setImage(go);
 				o.setType(TYPE_GO);
 				o.setName("Go");
+				o.setShortname("Go");
 				break;
 			case 1:
 				o.setImage(oldKentRoadTile);
@@ -353,6 +354,7 @@ public class PropertyImages {
 				o.setImage(chance);
 				o.setType(TYPE_CHANCE);
 				o.setName("Chance");
+				o.setShortname("Chance");
 				break;
 			case 8:
 				o.setImage(eustonRoadTile);
@@ -382,6 +384,7 @@ public class PropertyImages {
 				o.setImage(injail);
 				o.setType(TYPE_JAIL);
 				o.setName("Jail");
+				o.setShortname("Jail");
 				break;
 			case 11:
 				o.setImage(pallMallTile);
@@ -485,6 +488,7 @@ public class PropertyImages {
 				o.setImage(freepark);
 				o.setType(TYPE_PARKING);
 				o.setName("Free Parking");
+				o.setShortname("Parking");
 				break;
 			case 21:
 				o.setImage(strandTile);
@@ -502,6 +506,7 @@ public class PropertyImages {
 				o.setImage(chancetop);
 				o.setType(TYPE_CHANCE);
 				o.setName("Chance");
+				o.setShortname("Chance");
 				break;
 			case 23:
 				o.setImage(fleetStreetTile);
@@ -587,6 +592,7 @@ public class PropertyImages {
 				o.setImage(gotojail);
 				o.setType(TYPE_GOTO_JAIL);
 				o.setName("Go to Jail!");
+				o.setShortname("Go To Jail");
 				break;
 			case 31:
 				o.setImage(regentStreetTile);
@@ -644,6 +650,7 @@ public class PropertyImages {
 				o.setImage(chanceright);
 				o.setType(TYPE_CHANCE);
 				o.setName("Chance");
+				o.setShortname("Chance");
 				break;
 			case 37:
 				o.setImage(parkLaneTile);
@@ -662,6 +669,7 @@ public class PropertyImages {
 				o.setType(TYPE_TAX);
 				o.setPrice(SITE_PRICES[3]); //same price as angel Islington
 				o.setName("Luxury Tax");
+				o.setShortname("Luxury");
 				o.setTaxAmount(SITE_TAX_VALUES[1]);
 				break;
 			case 39:
