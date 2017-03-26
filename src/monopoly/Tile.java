@@ -10,8 +10,8 @@ package monopoly;
  * These Tiles can be of any type(property, chance, community chest etc.)
  * 40 Tiles are used in our game. These are kept in the ArrayList 'Tiles' in GameScreen.
  * Each Tile has its own Image which is drawn relative to its own x and y position.
- * Each Tile also has all its possible rent values (fixed at first for Sprint 2), 
- * what player owns it, and the type of tile it is.  
+ * Each Tile also has all its possible rent values, its mortgage value, the price of houses,
+ * what player owns it, if its mortgaged or not, and the type of tile it is.  
  *
  * */
 import java.awt.Image;

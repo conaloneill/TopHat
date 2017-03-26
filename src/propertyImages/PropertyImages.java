@@ -12,7 +12,7 @@ package propertyImages;
  * called 'screen'. These images are drawn in the RenderPanel class.
  * 
  * As this class is cycling through every tile and assigning info to those tiles, we 
- * have added the rent, type, price and name of each tile inside the same loop.
+ * have added the rent, type, price, mortgage value and name of each tile inside the same loop.
  * This was done to improve readability(everything is assigned together) and 
  * code performance(only 1 loop through all tiles to assign information). 
  * 
