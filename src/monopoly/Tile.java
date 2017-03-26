@@ -2,7 +2,7 @@ package monopoly;
 
 /*
  *---Tophat---
- * Brian O'Leary - 134775468
+ * Brian O'Leary - 13475468
  * Conal O'Neill - 13315756
  * Daniel Graham - 15319536
  * 

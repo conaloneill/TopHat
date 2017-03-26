@@ -1,7 +1,7 @@
 package monopoly;
 /*
  * ---Tophat---
- * Brian O'Leary - 134775468
+ * Brian O'Leary - 13475468
  * Conal O'Neill - 13315756
  * Daniel Graham - 15319536
  * 
@@ -19,6 +19,8 @@ public class Dice {
 	public void roll(){
 		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
 		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
+		this.valueDice1 = 2;
+		this.valueDice2 =3;
 	}
 
 	public boolean checkDouble() {

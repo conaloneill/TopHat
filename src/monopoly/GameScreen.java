@@ -1,7 +1,7 @@
 package monopoly;
 /*
  * ---Tophat---
- * Brian O'Leary - 134775468
+ * Brian O'Leary - 13475468
  * Conal O'Neill - 13315756
  * Daniel Graham - 15319536
  * 
@@ -42,7 +42,6 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -94,10 +93,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
 			+ "-quit : ends the game and display the winner\n"
-			+ "-info : displays the short name of the current tile\n";
-
-
-
+			+ "-info : displays the short name of the current tile\n"
+			+ "-bankrupt : Current player is declared bankrupt and is removed from the game\n";
+	
 
 	GameScreen() {
 		//Sets up Tiles and Players
@@ -286,11 +284,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Create an instance of our main class
 		screen = new GameScreen();
 
-
-
 	}
-
-
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
@@ -366,8 +360,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 	//END OF GAME RUNNING METHODS
-
-
 
 
 	//METHODS
@@ -456,13 +448,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			infoPanel.append(helpString);
 			break;
 
-			//case below rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
+			//Rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
 		case "roll":
 			//Re-roll the dice to get new values
 			dice.roll();
 			//Check if player has rolled doubles less than 3 times but is still allowed roll again
 			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
-
 
 				//Move currentPlayer the value of the dice
 				movePlayer();
@@ -479,12 +470,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//If Tile landed on is owned and not by current player
 				//System.out.println("currPlayer.playerNumber: " + currentPlayer.playerNumber);
 
-
 				else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
 					infoPanel.append("got here");
 					checkRentOwed();
 				}
-
 
 				/*//No tax in this Sprint
 				else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_TAX) {
@@ -631,12 +620,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
 	}
 
-
 	private void info() {
 		infoPanel.append("Short name of " + Tiles.get(currentPlayer.currentTile).getName() + " is " + Tiles.get(currentPlayer.currentTile).getShortName());
 	}
 
 	private void bankrupt() {
+		//Remove all buildings from tiles owned by player
 		for (Tile tile : Tiles) {
 			if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
 				currentPlayer.deposit(tile.removeAllBuildings());
@@ -645,11 +634,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		currentPlayer.calculateAssetValue(Tiles);
 		int assets = currentPlayer.getAssetValue();
+		//Return property to bank
 		setPropertyUnowned();
 
 		infoPanel.append("Player " + currentPlayer.getName() + " has declared bankruptcy and has left the game with assets of " 
 				+ assets + " and debts of " + currentPlayer.getDebt() + ". All properties and buildings have been returned to the bank");
 
+		//Removes player from ArrayList
 		Player prevPlayer = currentPlayer;
 		done();
 		Players.remove(prevPlayer);
@@ -682,7 +673,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			else if (currTile.getType() == PropertyImages.TYPE_STATION) {
 				int i = 0;
-				System.out.println("curr play no: " + currentPlayer.playerNumber);
 				for (Tile tile : Tiles) {
 					if (tile.getOwnerNumber() == currTile.getOwnerNumber()) {
 						i++;
@@ -713,20 +703,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-
-
-
 	// removes x num of houses on the tile given by short name
 	private void demolish(int num, String name) {
 		for (Tile tile : Tiles) {
 			if (propertyName.equals(tile.getShortName())) {
 				//check player owns property
 				if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
+					//Check tile is a property type
 					if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
 						//check not trying to demolish more building than exists
 						if (numBuildings <= tile.getBuildings()) {
 							tile.removeBuildings(num);
 							int cost = (tile.getHousePrice() / 2) * num;
+							//Give player value from demolishing
 							Players.get(currentPlayer.playerNumber).deposit(cost);
 							infoPanel.append("Player " + Players.get(currentPlayer.playerNumber).getName() + " removed "
 									+ num + " houses from " + tile.getName() + " for a gain of " + cost);
@@ -803,6 +792,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 						//Checks if property has buildings on it
 						if (tile.getBuildings()==0) {
 							tile.setMortgaged(true);
+							//Give player mortgage value
 							currentPlayer.deposit(tile.getMortgageValue());
 							infoPanel.append("\nPlayer " +Players.get(currentPlayer.playerNumber).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
 						}
@@ -825,6 +815,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		for (Tile tile : Tiles) {
 			//Searches for the property with the name the player entered
 			if (name.equals(tile.getShortName())) {
+				//Checks if player can afford to redeem property
 				if (currentPlayer.getBalance() > ((tile.getMortgageValue()/10) *11 )) {
 					//check player owns property
 					if (tile.getOwnerNumber() == currentPlayer.playerNumber) {
@@ -897,7 +888,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					//Player spends price of property
 					currentPlayer.spend(currTile.getPrice());
 					currTile.setOwnerNumber(currentPlayer.playerNumber);
-					infoPanel.append("buy:: player number: " + currentPlayer.playerNumber + " owner num: " + currTile.getOwnerNumber() + "\n");
+					//infoPanel.append("buy:: player number: " + currentPlayer.playerNumber + " owner num: " + currTile.getOwnerNumber() + "\n");
 
 					//Adds number of stations
 					if(currTile.getType() == PropertyImages.TYPE_STATION) {
@@ -940,6 +931,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
+	//Checks if group of colors all owned by same player
 	//change to holding record of tile numbers and scrolling array of 2/3 size not arraylist of 40 tiles
 	private void setAllColoursOwned(Tile currTile, int numProperties) {
 		int i = 0;
