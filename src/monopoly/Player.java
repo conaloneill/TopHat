@@ -95,6 +95,9 @@ public class Player {
 	public void setDebt(int amount) {
 		this.debt = amount;
 	}
+	public void clearDebt() {
+		this.debt = 0;
+	}
 	public int getDebt() {
 		return this.debt;
 	}
