@@ -224,7 +224,7 @@ public class PropertyImages {
 			trafalgarSqTile = getImage("drawable/Trafalgar Square Tile.png");
 			vineStreetTile = getImage("drawable/Vine Street Tile.png");
 			waterWorksTile = getImage("drawable/WaterWorks Tile.png");
-			whitechapelRdTile = getImage("drawable/WhiteChapel Road Tile.png");
+			whitechapelRdTile = getImage("drawable/Whitechapel Road Tile.png");
 			whitehallTile = getImage("drawable/Whitehall Tile.png");
 
 
