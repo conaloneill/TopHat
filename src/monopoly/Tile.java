@@ -35,7 +35,7 @@ public class Tile {
 	
 	private int buildings = 0;
 	
-	private boolean allColourOwned = true;
+	private boolean allColourOwned;
 	private String colour;
 	
 	public int x;	//stores tile x position
@@ -46,7 +46,7 @@ public class Tile {
 		this.price = 0;
 		x=posx;
 		y=posy;
-		ownedByPlayer = 2; // -1 denotes no owner
+		ownedByPlayer = -1; // -1 denotes no owner
 	}
 
 	public void setImage(Image img) {
