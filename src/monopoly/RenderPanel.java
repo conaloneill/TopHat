@@ -28,7 +28,8 @@ public class RenderPanel extends JPanel {
 
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
+	private int mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
+			logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
 
 
 	@Override
@@ -159,6 +160,12 @@ public class RenderPanel extends JPanel {
 					g.setColor(Color.BLACK);
 					g.drawRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
 				}
+			}
+			
+			//Mortgaged Banner
+			//If mortgaged
+			if(o.checkMortgaged()){
+				g.drawImage(propertyImages.mortgaged, o.x - mortgageWidth/2, o.y - mortgageHeight/2, mortgageWidth, mortgageHeight, this);	
 			}
 
 		}

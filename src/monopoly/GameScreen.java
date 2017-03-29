@@ -801,7 +801,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							tile.setMortgaged(true);
 							//Give player mortgage value
 							currentPlayer.deposit(tile.getMortgageValue());
-							infoPanel.append("\nPlayer " +Players.get(currentPlayer.playerNumber).getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
+							infoPanel.append("\nPlayer " + currentPlayer.getName() + " mortgaged " +tile.getName()+" for "+tile.getMortgageValue());
 						}
 						else {
 							infoPanel.append("\nError can't mortgage a property with buildings on it. \nPlease use 'demolish' command to remove buildings from this property before mortgaging");
@@ -830,7 +830,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 						if (tile.checkMortgaged() == true) {
 							tile.setMortgaged(false);
 							currentPlayer.spend((tile.getMortgageValue() / 10) * 11);
-							infoPanel.append("\nPlayer " + Players.get(currentPlayer.playerNumber).getName() + " redeemed "
+							infoPanel.append("\nPlayer " + currentPlayer.getName() + " redeemed "
 									+ tile.getName() + " for " + (tile.getMortgageValue() / 10) * 11);
 						} else {
 							infoPanel.append("\nError property isn't mortgaged");

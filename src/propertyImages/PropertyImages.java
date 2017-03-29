@@ -104,6 +104,7 @@ public class PropertyImages {
 	private Image comchestright;
 	private Image chancetop;
 	private Image chanceright;
+	public Image mortgaged;
 	
 	
 	//Property Types
@@ -244,6 +245,7 @@ public class PropertyImages {
 			comchestright = getImage("drawable/comchestright.png");
 			chancetop = getImage("drawable/chancetop.png");
 			chanceright = getImage("drawable/chanceright.png");
+			mortgaged = getImage("drawable/mortgaged.png");
 
 
 
