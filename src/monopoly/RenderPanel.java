@@ -58,7 +58,7 @@ public class RenderPanel extends JPanel {
 		}
 
 		//Loop to go through all tiles and draw the image and the black outline.
-		//Also draws buildings and owner tokens
+		//Also draws buildings, owner tokens and mortgaged banners
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image
 			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);

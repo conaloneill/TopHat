@@ -723,8 +723,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							tile.removeBuildings(num);
 							int cost = (tile.getHousePrice() / 2) * num;
 							//Give player value from demolishing
-							Players.get(currentPlayer.playerNumber).deposit(cost);
-							infoPanel.append("Player " + Players.get(currentPlayer.playerNumber).getName() + " removed "
+							currentPlayer.deposit(cost);
+							infoPanel.append("Player " + currentPlayer.getName() + " removed "
 									+ num + " houses from " + tile.getName() + " for a gain of " + cost);
 						} else {
 							infoPanel.append("Error cant demolish more buildings than are built on property!");
@@ -760,8 +760,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 									if ((numBuildings + tile.getBuildings()) <= 5) {
 										tile.addBuildings(num);
 										int cost = tile.getHousePrice() * num;
-										Players.get(currentPlayer.playerNumber).spend(cost);
-										infoPanel.append("Player " + Players.get(currentPlayer.playerNumber).getName()
+										currentPlayer.spend(cost);
+										infoPanel.append("Player " + currentPlayer.getName()
 												+ " put " + num + " houses on " + tile.getName() + " at a cost of "
 												+ cost);
 									} else {
