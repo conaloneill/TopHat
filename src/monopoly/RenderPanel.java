@@ -28,7 +28,7 @@ public class RenderPanel extends JPanel {
 
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
+	private int ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
 
 
 	@Override
@@ -57,6 +57,7 @@ public class RenderPanel extends JPanel {
 		}
 
 		//Loop to go through all tiles and draw the image and the black outline.
+		//Also draws buildings and owner tokens
 		for(Tile o : screen.Tiles){ 
 			//Draw Tile's image
 			g.drawImage(o.getImage(), o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE, this);
@@ -118,6 +119,47 @@ public class RenderPanel extends JPanel {
 				}
 			}
 			
+			
+			//Owner Indicator Tokens
+			//If tile has an owner
+			if(o.getOwnerNumber() != -1){
+				
+				//Find correct player color
+				Color playerColor = null;
+				for(Player p : screen.Players){
+					if(o.getOwnerNumber() == p.playerNumber){
+						playerColor = p.getColour();
+					}
+				}
+				//BOT ROW
+				if(o.getTileNum() <= 9){
+					g.setColor(playerColor);
+					g.fillRect(o.x - ownerTokenSize/2, o.y + GameScreen.TILESIZE/2 - ownerTokenSize/2, ownerTokenSize, ownerTokenSize/2);
+					g.setColor(Color.BLACK);
+					g.drawRect(o.x - ownerTokenSize/2, o.y + GameScreen.TILESIZE/2 - ownerTokenSize/2, ownerTokenSize, ownerTokenSize/2);
+				}
+				//LEFT COL
+				if(o.getTileNum() >= 11 && o.getTileNum() <= 19){
+					g.setColor(playerColor);
+					g.fillRect(o.x - GameScreen.TILESIZE/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
+					g.setColor(Color.BLACK);
+					g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
+				}
+				//TOP ROW
+				if(o.getTileNum() >= 21 && o.getTileNum() <= 29){
+					g.setColor(playerColor);
+					g.fillRect(o.x - ownerTokenSize/2, o.y - GameScreen.TILESIZE/2, ownerTokenSize, ownerTokenSize/2);
+					g.setColor(Color.BLACK);
+					g.drawRect(o.x - ownerTokenSize/2, o.y - GameScreen.TILESIZE/2, ownerTokenSize, ownerTokenSize/2);
+				}
+				//RIGHT COL
+				if(o.getTileNum() >= 31 && o.getTileNum() <= 39){
+					g.setColor(playerColor);
+					g.fillRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
+					g.setColor(Color.BLACK);
+					g.drawRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
+				}
+			}
 
 		}
 
