@@ -22,8 +22,6 @@ public class Player {
 	private int  balance;
 	private String name;
 	private int assetValue = 0;
-	private int debt;
-	private int playerNumberOwed;
 
 	public int playerNumber;
 	public int currentTile;
@@ -41,7 +39,6 @@ public class Player {
 		this.currentTile = 0;
 		this.playerNumber = playerNum;
 		this.balance = balance;
-		this.debt = 0;
 		this.utilitiesOwned = 0;
 		this.stationsOwned = 0;
 	}
@@ -89,24 +86,6 @@ public class Player {
 				}
 			}
 		}
-	}
-	
-	//getter and setter for debt (used in paying rent)
-	public void setDebt(int amount) {
-		this.debt = amount;
-	}
-	public void clearDebt() {
-		this.debt = 0;
-	}
-	public int getDebt() {
-		return this.debt;
-	}
-	//getter and setter for who the player owes rent to
-	public void setPlayerOwed(int playerNum) {
-		this.playerNumberOwed = playerNum;
-	}
-	public int getPlayerOwed() {
-		return this.playerNumberOwed;
 	}
 
 }
