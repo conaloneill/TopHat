@@ -14,7 +14,11 @@ public class Card {
 	private String message;
 	private int amount;
 	private int type;
+	private int destination;
+	public boolean passGo;
+	
 	public int cardNumber;
+	
 	
 	public Card(int n){
 		this.cardNumber = n;
@@ -38,5 +42,12 @@ public class Card {
 	}
 	public int getType(){
 		return this.type;
+	}
+	
+	public void setDestination(int x){
+		this.destination = x;
+	}
+	public int getDestination(){
+		return this.destination;
 	}
 }

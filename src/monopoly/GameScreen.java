@@ -88,7 +88,6 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-buy : allows player to buy the property they are on if it can be bought \n"
 			+ "-build <short name> <number> : build houses on the property using short name and number to build \n"
 			+ "-demolish <short name <number> : demolish houses on the property using short name and number to demolish \n"
-			+ "-pay rent : allows player to pay owed rent to the owner of the property they are on \n"
 			+ "-mortgage <short name> : allows player to mortgage a property to the bank for the amount listed on it's card \n"
 			+ "-redeem <short name> : allows player to buy back a mortgaged property from the bank for the mortgage value + 10%\n"
 			+ "-property : shows a list of the all the properties owned by the player \n"
@@ -711,7 +710,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			currentPlayer.spend(debt);
 			//Give money to player owed
 			Players.get(playerNumberOwed-1).deposit(debt);
-			String s = currentPlayer.getName() + " payed " + debt + " to " + Players.get(playerNumberOwed-1).getName() + ".";
+			String s = "\n" + currentPlayer.getName() + " payed " + debt + " to " + Players.get(playerNumberOwed-1).getName() + ".";
 
 			infoPanel.append(s);
 		}
