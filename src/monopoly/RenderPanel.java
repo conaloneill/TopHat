@@ -47,6 +47,8 @@ public class RenderPanel extends JPanel {
 
 		if(firstTime){ //get images for the tile spaces only on the first time this method is called.
 			propertyImages.assignTileImages();
+			//Assign Cards Info
+			propertyImages.assignCards();
 			firstTime = false;
 		}
 

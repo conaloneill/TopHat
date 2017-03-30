@@ -77,6 +77,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
+	public ArrayList<Card> ChanceCards = new ArrayList<Card>();
+	public ArrayList<Card> ComChestCards = new ArrayList<Card>();
 
 	private String propertyName = null;
 	private String choice; //contains user's input throughout the game 
@@ -180,6 +182,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	//Called once on create. Used to setup game
 	private void init() {  
 
+		
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");

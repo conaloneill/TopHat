@@ -21,8 +21,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
-
-
+import monopoly.Card;
 import monopoly.GameScreen;
 import monopoly.Tile;
 
@@ -105,8 +104,8 @@ public class PropertyImages {
 	private Image chancetop;
 	private Image chanceright;
 	public Image mortgaged;
-	
-	
+
+
 	//Property Types
 	public static final int TYPE_GO = 0;
 	public static final int TYPE_PROPERTY = 1; 
@@ -119,7 +118,7 @@ public class PropertyImages {
 	public static final int TYPE_GOTO_JAIL = 8; 
 	public static final int TYPE_TAX = 9;
 
-	
+
 	//Property rent constants
 	private static final int[][] SITE_RENTS = { {2,10,30,90,160,250},
 			{4,20,60,180,320,450},{25,50,100,200,200,200},{6,30,90,270,400,550},{6,30,90,270,400,550},
@@ -131,30 +130,30 @@ public class PropertyImages {
 			{22,120,360,850,1025,1200},{26,130,390,900,1100,1275},
 			{26,130,390,900,1100,1275},{28,150,450,1000,1200,1400},{25,50,100,200,200,200},
 			{35,175,500,1100,1300,1500}, {50,200,600,1400,1700,2000}};
-	
-	
+
+
 	//Property price constants
 	private static final int[] SITE_PRICES = 	{60,60,200,100,100,120,140,
-												150,140,160,200,180,180,200,
-												220,220,240,200,260,260,150,
-												280,300,300,320,200,350,400};
-	
-	
+			150,140,160,200,180,180,200,
+			220,220,240,200,260,260,150,
+			280,300,300,320,200,350,400};
+
+
 	//Property house prices(hotels same price)
 	private static final int[] HOUSE_PRICES = 	{30, 30, 50, 50, 50,
-												100,100,100,100,100,100,
-												150,150,150,150,150,150,
-												150,150,160,200,200};
-	
+			100,100,100,100,100,100,
+			150,150,150,150,150,150,
+			150,150,160,200,200};
+
 	//Property mortgage constants
 	private static final int[] SITE_MORTGAGE_VALUE = {50,50,100,50,50,60,70,
-			                                          75,70,80,100,90,90,100,110,
-			                                          110,120,100,150,150,75,150,
-		                                           	  200,200,200,100,175,200};
-	
+			75,70,80,100,90,90,100,110,
+			110,120,100,150,150,75,150,
+			200,200,200,100,175,200};
+
 	//Income tax amounts
 	private static final int[] SITE_TAX_VALUES = {200,100};
-	
+
 	//Property full names
 	private static final String[] SITE_NAMES = {
 			"Old Kent Rd","Whitechapel Rd","King's Cross Station","The Angel Islington",
@@ -163,7 +162,7 @@ public class PropertyImages {
 			"Vine St","Strand","Fleet St","Trafalgar Sq","Fenchurch Station",
 			"Leicester Sq","Coventry St","Water Works","Piccadilly","Regent St",
 			"Oxford St","Bond St","Liverpool Station","Park Lane","Mayfair"};
-	
+
 	//Property short names
 	private static final String[] SITE_SHORT_NAMES = {
 			"kent","whitechapel","kings","angel",
@@ -172,13 +171,13 @@ public class PropertyImages {
 			"vine","strand","fleet","trafalgar","fenchurch",
 			"leicester","coventry","water","piccadilly","regent",
 			"oxford","bond","liverpool","park","mayfair"};
-	
-	
+
+
 	//Property Colours
 	private static final String[] COLOURS = {
 			"brown", "blue", "pink", "orange", "red", "yellow", "green", "navy" };
-	
-	
+
+
 	//Function to retrieve images from their path in the drawable folder
 	public Image getImage(String path){ 
 		Image temp = null;
@@ -190,13 +189,13 @@ public class PropertyImages {
 		}
 		return temp;
 	}
-	
-	
+
+
 
 	public void assignTileImages() {
+
 		//Allow reference to our game screen
 		GameScreen screen = GameScreen.screen;
-
 		//Get images 
 		if(bondStreetTile == null){ 
 			bondStreetTile = getImage("drawable/Bond Street Tile.png");
@@ -691,4 +690,128 @@ public class PropertyImages {
 			}
 		}
 	}
+
+	public void assignCards(){
+		//Allow reference to our game screen
+		GameScreen screen = GameScreen.screen;
+		
+		//Create 16 blank cards in each deck
+		for(int i = 0;i<15;i++){
+			screen.ChanceCards.add(new Card(i));
+			screen.ComChestCards.add(new Card(i));
+		}
+
+		//Assign card info
+		for(Card c : screen.ChanceCards){
+			switch(c.cardNumber){
+			case 0:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 1:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 2:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 3:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 4:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 5:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 6:
+				c.setType(Card.TYPE_GOTO); //Maybe??
+				break;
+			case 7:
+				c.setType(Card.TYPE_BUILDINGFINE);
+				break;
+			case 8:
+				c.setType(Card.TYPE_BUILDINGFINE);
+				break;
+			case 9:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 10:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 11:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 12:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 13:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 14:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 15:
+				c.setType(Card.TYPE_GOOJ);
+				break;
+
+			default:
+				break;
+			}
+		}
+		for(Card c : screen.ComChestCards){
+			switch(c.cardNumber){
+			case 0:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 1:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 2:
+				c.setType(Card.TYPE_GOTO);
+				break;
+			case 3:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 4:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 5:
+				c.setType(Card.TYPE_FINE);
+				break;
+			case 6:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 7:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 8:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 9:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 10:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 11:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 12:
+				c.setType(Card.TYPE_REWARD);
+				break;
+			case 13:
+				c.setType(Card.TYPE_MONEYFROMEACHPLAYER);
+				break;
+			case 14:
+				c.setType(Card.TYPE_GOOJ);
+				break;
+			case 15:
+				c.setType(Card.TYPE_FINEORCHANCE);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
 }
