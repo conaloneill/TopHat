@@ -484,27 +484,24 @@ dice.roll();
 				//Info about Tile player landed on:
 				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 
-					Tile currTile = Tiles.get(currentPlayer.currentTile);
-					//If property can be bought
-					if(currTile.getPrice() > 0 && currTile.getOwnerNumber() == -1) {
-						if (currTile.getType() == PropertyImages.TYPE_STATION || currTile.getType() == PropertyImages.TYPE_PROPERTY || currTile.getType() == PropertyImages.TYPE_UTILITY) {
-							infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
-						}
+				Tile currTile = Tiles.get(currentPlayer.currentTile);
+				int currTileType = Tiles.get(currentPlayer.currentTile).getType();
+				
+				//If property can be bought(Is property, station or utility with no owner)
+				if((currTileType == PropertyImages.TYPE_PROPERTY || currTileType == PropertyImages.TYPE_STATION || currTileType == PropertyImages.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
+					if (currTile.getType() == PropertyImages.TYPE_STATION || currTile.getType() == PropertyImages.TYPE_PROPERTY || currTile.getType() == PropertyImages.TYPE_UTILITY) {
+						infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
 					}
-					//If Tile landed on is owned and not by current player
-					else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
-						payRentOwed();
-					}
-					
-					else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_GOTO_JAIL) {
-						goToJail();
-						infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
-					}
+				}
+				//If Tile landed on is owned and not by current player
+				else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
+					payRentOwed();
+				}
 
-					/*//No tax in this Sprint
-				else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_TAX) {
+				//Tax
+				else if(currTileType == PropertyImages.TYPE_TAX) {
 					payTax();
-				}*/
+				}
 
 				}else{
 						infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
@@ -657,19 +654,14 @@ dice.roll();
 
 	//No tax in this Sprint
 	//paying tax method for the two tax tiles. checks if enough balance and pays tax automatically to the bank.
-	/*	private void payTax() {
+	private void payTax() {
 		Tile currTile = Tiles.get(currentPlayer.currentTile);
 		int tax = currTile.getTaxAmount(); 
 
-		if (currentPlayer.getBalance() >= tax) {
-			currentPlayer.spend(tax);
-			infoPanel.append(" and had to pay " + tax + " in tax to the Bank");
-		}
-		else {
-			infoPanel.append("Error Player does not have enough money to pay tax. Mortgage properties or demolish buildings to get money, or declare bankruptcy");
-		}
+		currentPlayer.spend(tax);
+		infoPanel.append(" and had to pay " + tax + " in tax to the Bank");
 
-	}*/
+	}
 
 	private void payRentOwed() {
 		Tile currTile = Tiles.get(currentPlayer.currentTile);
