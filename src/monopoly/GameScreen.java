@@ -451,36 +451,62 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//Rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
 		case "roll":
 			//Re-roll the dice to get new values
-			dice.roll();
+dice.roll();
+			
+			if(currentPlayer.inJail == true && rollAgain == true) {
+				infoPanel.append(currentPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + "\n");
+				if(dice.checkDouble()) {
+					infoPanel.append("You rolled doubles and got out of Jail!\n");
+					currentPlayer.inJail = false;
+				}
+				else{
+					infoPanel.append("You need to roll doubles or pay a fine of 50 to get out of Jail");
+					rollAgain = false;
+				}
+			}
+			
+			if(currentPlayer.inJail == true && rollAgain == false) {
+				infoPanel.append("You can't roll again this turn. To get out of Jail either pay a fine of 50 or roll doubles on your next turn");
+			}
+			else {
 			//Check if player has rolled doubles less than 3 times but is still allowed roll again
 			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
 
-					//Check positive balance
-					if(currentPlayer.getBalance() >= 0){
+				//Check positive balance
+				if(currentPlayer.getBalance() >= 0){
 
-						//Move currentPlayer the value of the dice
-						movePlayer();
-						//Info about Tile player landed on:
-						infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
+				//Move currentPlayer the value of the dice
+				movePlayer(dice.getValue());
+				infoPanel.append(currentPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
+				if(dice.checkDouble()) {
+					infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
+				}
+				//Info about Tile player landed on:
+				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 
-						Tile currTile = Tiles.get(currentPlayer.currentTile);
-						//If property can be bought
-						if(currTile.getPrice() > 0 && currTile.getOwnerNumber() == -1) {
-							if (currTile.getType() == PropertyImages.TYPE_STATION || currTile.getType() == PropertyImages.TYPE_PROPERTY || currTile.getType() == PropertyImages.TYPE_UTILITY) {
-								infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
-							}
+					Tile currTile = Tiles.get(currentPlayer.currentTile);
+					//If property can be bought
+					if(currTile.getPrice() > 0 && currTile.getOwnerNumber() == -1) {
+						if (currTile.getType() == PropertyImages.TYPE_STATION || currTile.getType() == PropertyImages.TYPE_PROPERTY || currTile.getType() == PropertyImages.TYPE_UTILITY) {
+							infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
 						}
-						//If Tile landed on is owned and not by current player
-						else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
-							payRentOwed();
-						}
+					}
+					//If Tile landed on is owned and not by current player
+					else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
+						payRentOwed();
+					}
+					
+					else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_GOTO_JAIL) {
+						goToJail();
+						infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
+					}
 
-						/*//No tax in this Sprint
-					else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_TAX) {
-						payTax();
-					}*/
+					/*//No tax in this Sprint
+				else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_TAX) {
+					payTax();
+				}*/
 
-					}else{
+				}else{
 						infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
 					}
 
@@ -490,7 +516,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			else {
 				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options");
 			}
-
+		}
+			
 			break;
 
 		case "balance": 
@@ -540,6 +567,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		case "quit":
 			quitGame();
+			break;
+			
+		case "pay":
+			if(currentPlayer.inJail == false) {
+				infoPanel.append("\nError: You are not in Jail");
+			}
+			else{
+				currentPlayer.spend(50);
+				currentPlayer.inJail = false;
+				infoPanel.append("\nYou paid a fine of 50 and got out of Jail");
+			}
 			break;
 
 			//build houses
@@ -916,6 +954,14 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 		}
 	}
+	
+	private void goToJail() {
+		currentPlayer.inJail = true;
+		while(Tiles.get(currentPlayer.currentTile).getType() != PropertyImages.TYPE_JAIL) {
+			movePlayer(1);
+		}
+		rollAgain = false;
+	}
 
 	private void quitGame() {
 
@@ -960,10 +1006,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
-	private void movePlayer() {
+	private void movePlayer(int move) {
 
 		Player currPlayer = Players.get(currentPlayerNumber-1);
-		for(int i = 1; i <= dice.getValue(); i++) {
+		for(int i = 1; i <= move; i++) {
 			//While on the bottom squares, players move to the left
 			if(currPlayer.currentTile <= 9) { 
 				currPlayer.xPosition -= TILESIZE;
@@ -989,18 +1035,18 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					currPlayer.currentTile = 0;
 
 					//Pass go, collect 200
-					infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!\n");
-					currPlayer.deposit(200);
-				}
+					if(currPlayer.inJail == false) {
+						infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!\n");
+						currPlayer.deposit(200);
+						}
 			}
 		}
+	}	
 		rollAgain = false;
 
-		infoPanel.append(currPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
 
 		//Checks to keep track how many times Player rolls doubles
 		if (dice.checkDouble() && doubleCount < 4) {
-			infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
 			doubleCount++;
 			rollAgain = true;
 			rollTurns++;

@@ -29,6 +29,7 @@ public class Player {
 	public int xPosition;  //Stores current x position
 	public int yPosition;  //Stores current y position
 	
+	public boolean inJail = false;
 	
 	public int stationsOwned;
 	public int utilitiesOwned;
