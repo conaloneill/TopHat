@@ -451,8 +451,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//Rolls the dice and calls move player method. Checks for any rent owed and assigns that to player
 		case "roll":
 			//Re-roll the dice to get new values
-dice.roll();
-			
+			dice.roll();
+
 			if(currentPlayer.inJail == true && rollAgain == true) {
 				infoPanel.append(currentPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + "\n");
 				if(dice.checkDouble()) {
@@ -464,57 +464,60 @@ dice.roll();
 					rollAgain = false;
 				}
 			}
-			
+
 			if(currentPlayer.inJail == true && rollAgain == false) {
 				infoPanel.append("You can't roll again this turn. To get out of Jail either pay a fine of 50 or roll doubles on your next turn");
 			}
 			else {
-			//Check if player has rolled doubles less than 3 times but is still allowed roll again
-			if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
+				//Check if player has rolled doubles less than 3 times but is still allowed roll again
+				if (rollTurns < 3 && rollTurns >= 0 && rollAgain) {
 
-				//Check positive balance
-				if(currentPlayer.getBalance() >= 0){
+					//Check positive balance
+					if(currentPlayer.getBalance() >= 0){
 
-				//Move currentPlayer the value of the dice
-				movePlayer(dice.getValue());
-				infoPanel.append(currentPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
-				if(dice.checkDouble()) {
-					infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
-				}
-				//Info about Tile player landed on:
-				infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
+						//Move currentPlayer the value of the dice
+						movePlayer(dice.getValue());
+						infoPanel.append(currentPlayer.getName() + " rolled " + dice.getDice1() + " and " + dice.getDice2() + ". Moved " + dice.getValue() + " squares"); //Says how many squares a player has moved
+						if(dice.checkDouble()) {
+							infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
+						}
+						//Info about Tile player landed on:
+						infoPanel.append("\n" + currentPlayer.getName() + " landed on " + Tiles.get(currentPlayer.currentTile).getName());
 
-				Tile currTile = Tiles.get(currentPlayer.currentTile);
-				int currTileType = Tiles.get(currentPlayer.currentTile).getType();
-				
-				//If property can be bought(Is property, station or utility with no owner)
-				if((currTileType == PropertyImages.TYPE_PROPERTY || currTileType == PropertyImages.TYPE_STATION || currTileType == PropertyImages.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
-					if (currTile.getType() == PropertyImages.TYPE_STATION || currTile.getType() == PropertyImages.TYPE_PROPERTY || currTile.getType() == PropertyImages.TYPE_UTILITY) {
-						infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
-					}
-				}
-				//If Tile landed on is owned and not by current player
-				else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
-					payRentOwed();
-				}
+						Tile currTile = Tiles.get(currentPlayer.currentTile);
+						int currTileType = Tiles.get(currentPlayer.currentTile).getType();
 
-				//Tax
-				else if(currTileType == PropertyImages.TYPE_TAX) {
-					payTax();
-				}
+						//If property can be bought(Is property, station or utility with no owner)
+						if((currTileType == PropertyImages.TYPE_PROPERTY || currTileType == PropertyImages.TYPE_STATION || currTileType == PropertyImages.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
+							infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
+						}
+						//If Tile landed on is owned and not by current player
+						else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != currentPlayer.playerNumber){
+							payRentOwed();
+						}
 
-				}else{
+						else if(Tiles.get(currentPlayer.currentTile).getType() == PropertyImages.TYPE_GOTO_JAIL) {
+							goToJail();
+							infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
+						}
+						
+						//Tax
+						else if(currTileType == PropertyImages.TYPE_TAX) {
+							payTax();
+						}
+
+					}else{
 						infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
 					}
 
+				}
+
+				//Player has already rolled and didn't get doubles
+				else {
+					infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options");
+				}
 			}
 
-			//Player has already rolled and didn't get doubles
-			else {
-				infoPanel.append("Error you cant roll again this turn. Please end turn with 'done'\nor type 'help' for the other options");
-			}
-		}
-			
 			break;
 
 		case "balance": 
@@ -542,19 +545,19 @@ dice.roll();
 			//Check if player must roll again this turn
 			if(rollTurns>0 && doubleCount == 0 && !rollAgain) {
 
-					//Check if player has positive  balance
-					if(currentPlayer.getBalance() >=0){
-					
-						//Move on to next player
-						done();
-						//Check if only one Player left
-						if (Players.size() <= 1){
-							quitGame();
-						}
-					//Has negative balance
-					}else{
-						infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
+				//Check if player has positive  balance
+				if(currentPlayer.getBalance() >=0){
+
+					//Move on to next player
+					done();
+					//Check if only one Player left
+					if (Players.size() <= 1){
+						quitGame();
 					}
+					//Has negative balance
+				}else{
+					infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
+				}
 			}
 			//Must roll again
 			else {
@@ -565,7 +568,7 @@ dice.roll();
 		case "quit":
 			quitGame();
 			break;
-			
+
 		case "pay":
 			if(currentPlayer.inJail == false) {
 				infoPanel.append("\nError: You are not in Jail");
@@ -697,10 +700,10 @@ dice.roll();
 
 			//Set which player is owed money
 			playerNumberOwed = currTile.getOwnerNumber();
-			
+
 			//Tell player money is owed
 			//infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(playerNumberOwed-1).getName() + " " + debt + ".");
-			
+
 			//Take money from player
 			currentPlayer.spend(debt);
 			//Give money to player owed
@@ -946,7 +949,7 @@ dice.roll();
 			}
 		}
 	}
-	
+
 	private void goToJail() {
 		currentPlayer.inJail = true;
 		while(Tiles.get(currentPlayer.currentTile).getType() != PropertyImages.TYPE_JAIL) {
@@ -1030,10 +1033,10 @@ dice.roll();
 					if(currPlayer.inJail == false) {
 						infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!\n");
 						currPlayer.deposit(200);
-						}
+					}
+				}
 			}
-		}
-	}	
+		}	
 		rollAgain = false;
 
 
