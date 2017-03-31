@@ -507,10 +507,16 @@ public class UserInputMethods {
 
 
 
-	public void drawComChestCard() {
+	public void drawCard(int tileType) {
 		GameScreen gameScreen = GameScreen.screen;
 		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
-		Card cardDrawn = gameScreen.ComChestCards.get(cardNum);
+		Card cardDrawn;
+		if (tileType == PropertyImages.TYPE_CHANCE) {
+			cardDrawn = gameScreen.ChanceCards.get(cardNum);
+		}
+		else{
+			cardDrawn = gameScreen.ComChestCards.get(cardNum);
+		}
 		//Get card type
 		int cardType = cardDrawn.getType();
 		//Show card message
@@ -522,29 +528,26 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
 			break;
+			
 		case Card.TYPE_REWARD :
 			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + ".");
 			break;
+			
 		case Card.TYPE_GOOJ :
 			gameScreen.currentPlayer.numberOfGOOJCards++;
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card.");
 			break;
-		case Card.TYPE_GOTO :
+			
+		case Card.TYPE_GOTO : 
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
 
-			//Find distance to move
-			int spacesToMove;
-			if(cardDrawn.getDestination() > gameScreen.currentPlayer.currentTile)
-				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
-			else
-				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
-
-			//Move Player
-			movePlayer(spacesToMove, cardDrawn.passGo);
-			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
-
+			while (gameScreen.currentPlayer.currentTile != cardDrawn.getDestination()) {
+				//Move Player
+				movePlayer(1, cardDrawn.passGo);
+			}
 			break;
+
 		case Card.TYPE_BUILDINGFINE :
 
 			int houseCount = 0;
@@ -565,6 +568,7 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.spend(totalCost);
 
 			break;
+			
 		case Card.TYPE_MONEYFROMEACHPLAYER :
 			int total = 0;
 			int moneyFromPlayer = cardDrawn.getAmount();
@@ -583,83 +587,7 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.deposit(total);
 
 			break;
-		case Card.TYPE_FINEORCHANCE :
-			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
-
-			//Not working yet
-			switch(gameScreen.choice){
-			case "fine":
-				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() +  " spent " + cardDrawn.getAmount() + ".");
-				gameScreen.currentPlayer.spend(cardDrawn.getAmount());
-			case "chance":
-				drawChanceCard();
-			default:
-				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
-			}
-			break;
-		default :
-			gameScreen.infoPanel.append("\nError retrieving card.");
-		}
-	}
-
-	public void drawChanceCard() {
-		GameScreen gameScreen = GameScreen.screen;
-		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
-		Card cardDrawn = gameScreen.ChanceCards.get(cardNum);
-		//Get card type
-		int cardType = cardDrawn.getType();
-		//Show card message
-		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
-
-		switch(cardType){
-		//Do card action based on type
-		case Card.TYPE_FINE:
-			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + " .");
-			break;
-		case Card.TYPE_REWARD :
-			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + " .");
-			break;
-		case Card.TYPE_GOOJ :
-			gameScreen.currentPlayer.numberOfGOOJCards++;
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail Free' card .");
-			break;
-		case Card.TYPE_GOTO : 
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
-
-			//Find distance to move
-			int spacesToMove;
-			if(cardDrawn.getDestination() > gameScreen.currentPlayer.currentTile)
-				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
-			else
-				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
-
-			//Move Player
-			movePlayer(spacesToMove, cardDrawn.passGo);
-			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
-
-		case Card.TYPE_BUILDINGFINE :
-
-			int houseCount = 0;
-			int hotelCount = 0;
-			int totalCost = 0;
-			//Count number of houses and hotels
-			for(Tile tile : gameScreen.Tiles){
-				if(tile.getOwnerNumber() == gameScreen.currentPlayerNumber){
-					if(tile.getBuildings() >= 4){
-						houseCount += tile.getBuildings();
-					}else if(tile.getBuildings() == 5){
-						hotelCount ++;
-					}
-				}
-			}
-			totalCost = (cardDrawn.getHouseCost() * houseCount) + (cardDrawn.getHotelCost() * hotelCount);
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
-			gameScreen.currentPlayer.spend(totalCost);
-			break;
-		
-				
+			
 		case Card.TYPE_MOVEXSPACES :
 
 			int moveSpaces = cardDrawn.getDestination();
@@ -680,8 +608,25 @@ public class UserInputMethods {
 			}
 
 			break;
+			
+		case Card.TYPE_FINEORCHANCE :
+			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+
+			//Not working yet
+			switch(gameScreen.choice){
+			case "fine":
+				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() +  " spent " + cardDrawn.getAmount() + ".");
+				gameScreen.currentPlayer.spend(cardDrawn.getAmount());
+			case "chance":
+				drawCard(PropertyImages.TYPE_CHANCE);
+			default:
+				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			}
+			break;
+			
 		default :
 			gameScreen.infoPanel.append("\nError retrieving card.");
 		}
 	}
+
 }

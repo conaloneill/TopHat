@@ -139,12 +139,8 @@ public class UserInput {
 							userInputMethods.payTax();
 						}
 
-						else if (currTileType == PropertyImages.TYPE_CHANCE) {
-							userInputMethods.drawChanceCard();
-						}
-
-						else if (currTileType == PropertyImages.TYPE_COMMUNITY) {
-							userInputMethods.drawComChestCard();
+						else if (currTileType == PropertyImages.TYPE_CHANCE || currTileType == PropertyImages.TYPE_COMMUNITY) {
+							userInputMethods.drawCard(currTileType);
 						}
 
 					}else{
