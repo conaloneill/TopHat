@@ -506,20 +506,20 @@ public class UserInputMethods {
 		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
 
 		//Do card action based on type
-		//switch(cardType)
-		if(cardType == Card.TYPE_FINE){
+		switch(cardType){
+		case Card.TYPE_FINE :
 			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
-		}
-		if(cardType == Card.TYPE_REWARD){
+			break;
+		case Card.TYPE_REWARD :
 			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + ".");
-		}
-		if(cardType == Card.TYPE_GOOJ){
+			break;
+		case Card.TYPE_GOOJ :
 			gameScreen.currentPlayer.numberOfGOOJCards++;
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card.");
-		}
-		if(cardType == Card.TYPE_GOTO){
+			break;
+		case Card.TYPE_GOTO :
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
 
 			//Find distance to move
@@ -528,13 +528,13 @@ public class UserInputMethods {
 				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
 			else
 				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
-			
+
 			//Move Player
 			movePlayer(spacesToMove, cardDrawn.passGo);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
 
-		}
-		if(cardType == Card.TYPE_BUILDINGFINE){
+			break;
+		case Card.TYPE_BUILDINGFINE :
 
 			int houseCount = 0;
 			int hotelCount = 0;
@@ -553,11 +553,11 @@ public class UserInputMethods {
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
 			gameScreen.currentPlayer.spend(totalCost);
 
-		}
-		if(cardType == Card.TYPE_MONEYFROMEACHPLAYER){
+			break;
+		case Card.TYPE_MONEYFROMEACHPLAYER :
 			int total = 0;
 			int moneyFromPlayer = cardDrawn.getAmount();
-			
+
 			//Take money from each player and notify them
 			for(Player player : gameScreen.Players){
 				if(player != gameScreen.currentPlayer){
@@ -566,15 +566,15 @@ public class UserInputMethods {
 					gameScreen.infoPanel.append("\n" + player.getName() + " spent " + moneyFromPlayer + ".");
 				}
 			}
-			
+
 			//Give money to player
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + total + ".");
 			gameScreen.currentPlayer.deposit(total);
 
-		}
-		if(cardType == Card.TYPE_FINEORCHANCE){
+			break;
+		case Card.TYPE_FINEORCHANCE :
 			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
-			
+
 			//Not working yet
 			switch(gameScreen.choice){
 			case "fine":
@@ -584,33 +584,37 @@ public class UserInputMethods {
 				drawChanceCard();
 			default:
 				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
-			}	
+			}
+			break;
+		default :
+			gameScreen.infoPanel.append("\nError retrieving card.");
 		}
 	}
-
 
 	public void drawChanceCard() {
 		GameScreen gameScreen = GameScreen.screen;
 		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
 		Card cardDrawn = gameScreen.ChanceCards.get(cardNum);
-		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
-		//Get Card type
+		//Get card type
 		int cardType = cardDrawn.getType();
+		//Show card message
+		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
 
+		switch(cardType){
 		//Do card action based on type
-		if(cardType == Card.TYPE_FINE){
+		case Card.TYPE_FINE:
 			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + " .");
-		}
-		if(cardType == Card.TYPE_REWARD){
+			break;
+		case Card.TYPE_REWARD :
 			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + " .");
-		}
-		if(cardType == Card.TYPE_GOOJ){
+			break;
+		case Card.TYPE_GOOJ :
 			gameScreen.currentPlayer.numberOfGOOJCards++;
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail Free' card .");
-		}
-		if(cardType == Card.TYPE_GOTO){
+			break;
+		case Card.TYPE_GOTO : 
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
 
 			//Find distance to move
@@ -621,12 +625,12 @@ public class UserInputMethods {
 				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
 
 			//Move Player
-			movePlayer(spacesToMove, true);
+			movePlayer(spacesToMove, cardDrawn.passGo);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
-		}
-		
-		if(cardType == Card.TYPE_BUILDINGFINE){
-			
+
+			break;
+		case Card.TYPE_BUILDINGFINE :
+
 			int houseCount = 0;
 			int hotelCount = 0;
 			int totalCost = 0;
@@ -643,12 +647,29 @@ public class UserInputMethods {
 			totalCost = (cardDrawn.getHouseCost() * houseCount) + (cardDrawn.getHotelCost() * hotelCount);
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
 			gameScreen.currentPlayer.spend(totalCost);
-		}
-		if(cardType == Card.TYPE_MOVEXSPACES){
+			break;
+		case Card.TYPE_MOVEXSPACES :
 
+			int moveSpaces = cardDrawn.getDestination();
+			int destination = 0;
+
+			//Check if moving backwards or forwards
+			if(moveSpaces < 0){
+				//Find destination tile
+				destination = gameScreen.currentPlayer.currentTile - moveSpaces;
+				//Find Distance to move
+				moveSpaces = gameScreen.Tiles.size() - 2 - (destination - gameScreen.currentPlayer.currentTile);
+				//Move Player Backwards
+				movePlayer(moveSpaces, false);
+
+			}else{
+				//Move Player Forward
+				movePlayer(moveSpaces, true);
+			}
+
+			break;
+		default :
+			gameScreen.infoPanel.append("\nError retrieving card.");
 		}
 	}
-
-
-
 }

@@ -5,7 +5,7 @@ import monopoly.GameScreen;
 import monopoly.UserInputMethods;
 
 public class UserInput {
-	
+
 	UserInputMethods userInputMethods = new UserInputMethods();
 
 	//method for all user inputs on a players turn. gets the input and calls methods to implement choice
@@ -133,16 +133,16 @@ public class UserInput {
 							userInputMethods.goToJail();
 							gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
 						}
-						
+
 						//Tax
 						else if(currTileType == PropertyImages.TYPE_TAX) {
 							userInputMethods.payTax();
 						}
-						
+
 						else if (currTileType == PropertyImages.TYPE_CHANCE) {
 							userInputMethods.drawChanceCard();
 						}
-						
+
 						else if (currTileType == PropertyImages.TYPE_COMMUNITY) {
 							userInputMethods.drawComChestCard();
 						}
