@@ -108,8 +108,8 @@ public class UserInput {
 					//Check positive balance
 					if(gameScreen.currentPlayer.getBalance() >= 0){
 
-						//Move currentPlayer the value of the dice
-						gameScreen.userInputMethods.movePlayer(gameScreen.dice.getValue());
+						//Move currentPlayer the value of the dice, Pass Go is true
+						gameScreen.userInputMethods.movePlayer(gameScreen.dice.getValue(), true);
 						gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " rolled " + gameScreen.dice.getDice1() + " and " + gameScreen.dice.getDice2() + ". Moved " + gameScreen.dice.getValue() + " squares"); //Says how many squares a player has moved
 						if(gameScreen.dice.checkDouble()) {
 							gameScreen.infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
@@ -129,7 +129,7 @@ public class UserInput {
 							userInputMethods.payRentOwed();
 						}
 
-						else if(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() == PropertyImages.TYPE_GOTO_JAIL) {
+						else if(currTileType == PropertyImages.TYPE_GOTO_JAIL) {
 							userInputMethods.goToJail();
 							gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
 						}

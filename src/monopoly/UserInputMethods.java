@@ -12,7 +12,7 @@ public class UserInputMethods {
 
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
-	public void movePlayer(int move) {
+	public void movePlayer(int move, boolean passGo) {
 		GameScreen gameScreen = GameScreen.screen;
 
 		Player currPlayer = gameScreen.Players.get(gameScreen.currentPlayerNumber-1);
@@ -42,7 +42,7 @@ public class UserInputMethods {
 					currPlayer.currentTile = 0;
 
 					//Pass go, collect 200
-					if(currPlayer.inJail == false) {
+					if(passGo) {
 						gameScreen.infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!\n");
 						currPlayer.deposit(200);
 					}
@@ -132,7 +132,7 @@ public class UserInputMethods {
 
 		gameScreen.currentPlayer.inJail = true;
 		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyImages.TYPE_JAIL) {
-			movePlayer(1);
+			movePlayer(1, false);
 		}
 		gameScreen.rollAgain = false;
 	}
@@ -506,6 +506,7 @@ public class UserInputMethods {
 		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
 
 		//Do card action based on type
+		//switch(cardType)
 		if(cardType == Card.TYPE_FINE){
 			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
@@ -527,9 +528,9 @@ public class UserInputMethods {
 				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
 			else
 				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
-
+			
 			//Move Player
-			movePlayer(spacesToMove);
+			movePlayer(spacesToMove, cardDrawn.passGo);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
 
 		}
@@ -620,7 +621,7 @@ public class UserInputMethods {
 				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
 
 			//Move Player
-			movePlayer(spacesToMove);
+			movePlayer(spacesToMove, true);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
 		}
 		
