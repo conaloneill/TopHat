@@ -52,6 +52,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import javax.swing.text.DefaultCaret;
 
+import cards.Card;
 import propertyImages.PropertyImages;
 import monopoly.RenderPanel;
 

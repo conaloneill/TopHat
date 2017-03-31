@@ -16,7 +16,7 @@ import monopoly.GameScreen;
 
 import javax.swing.JPanel;
 
-
+import cards.CardInfo;
 import propertyImages.PropertyImages;
 
 
@@ -25,6 +25,7 @@ public class RenderPanel extends JPanel {
 
 	private boolean firstTime = true;
 	private PropertyImages propertyImages = new PropertyImages();
+	private CardInfo cardInfo;
 
 	public Color insideGreen = new Color(165, 255, 137);
 
@@ -48,7 +49,7 @@ public class RenderPanel extends JPanel {
 		if(firstTime){ //get images for the tile spaces only on the first time this method is called.
 			propertyImages.assignTileImages();
 			//Assign Cards Info
-			propertyImages.assignCards();
+			cardInfo.assignCards();
 			firstTime = false;
 		}
 

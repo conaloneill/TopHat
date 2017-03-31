@@ -1,4 +1,4 @@
-package monopoly;
+package cards;
 
 public class Card {
 	
