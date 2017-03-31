@@ -9,14 +9,17 @@ public class Card {
 	public static final int TYPE_BUILDINGFINE = 4;
 	public static final int TYPE_MONEYFROMEACHPLAYER = 5;
 	public static final int TYPE_FINEORCHANCE = 6;
+	public static final int TYPE_MOVEXSPACES = 7;
 	
 	
 	private String message;
 	private int amount;
 	private int type;
 	private int destination;
-	public boolean passGo;
+	private int spacesToMove;
+	private int[] buildingCosts;
 	
+	public boolean passGo;
 	public int cardNumber;
 	
 	
@@ -49,5 +52,20 @@ public class Card {
 	}
 	public int getDestination(){
 		return this.destination;
+	}
+	
+	public void setSpacesToMove(int x){
+		this.spacesToMove = x;
+	}
+	public int getSpacesToMove(){
+		return this.spacesToMove;
+	}
+	
+	public void setBuildingCosts(int house, int hotel){
+		this.buildingCosts[0] = house;
+		this.buildingCosts[1] = hotel;
+	}
+	public int[] getBuildingCosts(){
+		return this.buildingCosts;
 	}
 }

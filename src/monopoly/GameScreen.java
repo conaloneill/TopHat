@@ -42,6 +42,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,7 +68,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	private Dice dice = new Dice();
 	private RenderPanel boardGraphics = new RenderPanel();
-	private Player currentPlayer;
+	public Player currentPlayer;
 	public static GameScreen screen;
 
 	public int mouseX, mouseY, currentTile, numberOfPlayers = 0;
@@ -182,7 +183,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	//Called once on create. Used to setup game
 	private void init() {  
 
-		
+
 		//Get number of Players
 		while(!playerNumberCheck){
 			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
@@ -503,10 +504,18 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 							goToJail();
 							infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
 						}
-						
+
 						//Tax
 						else if(currTileType == PropertyImages.TYPE_TAX) {
 							payTax();
+						}
+
+						//Cards
+						else if(currTileType == PropertyImages.TYPE_CHANCE) {
+							drawChanceCard();
+						}
+						else if(currTileType == PropertyImages.TYPE_COMMUNITY) {
+							drawComChestCard();
 						}
 
 					}else{
@@ -630,6 +639,114 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//Asks the next player for input
 		infoPanel.append("\n" + currentPlayer.getName() + " :");  
+	}
+
+	private void drawComChestCard() {
+		int cardNum = 1;//ThreadLocalRandom.current().nextInt(1, 16);
+		Card cardDrawn = ComChestCards.get(cardNum);
+		//Get card type
+		int cardType = cardDrawn.getType();
+		//Show card message
+		infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
+
+		//Do card action based on type
+		if(cardType == Card.TYPE_FINE){
+			currentPlayer.spend(cardDrawn.getAmount());
+			infoPanel.append("\n" + currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
+		}
+		if(cardType == Card.TYPE_REWARD){
+			currentPlayer.deposit(cardDrawn.getAmount());
+			infoPanel.append("\n" + currentPlayer.getName() + " got " + cardDrawn.getAmount() + ".");
+		}
+		if(cardType == Card.TYPE_GOOJ){
+			currentPlayer.numberOfGOOJCards++;
+			infoPanel.append("\n" + currentPlayer.getName() + " got a 'Get Out of Jail' card.");
+		}
+		if(cardType == Card.TYPE_GOTO){
+			infoPanel.append("\n" + currentPlayer.getName() + " moved to " + Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
+
+			//Find distance to move
+			int spacesToMove;
+			if(cardDrawn.getDestination() > currentPlayer.currentTile)
+				spacesToMove = cardDrawn.getDestination() - currentPlayer.currentTile;
+			else
+				spacesToMove = Tiles.size() - 2 - (cardDrawn.getDestination() - currentPlayer.currentTile);
+
+			//Move Player
+			movePlayer(spacesToMove);
+			currentPlayer.currentTile = cardDrawn.getDestination();
+
+		}
+		if(cardType == Card.TYPE_BUILDINGFINE){
+			
+			int houseCount = 0;
+			int hotelCount = 0;
+			int totalCost = 0;
+			//Count number of houses and hotels
+			for(Tile tile : Tiles){
+				if(tile.getOwnerNumber() == currentPlayerNumber){
+					if(tile.getBuildings() >= 4){
+						houseCount += tile.getBuildings();
+					}else if(tile.getBuildings() == 5){
+						hotelCount ++;
+					}
+				}
+			}
+			totalCost = (cardDrawn.getBuildingCosts()[0] * houseCount) + (cardDrawn.getBuildingCosts()[0] * hotelCount);
+			infoPanel.append("\n" + currentPlayer.getName() + " spent " + totalCost + ".");
+			currentPlayer.spend(totalCost);
+
+		}
+		if(cardType == Card.TYPE_MONEYFROMEACHPLAYER){
+
+		}
+		if(cardType == Card.TYPE_FINEORCHANCE){
+
+		}
+
+
+	}
+
+	private void drawChanceCard() {
+		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
+		Card cardDrawn = ChanceCards.get(cardNum);
+		infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
+		//Get Card type
+		int cardType = cardDrawn.getType();
+
+		//Do card action based on type
+		if(cardType == Card.TYPE_FINE){
+			currentPlayer.spend(cardDrawn.getAmount());
+			infoPanel.append("\n" + currentPlayer.getName() + " spent " + cardDrawn.getAmount() + " .");
+		}
+		if(cardType == Card.TYPE_REWARD){
+			currentPlayer.deposit(cardDrawn.getAmount());
+			infoPanel.append("\n" + currentPlayer.getName() + " got " + cardDrawn.getAmount() + " .");
+		}
+		if(cardType == Card.TYPE_GOOJ){
+			currentPlayer.numberOfGOOJCards++;
+			infoPanel.append("\n" + currentPlayer.getName() + " got a 'Get Out of Jail' card .");
+		}
+		if(cardType == Card.TYPE_GOTO){
+			infoPanel.append("\n" + currentPlayer.getName() + " moved to " + Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
+
+			//Find distance to move
+			int spacesToMove;
+			if(cardDrawn.getDestination() > currentPlayer.currentTile)
+				spacesToMove = cardDrawn.getDestination() - currentPlayer.currentTile;
+			else
+				spacesToMove = Tiles.size() - 2 - (cardDrawn.getDestination() - currentPlayer.currentTile);
+
+			//Move Player
+			movePlayer(spacesToMove);
+			currentPlayer.currentTile = cardDrawn.getDestination();
+		}
+		if(cardType == Card.TYPE_BUILDINGFINE){
+
+		}
+		if(cardType == Card.TYPE_MOVEXSPACES){
+
+		}
 	}
 
 	private void info() {

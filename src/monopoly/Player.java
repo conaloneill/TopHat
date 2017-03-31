@@ -33,6 +33,8 @@ public class Player {
 	
 	public int stationsOwned;
 	public int utilitiesOwned;
+	
+	public int numberOfGOOJCards;
 
 
 
@@ -42,6 +44,7 @@ public class Player {
 		this.balance = balance;
 		this.utilitiesOwned = 0;
 		this.stationsOwned = 0;
+		this.numberOfGOOJCards = 0;
 	}
 
 	public void setColour(Color color) {
