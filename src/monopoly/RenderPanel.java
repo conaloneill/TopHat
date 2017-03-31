@@ -25,7 +25,7 @@ public class RenderPanel extends JPanel {
 
 	private boolean firstTime = true;
 	private PropertyImages propertyImages = new PropertyImages();
-	private CardInfo cardInfo;
+	private CardInfo cardInfo = new CardInfo();
 
 	public Color insideGreen = new Color(165, 255, 137);
 
