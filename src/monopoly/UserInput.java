@@ -259,6 +259,10 @@ public class UserInput {
 		case "info" :
 			userInputMethods.info();
 			break;
+			
+		case "exit" :
+			System.exit(0);
+			break;
 
 		default:
 			gameScreen.infoPanel.append("Error: Invalid command");

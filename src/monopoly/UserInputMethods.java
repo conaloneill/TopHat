@@ -435,8 +435,20 @@ public class UserInputMethods {
 
 		//Removes player from ArrayList
 		Player prevPlayer = gameScreen.currentPlayer;
-		done();
 		gameScreen.Players.remove(prevPlayer);
+
+
+		if (gameScreen.currentPlayerNumber > gameScreen.Players.size()) { //If every player has had a turn, resets to player 1
+			gameScreen.currentPlayerNumber = 1;
+			gameScreen.currentPlayer = gameScreen.Players.get(gameScreen.currentPlayerNumber-1);
+		} 
+		else if (gameScreen.currentPlayerNumber <= gameScreen.Players.size()) {
+			gameScreen.currentPlayer = gameScreen.Players.get(gameScreen.currentPlayerNumber-1);
+		}
+		gameScreen.rollTurns = 0;
+		gameScreen.rollAgain = true;
+		gameScreen.doubleCount = 0;
+
 	}
 
 
@@ -455,7 +467,6 @@ public class UserInputMethods {
 		if (gameScreen.Players.size() <= 1 || gameScreen.choice == "quit") {
 			gameScreen.infoPanel.append("Game Over! Only one player remaining.\n Winner is " + gameScreen.Players.get(gameScreen.Players.size()-1).getName()
 					+ " with assets worth " + gameScreen.Players.get(gameScreen.Players.size()-1).getAssetValue());
-			gameScreen.commandPanel.setText(null);
 			return true;
 		}
 		return false;
@@ -528,7 +539,7 @@ public class UserInputMethods {
 				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
 			else
 				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
-			
+
 			//Move Player
 			movePlayer(spacesToMove, cardDrawn.passGo);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
@@ -557,7 +568,7 @@ public class UserInputMethods {
 		if(cardType == Card.TYPE_MONEYFROMEACHPLAYER){
 			int total = 0;
 			int moneyFromPlayer = cardDrawn.getAmount();
-			
+
 			//Take money from each player and notify them
 			for(Player player : gameScreen.Players){
 				if(player != gameScreen.currentPlayer){
@@ -566,7 +577,7 @@ public class UserInputMethods {
 					gameScreen.infoPanel.append("\n" + player.getName() + " spent " + moneyFromPlayer + ".");
 				}
 			}
-			
+
 			//Give money to player
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + total + ".");
 			gameScreen.currentPlayer.deposit(total);
@@ -574,7 +585,7 @@ public class UserInputMethods {
 		}
 		if(cardType == Card.TYPE_FINEORCHANCE){
 			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
-			
+
 			//Not working yet
 			switch(gameScreen.choice){
 			case "fine":
@@ -624,9 +635,9 @@ public class UserInputMethods {
 			movePlayer(spacesToMove, true);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
 		}
-		
+
 		if(cardType == Card.TYPE_BUILDINGFINE){
-			
+
 			int houseCount = 0;
 			int hotelCount = 0;
 			int totalCost = 0;

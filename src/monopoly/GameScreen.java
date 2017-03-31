@@ -329,18 +329,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//Check user input and carry out command entered
 				userInput.userInput();
 			}
-			//If Game has ended exit the program on user command
 			else {
-				infoPanel.append("\nError cant continue as Game is Over!\nEnter \"exit\" to end the program\n\n");
-				String choiceString = commandPanel.getText().trim().toLowerCase();
-				switch (choiceString) {
+				choice = commandPanel.getText().trim().toLowerCase();
+				switch (choice) {
 				case "exit":
 					System.exit(0);
 					break;
 
 				default:
 					break;
-				}	
+				}
 			}
 		}
 
