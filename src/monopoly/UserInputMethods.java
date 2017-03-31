@@ -1,7 +1,9 @@
 package monopoly;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 
+import cards.Card;
 import monopoly.GameScreen;
 import monopoly.Player;
 import propertyImages.PropertyImages;
@@ -207,7 +209,7 @@ public class UserInputMethods {
 		}
 	}
 
-
+	//Loops through Tiles ArrayList and displays all Tiles owned by currentPlayer
 	public void propertiesOwnedBycurrentPlayerNumber() {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -220,7 +222,7 @@ public class UserInputMethods {
 		gameScreen.infoPanel.append(properties);
 	}
 
-
+	//ends players turn and increments counter to the next player
 	public void done() {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -266,7 +268,7 @@ public class UserInputMethods {
 		gameScreen.gameOver = true;
 	}
 
-
+	//builds x num of houses on the tile given by short name
 	public void build(int num, String name) {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -314,7 +316,7 @@ public class UserInputMethods {
 		gameScreen.propertyName = null;
 	}
 
-
+	// removes x num of houses on the tile given by short name
 	public void demolish(int num, String name) {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -411,7 +413,8 @@ public class UserInputMethods {
 		}
 	}
 
-
+	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
+	//Used when a player goes bankrupt
 	public void bankrupt() {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -444,6 +447,8 @@ public class UserInputMethods {
 	}
 
 
+	//method to check the game is over by checking if only 1 player left in the player 
+	//array or user enter's "quit". This also prints the winner.
 	public boolean checkGameOver() {
 		GameScreen gameScreen = GameScreen.screen;
 		
@@ -488,5 +493,123 @@ public class UserInputMethods {
 			}
 		}
 	}
+	
+	
+	
+	public void drawComChestCard() {
+		GameScreen gameScreen = GameScreen.screen;
+		int cardNum = 1;//ThreadLocalRandom.current().nextInt(1, 16);
+		Card cardDrawn = gameScreen.ComChestCards.get(cardNum);
+		//Get card type
+		int cardType = cardDrawn.getType();
+		//Show card message
+		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
+
+		//Do card action based on type
+		if(cardType == Card.TYPE_FINE){
+			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
+		}
+		if(cardType == Card.TYPE_REWARD){
+			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + ".");
+		}
+		if(cardType == Card.TYPE_GOOJ){
+			gameScreen.currentPlayer.numberOfGOOJCards++;
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card.");
+		}
+		if(cardType == Card.TYPE_GOTO){
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
+
+			//Find distance to move
+			int spacesToMove;
+			if(cardDrawn.getDestination() > gameScreen.currentPlayer.currentTile)
+				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
+			else
+				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
+
+			//Move Player
+			movePlayer(spacesToMove);
+			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
+
+		}
+		if(cardType == Card.TYPE_BUILDINGFINE){
+			
+			int houseCount = 0;
+			int hotelCount = 0;
+			int totalCost = 0;
+			//Count number of houses and hotels
+			for(Tile tile : gameScreen.Tiles){
+				if(tile.getOwnerNumber() == gameScreen.currentPlayerNumber){
+					if(tile.getBuildings() >= 4){
+						houseCount += tile.getBuildings();
+					}else if(tile.getBuildings() == 5){
+						hotelCount ++;
+					}
+				}
+			}
+			totalCost = (cardDrawn.getBuildingCosts()[0] * houseCount) + (cardDrawn.getBuildingCosts()[0] * hotelCount);
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
+			gameScreen.currentPlayer.spend(totalCost);
+
+		}
+		if(cardType == Card.TYPE_MONEYFROMEACHPLAYER){
+
+		}
+		if(cardType == Card.TYPE_FINEORCHANCE){
+
+		}
+
+
+	}
+	
+	
+
+	
+
+	public void drawChanceCard() {
+		GameScreen gameScreen = GameScreen.screen;
+		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
+		Card cardDrawn = gameScreen.ChanceCards.get(cardNum);
+		gameScreen.infoPanel.append("\n\"" + cardDrawn.getMessage() + "\"");
+		//Get Card type
+		int cardType = cardDrawn.getType();
+
+		//Do card action based on type
+		if(cardType == Card.TYPE_FINE){
+			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + " .");
+		}
+		if(cardType == Card.TYPE_REWARD){
+			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + " .");
+		}
+		if(cardType == Card.TYPE_GOOJ){
+			gameScreen.currentPlayer.numberOfGOOJCards++;
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card .");
+		}
+		if(cardType == Card.TYPE_GOTO){
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
+
+			//Find distance to move
+			int spacesToMove;
+			if(cardDrawn.getDestination() > gameScreen.currentPlayer.currentTile)
+				spacesToMove = cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile;
+			else
+				spacesToMove = gameScreen.Tiles.size() - 2 - (cardDrawn.getDestination() - gameScreen.currentPlayer.currentTile);
+
+			//Move Player
+			movePlayer(spacesToMove);
+			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
+		}
+		if(cardType == Card.TYPE_BUILDINGFINE){
+
+		}
+		if(cardType == Card.TYPE_MOVEXSPACES){
+
+		}
+	}
+	
+	
 
 }

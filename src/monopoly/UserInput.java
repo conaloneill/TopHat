@@ -138,6 +138,14 @@ public class UserInput {
 						else if(currTileType == PropertyImages.TYPE_TAX) {
 							userInputMethods.payTax();
 						}
+						
+						else if (currTileType == PropertyImages.TYPE_CHANCE) {
+							userInputMethods.drawChanceCard();
+						}
+						
+						else if (currTileType == PropertyImages.TYPE_COMMUNITY) {
+							userInputMethods.drawComChestCard();
+						}
 
 					}else{
 						gameScreen.infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
