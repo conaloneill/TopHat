@@ -17,7 +17,8 @@ public class Card {
 	private int type;
 	private int destination;
 	private int spacesToMove;
-	private int[] buildingCosts;
+	private int housecost;
+	private int hotelcost;
 	
 	public boolean passGo;
 	public int cardNumber;
@@ -62,10 +63,13 @@ public class Card {
 	}
 	
 	public void setBuildingCosts(int house, int hotel){
-		this.buildingCosts[0] = house;
-		this.buildingCosts[1] = hotel;
+		this.housecost = house;
+		this.hotelcost = hotel;
 	}
-	public int[] getBuildingCosts(){
-		return this.buildingCosts;
+	public int getHouseCost(){
+		return this.housecost;
+	}
+	public int getHotelCost(){
+		return this.hotelcost;
 	}
 }

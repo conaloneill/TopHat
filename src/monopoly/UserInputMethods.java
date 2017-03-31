@@ -10,11 +10,11 @@ import propertyImages.PropertyImages;
 
 public class UserInputMethods {
 
-	
+
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	public void movePlayer(int move) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		Player currPlayer = gameScreen.Players.get(gameScreen.currentPlayerNumber-1);
 		for(int i = 1; i <= move; i++) {
 			//While on the bottom squares, players move to the left
@@ -72,10 +72,10 @@ public class UserInputMethods {
 		}
 	}
 
-	
+
 	public void payRentOwed() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
 		int debt = 0;
 		int playerNumberOwed = -1;;
@@ -106,19 +106,19 @@ public class UserInputMethods {
 			else if (j > 0) {
 				debt = (gameScreen.dice.getValue() * currTile.getUtilityRentMultiplier(j));
 			}
-	
+
 			//Set which player is owed money
 			playerNumberOwed = currTile.getOwnerNumber();
-	
+
 			//Tell player money is owed
 			//infoPanel.append("\n" + currentPlayer.getName() + " owes " + Players.get(playerNumberOwed-1).getName() + " " + debt + ".");
-	
+
 			//Take money from player
 			gameScreen.currentPlayer.spend(debt);
 			//Give money to player owed
 			gameScreen.Players.get(playerNumberOwed-1).deposit(debt);
 			String s = "\n" + gameScreen.currentPlayer.getName() + " payed " + debt + " to " + gameScreen.Players.get(playerNumberOwed-1).getName() + ".";
-	
+
 			gameScreen.infoPanel.append(s);
 		}
 		else {
@@ -129,7 +129,7 @@ public class UserInputMethods {
 
 	public void goToJail() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		gameScreen.currentPlayer.inJail = true;
 		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyImages.TYPE_JAIL) {
 			movePlayer(1);
@@ -140,19 +140,19 @@ public class UserInputMethods {
 
 	public void payTax() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
 		int tax = currTile.getTaxAmount(); 
-	
+
 		gameScreen.currentPlayer.spend(tax);
 		gameScreen.infoPanel.append(" and had to pay " + tax + " in tax to the Bank");
-	
+
 	}
 
 
 	public String buy() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		//If Tile is a property
 		Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
 		if(currTile.getType() == PropertyImages.TYPE_STATION ||
@@ -162,12 +162,12 @@ public class UserInputMethods {
 			if(currTile.getOwnerNumber() == -1) {
 				//If player has enough money
 				if(gameScreen.currentPlayer.getBalance() >= currTile.getPrice()){
-	
+
 					//Player spends price of property
 					gameScreen.currentPlayer.spend(currTile.getPrice());
 					currTile.setOwnerNumber(gameScreen.currentPlayer.playerNumber);
 					//infoPanel.append("buy:: player number: " + currentPlayer.playerNumber + " owner num: " + currTile.getOwnerNumber() + "\n");
-	
+
 					//Adds number of stations
 					if(currTile.getType() == PropertyImages.TYPE_STATION) {
 						gameScreen.currentPlayer.stationsOwned++;
@@ -176,7 +176,7 @@ public class UserInputMethods {
 					if(currTile.getType() == PropertyImages.TYPE_UTILITY){
 						gameScreen.currentPlayer.utilitiesOwned++;
 					}
-	
+
 					//Handles same color groups
 					if(currTile.getType() == PropertyImages.TYPE_PROPERTY){
 						if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
@@ -212,7 +212,7 @@ public class UserInputMethods {
 	//Loops through Tiles ArrayList and displays all Tiles owned by currentPlayer
 	public void propertiesOwnedBycurrentPlayerNumber() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		String properties = "Property owned by " + gameScreen.currentPlayer.getName() + " :";
 		for(Tile o : gameScreen.Tiles){
 			if(o.getOwnerNumber() == gameScreen.currentPlayer.playerNumber){
@@ -225,7 +225,7 @@ public class UserInputMethods {
 	//ends players turn and increments counter to the next player
 	public void done() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		if (gameScreen.currentPlayerNumber >= gameScreen.Players.size()) { //If every player has had a turn, resets to player 1
 			gameScreen.currentPlayerNumber = 1;
 			gameScreen.currentPlayer = gameScreen.Players.get(gameScreen.currentPlayerNumber-1);
@@ -241,14 +241,14 @@ public class UserInputMethods {
 
 	public void quitGame() {
 		GameScreen gameScreen = GameScreen.screen;
-	
+
 		//Check if more than 1 Player left
 		if (gameScreen.Players.size() > 1) {
 			//calculate AssetValue for each player
 			for (Player player : gameScreen.Players) {
 				player.calculateAssetValue(gameScreen.Tiles);
 			}
-	
+
 			//Sort Players array based on assetValue property of Player objects
 			Collections.sort(gameScreen.Players, new Comparator<Player>() {
 				@Override public int compare(Player p1, Player p2) {
@@ -259,10 +259,10 @@ public class UserInputMethods {
 			//If only 1 Player, Calculate Players assets
 			gameScreen.Players.get(gameScreen.Players.size()-1).calculateAssetValue(gameScreen.Tiles);
 		}
-	
+
 		//Sort is in ascending order
 		Player winner = gameScreen.Players.get(gameScreen.Players.size()-1);
-	
+
 		gameScreen.infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
 		gameScreen.infoPanel.append("\nEnter \"exit\" to end the program\n");
 		gameScreen.gameOver = true;
@@ -271,7 +271,7 @@ public class UserInputMethods {
 	//builds x num of houses on the tile given by short name
 	public void build(int num, String name) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		for (Tile tile : gameScreen.Tiles) {
 			if (gameScreen.propertyName.equals(tile.getShortName())) {
 				//check if enough balance for building houses
@@ -319,7 +319,7 @@ public class UserInputMethods {
 	// removes x num of houses on the tile given by short name
 	public void demolish(int num, String name) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		for (Tile tile : gameScreen.Tiles) {
 			if (gameScreen.propertyName.equals(tile.getShortName())) {
 				//check player owns property
@@ -353,7 +353,7 @@ public class UserInputMethods {
 
 	public void mortgage(String name) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		for (Tile tile : gameScreen.Tiles) {
 			//Searches for the property with the name the player entered
 			if (name.equals(tile.getShortName())) {
@@ -386,7 +386,7 @@ public class UserInputMethods {
 
 	public void redeem(String name) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		for (Tile tile : gameScreen.Tiles) {
 			//Searches for the property with the name the player entered
 			if (name.equals(tile.getShortName())) {
@@ -417,22 +417,22 @@ public class UserInputMethods {
 	//Used when a player goes bankrupt
 	public void bankrupt() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		//Remove all buildings from tiles owned by player
 		for (Tile tile : gameScreen.Tiles) {
 			if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
 				gameScreen.currentPlayer.deposit(tile.removeAllBuildings());
 			}
 		}
-	
+
 		gameScreen.currentPlayer.calculateAssetValue(gameScreen.Tiles);
 		int assets = gameScreen.currentPlayer.getAssetValue();
 		//Return property to bank
 		setPropertyUnowned();
-	
+
 		gameScreen.infoPanel.append("Player " + gameScreen.currentPlayer.getName() + " has declared bankruptcy and has left the game with assets of " 
 				+ assets + ". All properties and buildings have been returned to the bank");
-	
+
 		//Removes player from ArrayList
 		Player prevPlayer = gameScreen.currentPlayer;
 		done();
@@ -442,7 +442,7 @@ public class UserInputMethods {
 
 	public void info() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		gameScreen.infoPanel.append("Short name of " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName() + " is " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getShortName());
 	}
 
@@ -451,7 +451,7 @@ public class UserInputMethods {
 	//array or user enter's "quit". This also prints the winner.
 	public boolean checkGameOver() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		if (gameScreen.Players.size() <= 1 || gameScreen.choice == "quit") {
 			gameScreen.infoPanel.append("Game Over! Only one player remaining.\n Winner is " + gameScreen.Players.get(gameScreen.Players.size()-1).getName()
 					+ " with assets worth " + gameScreen.Players.get(gameScreen.Players.size()-1).getAssetValue());
@@ -465,7 +465,7 @@ public class UserInputMethods {
 	//change to holding record of tile numbers and scrolling array of 2/3 size not arraylist of 40 tiles
 	public void setAllColoursOwned(Tile currTile, int numProperties) {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		int i = 0;
 		for (Tile tile : gameScreen.Tiles) {
 			if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
@@ -486,19 +486,19 @@ public class UserInputMethods {
 
 	public void setPropertyUnowned() {
 		GameScreen gameScreen = GameScreen.screen;
-		
+
 		for (Tile tile : gameScreen.Tiles) {
 			if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
 				tile.setOwnerNumber(-1);
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	public void drawComChestCard() {
 		GameScreen gameScreen = GameScreen.screen;
-		int cardNum = 1;//ThreadLocalRandom.current().nextInt(1, 16);
+		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
 		Card cardDrawn = gameScreen.ComChestCards.get(cardNum);
 		//Get card type
 		int cardType = cardDrawn.getType();
@@ -534,7 +534,7 @@ public class UserInputMethods {
 
 		}
 		if(cardType == Card.TYPE_BUILDINGFINE){
-			
+
 			int houseCount = 0;
 			int hotelCount = 0;
 			int totalCost = 0;
@@ -548,24 +548,45 @@ public class UserInputMethods {
 					}
 				}
 			}
-			totalCost = (cardDrawn.getBuildingCosts()[0] * houseCount) + (cardDrawn.getBuildingCosts()[0] * hotelCount);
+			totalCost = (cardDrawn.getHouseCost() * houseCount) + (cardDrawn.getHotelCost() * hotelCount);
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
 			gameScreen.currentPlayer.spend(totalCost);
 
 		}
 		if(cardType == Card.TYPE_MONEYFROMEACHPLAYER){
+			int total = 0;
+			int moneyFromPlayer = cardDrawn.getAmount();
+			
+			//Take money from each player and notify them
+			for(Player player : gameScreen.Players){
+				if(player != gameScreen.currentPlayer){
+					player.spend(moneyFromPlayer);
+					total += moneyFromPlayer;
+					gameScreen.infoPanel.append("\n" + player.getName() + " spent " + moneyFromPlayer + ".");
+				}
+			}
+			
+			//Give money to player
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + total + ".");
+			gameScreen.currentPlayer.deposit(total);
 
 		}
 		if(cardType == Card.TYPE_FINEORCHANCE){
-
+			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			
+			//Not working yet
+			switch(gameScreen.choice){
+			case "fine":
+				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() +  " spent " + cardDrawn.getAmount() + ".");
+				gameScreen.currentPlayer.spend(cardDrawn.getAmount());
+			case "chance":
+				drawChanceCard();
+			default:
+				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			}	
 		}
-
-
 	}
-	
-	
 
-	
 
 	public void drawChanceCard() {
 		GameScreen gameScreen = GameScreen.screen;
@@ -586,7 +607,7 @@ public class UserInputMethods {
 		}
 		if(cardType == Card.TYPE_GOOJ){
 			gameScreen.currentPlayer.numberOfGOOJCards++;
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card .");
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail Free' card .");
 		}
 		if(cardType == Card.TYPE_GOTO){
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
@@ -602,14 +623,31 @@ public class UserInputMethods {
 			movePlayer(spacesToMove);
 			gameScreen.currentPlayer.currentTile = cardDrawn.getDestination();
 		}
+		
 		if(cardType == Card.TYPE_BUILDINGFINE){
-
+			
+			int houseCount = 0;
+			int hotelCount = 0;
+			int totalCost = 0;
+			//Count number of houses and hotels
+			for(Tile tile : gameScreen.Tiles){
+				if(tile.getOwnerNumber() == gameScreen.currentPlayerNumber){
+					if(tile.getBuildings() >= 4){
+						houseCount += tile.getBuildings();
+					}else if(tile.getBuildings() == 5){
+						hotelCount ++;
+					}
+				}
+			}
+			totalCost = (cardDrawn.getHouseCost() * houseCount) + (cardDrawn.getHotelCost() * hotelCount);
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + totalCost + ".");
+			gameScreen.currentPlayer.spend(totalCost);
 		}
 		if(cardType == Card.TYPE_MOVEXSPACES){
 
 		}
 	}
-	
-	
+
+
 
 }
