@@ -13,18 +13,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import monopoly.GameScreen;
+import property.PropertyInfo;
 
 import javax.swing.JPanel;
 
 import cards.CardInfo;
-import propertyImages.PropertyImages;
 
 
 @SuppressWarnings("serial")
 public class RenderPanel extends JPanel {
 
 	private boolean firstTime = true;
-	private PropertyImages propertyImages = new PropertyImages();
+	private PropertyInfo propertyInfo = new PropertyInfo();
 	private CardInfo cardInfo = new CardInfo();
 
 	public Color insideGreen = new Color(165, 255, 137);
@@ -47,7 +47,7 @@ public class RenderPanel extends JPanel {
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_WIDTH  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2);
 
 		if(firstTime){ //get images for the tile spaces only on the first time this method is called.
-			propertyImages.assignTileImages();
+			propertyInfo.assignTileImages();
 			//Assign Cards Info
 			cardInfo.assignCards();
 			firstTime = false;
@@ -57,7 +57,7 @@ public class RenderPanel extends JPanel {
 		if(screen.mouseIsOnATile && screen.Tiles.get(screen.currentTile).getInfoImage() != null){
 			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
 		}else{
-			g.drawImage(propertyImages.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
+			g.drawImage(propertyInfo.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
 		}
 
 		//Loop to go through all tiles and draw the image and the black outline.
@@ -72,7 +72,7 @@ public class RenderPanel extends JPanel {
 			//Houses and Hotels
 			int x;
 			int y;
-			if(o.getType()==PropertyImages.TYPE_PROPERTY){
+			if(o.getType()==PropertyInfo.TYPE_PROPERTY){
 				//BOT ROW
 				if(o.getTileNum() <= 9){
 					if(o.getBuildings() > 0 && o.getBuildings() <= 4){
@@ -168,7 +168,7 @@ public class RenderPanel extends JPanel {
 			//Mortgaged Banner
 			//If mortgaged
 			if(o.checkMortgaged()){
-				g.drawImage(propertyImages.mortgaged, o.x - mortgageWidth/2, o.y - mortgageHeight/2, mortgageWidth, mortgageHeight, this);	
+				g.drawImage(propertyInfo.mortgaged, o.x - mortgageWidth/2, o.y - mortgageHeight/2, mortgageWidth, mortgageHeight, this);	
 			}
 
 		}

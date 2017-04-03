@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import cards.Card;
 import monopoly.GameScreen;
 import monopoly.Player;
-import propertyImages.PropertyImages;
+import property.PropertyInfo;
 
 public class UserInputMethods {
 
@@ -81,18 +81,18 @@ public class UserInputMethods {
 		int playerNumberOwed = -1;;
 		//Check for Tile isn't mortgaged
 		if (!currTile.checkMortgaged()) {
-			if (currTile.getType() == PropertyImages.TYPE_PROPERTY) {
+			if (currTile.getType() == PropertyInfo.TYPE_PROPERTY) {
 				//Set debt amount to rent of tile
 				debt = currTile.getRent();
 			}
 			int i = 0, j = 0;
 			for (Tile tile : gameScreen.Tiles) {
-				if (currTile.getType() == PropertyImages.TYPE_STATION && tile.getType() == PropertyImages.TYPE_STATION) {
+				if (currTile.getType() == PropertyInfo.TYPE_STATION && tile.getType() == PropertyInfo.TYPE_STATION) {
 					if (tile.getOwnerNumber() == currTile.getOwnerNumber()) {
 						i++;
 					}
 				}
-				if (currTile.getType() == PropertyImages.TYPE_UTILITY && tile.getType() == PropertyImages.TYPE_UTILITY) {
+				if (currTile.getType() == PropertyInfo.TYPE_UTILITY && tile.getType() == PropertyInfo.TYPE_UTILITY) {
 					if (tile.getOwnerNumber() == currTile.getOwnerNumber()) {
 						j++;
 					}
@@ -131,7 +131,7 @@ public class UserInputMethods {
 		GameScreen gameScreen = GameScreen.screen;
 
 		gameScreen.currentPlayer.inJail = true;
-		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyImages.TYPE_JAIL) {
+		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyInfo.TYPE_JAIL) {
 			movePlayer(1, false);
 		}
 		gameScreen.rollAgain = false;
@@ -155,9 +155,9 @@ public class UserInputMethods {
 
 		//If Tile is a property
 		Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
-		if(currTile.getType() == PropertyImages.TYPE_STATION ||
-				currTile.getType() == PropertyImages.TYPE_PROPERTY ||
-				currTile.getType() == PropertyImages.TYPE_UTILITY) {
+		if(currTile.getType() == PropertyInfo.TYPE_STATION ||
+				currTile.getType() == PropertyInfo.TYPE_PROPERTY ||
+				currTile.getType() == PropertyInfo.TYPE_UTILITY) {
 			//If Tile is not owned
 			if(currTile.getOwnerNumber() == -1) {
 				//If player has enough money
@@ -169,16 +169,16 @@ public class UserInputMethods {
 					//infoPanel.append("buy:: player number: " + currentPlayer.playerNumber + " owner num: " + currTile.getOwnerNumber() + "\n");
 
 					//Adds number of stations
-					if(currTile.getType() == PropertyImages.TYPE_STATION) {
+					if(currTile.getType() == PropertyInfo.TYPE_STATION) {
 						gameScreen.currentPlayer.stationsOwned++;
 					}
 					//Adds number of utilities
-					if(currTile.getType() == PropertyImages.TYPE_UTILITY){
+					if(currTile.getType() == PropertyInfo.TYPE_UTILITY){
 						gameScreen.currentPlayer.utilitiesOwned++;
 					}
 
 					//Handles same color groups
-					if(currTile.getType() == PropertyImages.TYPE_PROPERTY){
+					if(currTile.getType() == PropertyInfo.TYPE_PROPERTY){
 						if (currTile.getColour().equals("brown") || currTile.getColour().equals("navy")) {
 							int numProperties = 2;
 							setAllColoursOwned(currTile, numProperties);
@@ -279,7 +279,7 @@ public class UserInputMethods {
 					//check player owns property
 					if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
 						//Check if Tile is a property
-						if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
+						if (tile.getType() == PropertyInfo.TYPE_PROPERTY) {
 							//check if property is currently mortgaged
 							if (!tile.checkMortgaged()) {
 								//Check if all color group owned
@@ -325,7 +325,7 @@ public class UserInputMethods {
 				//check player owns property
 				if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
 					//Check tile is a property type
-					if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
+					if (tile.getType() == PropertyInfo.TYPE_PROPERTY) {
 						//check not trying to demolish more building than exists
 						if (gameScreen.numBuildings <= tile.getBuildings()) {
 							tile.removeBuildings(num);
@@ -479,7 +479,7 @@ public class UserInputMethods {
 
 		int i = 0;
 		for (Tile tile : gameScreen.Tiles) {
-			if (tile.getType() == PropertyImages.TYPE_PROPERTY) {
+			if (tile.getType() == PropertyInfo.TYPE_PROPERTY) {
 				if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber && tile.getColour().equals(currTile.getColour())) {
 					i++; 
 					if (i == numProperties) {
@@ -511,7 +511,7 @@ public class UserInputMethods {
 		GameScreen gameScreen = GameScreen.screen;
 		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
 		Card cardDrawn;
-		if (tileType == PropertyImages.TYPE_CHANCE) {
+		if (tileType == PropertyInfo.TYPE_CHANCE) {
 			cardDrawn = gameScreen.ChanceCards.get(cardNum);
 		}
 		else{
@@ -618,7 +618,7 @@ public class UserInputMethods {
 				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() +  " spent " + cardDrawn.getAmount() + ".");
 				gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			case "chance":
-				drawCard(PropertyImages.TYPE_CHANCE);
+				drawCard(PropertyInfo.TYPE_CHANCE);
 			default:
 				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
 			}

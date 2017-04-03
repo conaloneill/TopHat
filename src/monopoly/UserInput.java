@@ -1,6 +1,6 @@
 package monopoly;
 
-import propertyImages.PropertyImages;
+import property.PropertyInfo;
 import monopoly.GameScreen;
 import monopoly.UserInputMethods;
 
@@ -121,7 +121,7 @@ public class UserInput {
 						int currTileType = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType();
 
 						//If property can be bought(Is property, station or utility with no owner)
-						if((currTileType == PropertyImages.TYPE_PROPERTY || currTileType == PropertyImages.TYPE_STATION || currTileType == PropertyImages.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
+						if((currTileType == PropertyInfo.TYPE_PROPERTY || currTileType == PropertyInfo.TYPE_STATION || currTileType == PropertyInfo.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
 							gameScreen.infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
 						}
 						//If Tile landed on is owned and not by current player
@@ -129,17 +129,17 @@ public class UserInput {
 							userInputMethods.payRentOwed();
 						}
 
-						else if(currTileType == PropertyImages.TYPE_GOTO_JAIL) {
+						else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
 							userInputMethods.goToJail();
 							gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
 						}
 
 						//Tax
-						else if(currTileType == PropertyImages.TYPE_TAX) {
+						else if(currTileType == PropertyInfo.TYPE_TAX) {
 							userInputMethods.payTax();
 						}
 
-						else if (currTileType == PropertyImages.TYPE_CHANCE || currTileType == PropertyImages.TYPE_COMMUNITY) {
+						else if (currTileType == PropertyInfo.TYPE_CHANCE || currTileType == PropertyInfo.TYPE_COMMUNITY) {
 							userInputMethods.drawCard(currTileType);
 						}
 
