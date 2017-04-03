@@ -56,7 +56,7 @@ import monopoly.RenderPanel;
 import monopoly.UserInputMethods;
 
 @SuppressWarnings("serial")
-public class GameScreen extends JFrame implements ActionListener, MouseMotionListener, KeyListener {
+public class GameScreen extends JFrame implements ActionListener, MouseMotionListener {//,KeyListener
 
 	private Timer timer;
 	private JFrame frame;
@@ -117,10 +117,28 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		frame.pack(); //Shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.addKeyListener(this);
+		//Meant to enable pressing the space key as a button click
+		commandPanel.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent key) {
+				//If 'SPACE' is pressed, click the button
+				if(key.getKeyCode() == KeyEvent.VK_ENTER){
+					key.consume();
+					enter.doClick();
+				}
+
+			}
+			//Unused mandatory methods
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e) {} 
+		});
+
 		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
-
+		//frame.getRootPane().setDefaultButton(enter); //Set default button for use of the enter key
 		ticks = 0;
 		timer.start();
 
@@ -192,22 +210,22 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			String[] options = new String[] {"2", "3", "4", "5", "6"};
 			numberOfPlayers = JOptionPane.showOptionDialog(null,
 					"Enter Number of Players (2-6)",
-                    "TopHat",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    null);
-			
+					"TopHat",
+					JOptionPane.DEFAULT_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					options,
+					null);
+
 			//If user clicks 'X'
 			if (numberOfPlayers == JOptionPane.CLOSED_OPTION) {
-	            System.exit(0);
-	        }
-			
+				System.exit(0);
+			}
+
 			//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
 			numberOfPlayers +=2;
-			
-			
+
+
 			//Check number of players is acceptable
 			if(numberOfPlayers >= MINPLAYERS && numberOfPlayers <= MAXPLAYERS){
 				playerNumberCheck = true;
@@ -225,10 +243,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
 				//If user clicks 'X' or 'CANCEL' option
 				if (pname == null) {
-		            System.exit(0);
-		        }
+					System.exit(0);
+				}
 			}
-			
+
 			Players.get(i).setName(pname);
 
 			//roll dice and assign to the players
@@ -389,19 +407,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		mouseX = m.getX() - 2;//Get mouse Location
 		mouseY = m.getY() - 25;
 	}
-	//Meant to enable pressing the space key as a button click
-	@Override
-	public void keyPressed(KeyEvent key) {
-		//If 'SPACE' is pressed, click the button
-		if(key.getKeyCode() == KeyEvent.VK_SPACE){
-			enter.doClick();
-		}
-		System.out.println(key.getKeyCode());
-	}
 	@Override
 	public void mouseDragged(MouseEvent m) {}
-	@Override
-	public void keyReleased(KeyEvent e) {}
-	@Override
-	public void keyTyped(KeyEvent e) {}
+
 }
