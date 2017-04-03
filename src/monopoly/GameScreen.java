@@ -188,16 +188,26 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//Get number of Players
 		while(!playerNumberCheck){
-			String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
-
-			//Check if int. Else throw error and try again
-			try {
-				numberOfPlayers = Integer.parseInt(n);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-				System.out.println("Error. Number expected");
-			}
-
+			//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
+			String[] options = new String[] {"2", "3", "4", "5", "6"};
+			numberOfPlayers = JOptionPane.showOptionDialog(null,
+					"Enter Number of Players (2-6)",
+                    "TopHat",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    null);
+			
+			//If user clicks 'X'
+			if (numberOfPlayers == JOptionPane.CLOSED_OPTION) {
+	            System.exit(0);
+	        }
+			
+			//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
+			numberOfPlayers +=2;
+			
+			
 			//Check number of players is acceptable
 			if(numberOfPlayers >= MINPLAYERS && numberOfPlayers <= MAXPLAYERS){
 				playerNumberCheck = true;
@@ -213,7 +223,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			//Check that something has been entered
 			while(pname.equals("")){
 				pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
+				//If user clicks 'X' or 'CANCEL' option
+				if (pname == null) {
+		            System.exit(0);
+		        }
 			}
+			
 			Players.get(i).setName(pname);
 
 			//roll dice and assign to the players

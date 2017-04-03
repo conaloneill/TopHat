@@ -135,30 +135,27 @@ public class RenderPanel extends JPanel {
 						playerColor = p.getColour();
 					}
 				}
+				g.setColor(playerColor);
 				//BOT ROW
 				if(o.getTileNum() <= 9){
-					g.setColor(playerColor);
 					g.fillRect(o.x - ownerTokenSize/2, o.y + GameScreen.TILESIZE/2 - ownerTokenSize/2, ownerTokenSize, ownerTokenSize/2);
 					g.setColor(Color.BLACK);
 					g.drawRect(o.x - ownerTokenSize/2, o.y + GameScreen.TILESIZE/2 - ownerTokenSize/2, ownerTokenSize, ownerTokenSize/2);
 				}
 				//LEFT COL
 				if(o.getTileNum() >= 11 && o.getTileNum() <= 19){
-					g.setColor(playerColor);
 					g.fillRect(o.x - GameScreen.TILESIZE/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
 					g.setColor(Color.BLACK);
 					g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
 				}
 				//TOP ROW
 				if(o.getTileNum() >= 21 && o.getTileNum() <= 29){
-					g.setColor(playerColor);
 					g.fillRect(o.x - ownerTokenSize/2, o.y - GameScreen.TILESIZE/2, ownerTokenSize, ownerTokenSize/2);
 					g.setColor(Color.BLACK);
 					g.drawRect(o.x - ownerTokenSize/2, o.y - GameScreen.TILESIZE/2, ownerTokenSize, ownerTokenSize/2);
 				}
 				//RIGHT COL
 				if(o.getTileNum() >= 31 && o.getTileNum() <= 39){
-					g.setColor(playerColor);
 					g.fillRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
 					g.setColor(Color.BLACK);
 					g.drawRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
