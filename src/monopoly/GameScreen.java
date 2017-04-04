@@ -56,7 +56,7 @@ import monopoly.RenderPanel;
 import monopoly.UserInputMethods;
 
 @SuppressWarnings("serial")
-public class GameScreen extends JFrame implements ActionListener, MouseMotionListener {//,KeyListener
+public class GameScreen extends JFrame implements ActionListener, MouseMotionListener {
 
 	private Timer timer;
 	private JFrame frame;
@@ -117,28 +117,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		frame.pack(); //Shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Meant to enable pressing the space key as a button click
-		commandPanel.addKeyListener(new KeyListener(){
-
-			@Override
-			public void keyPressed(KeyEvent key) {
-				//If 'SPACE' is pressed, click the button
-				if(key.getKeyCode() == KeyEvent.VK_ENTER){
-					key.consume();
-					enter.doClick();
-				}
-
-			}
-			//Unused mandatory methods
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			@Override
-			public void keyTyped(KeyEvent e) {} 
-		});
-
 		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
-		//frame.getRootPane().setDefaultButton(enter); //Set default button for use of the enter key
 		ticks = 0;
 		timer.start();
 
@@ -183,7 +163,23 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		commandPanel = new JTextArea("COMMAND PANEL", 5,3);
 		commandPanel.setLineWrap(true);
 		commandPanel.setWrapStyleWord(true);
+		//Meant to enable pressing enter key as a button click
+		commandPanel.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent key) {
+				//If 'ENTER' is pressed, click the button
+				if(key.getKeyCode() == KeyEvent.VK_ENTER){
+					key.consume();
+					enter.doClick();
+				}
+			}
+			//Unused mandatory methods
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e) {} 
+		});
 		//adding a JScrollPane to the command panel to allow it to vertically scroll through the new command
 		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
 		commandScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -203,34 +199,25 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	//Called once on create. Used to setup game
 	private void init() {  
 
+		//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
+		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};
+		numberOfPlayers = JOptionPane.showOptionDialog(null,
+				"Enter Number of Players (2-6)",
+				"TopHat",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				null);
 
-		//Get number of Players
-		while(!playerNumberCheck){
-			//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
-			String[] options = new String[] {"2", "3", "4", "5", "6"};
-			numberOfPlayers = JOptionPane.showOptionDialog(null,
-					"Enter Number of Players (2-6)",
-					"TopHat",
-					JOptionPane.DEFAULT_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					options,
-					null);
-
-			//If user clicks 'X'
-			if (numberOfPlayers == JOptionPane.CLOSED_OPTION) {
-				System.exit(0);
-			}
-
-			//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
-			numberOfPlayers +=2;
-
-
-			//Check number of players is acceptable
-			if(numberOfPlayers >= MINPLAYERS && numberOfPlayers <= MAXPLAYERS){
-				playerNumberCheck = true;
-			}
+		//If user clicks 'X'
+		if (numberOfPlayers == JOptionPane.CLOSED_OPTION) {
+			System.exit(0);
 		}
+
+		//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
+		numberOfPlayers +=2;
+
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
 			Players.add(new Player(i+1, STARTINGBAL));

@@ -509,7 +509,7 @@ public class UserInputMethods {
 
 	public void drawCard(int tileType) {
 		GameScreen gameScreen = GameScreen.screen;
-		int cardNum = ThreadLocalRandom.current().nextInt(1, 16);
+		int cardNum = ThreadLocalRandom.current().nextInt(0, 16);
 		Card cardDrawn;
 		if (tileType == PropertyInfo.TYPE_CHANCE) {
 			cardDrawn = gameScreen.ChanceCards.get(cardNum);
@@ -556,7 +556,7 @@ public class UserInputMethods {
 			//Count number of houses and hotels
 			for(Tile tile : gameScreen.Tiles){
 				if(tile.getOwnerNumber() == gameScreen.currentPlayerNumber){
-					if(tile.getBuildings() >= 4){
+					if(tile.getBuildings() <= 4){
 						houseCount += tile.getBuildings();
 					}else if(tile.getBuildings() == 5){
 						hotelCount ++;
@@ -598,7 +598,7 @@ public class UserInputMethods {
 				//Find destination tile
 				destination = gameScreen.currentPlayer.currentTile - moveSpaces;
 				//Find Distance to move
-				moveSpaces = gameScreen.Tiles.size() - 2 - (destination - gameScreen.currentPlayer.currentTile);
+				moveSpaces = gameScreen.Tiles.size()  - (destination - gameScreen.currentPlayer.currentTile);
 				//Move Player Backwards
 				movePlayer(moveSpaces, false);
 
