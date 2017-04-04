@@ -54,7 +54,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.DefaultCaret;
 
 import cards.Card;
@@ -208,14 +207,15 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	//Called once on create. Used to setup game
 	private void init() {  
 		//Set background of JOptionPanes to green
-		UIManager.put("OptionPane.background",new ColorUIResource(165, 255, 137));
+		UIManager.put("OptionPane.background", boardGraphics.insideGreen);
 
 		//Icon used in JOptionPanes
 		ImageIcon icon = new ImageIcon(getClass().getResource("/monopolyIcon.png"));
 
-		//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
+		//Options for JOptionPane
 		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};
-		numberOfPlayers = JOptionPane.showOptionDialog(null,
+		//Show JOptionPane
+		int playerOption = JOptionPane.showOptionDialog(null,
 				"Select Number of Players : ",
 				TITLE,
 				JOptionPane.DEFAULT_OPTION,
@@ -225,56 +225,61 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				null);
 
 		//If user clicks 'X'
-		if (numberOfPlayers == JOptionPane.CLOSED_OPTION) {
+		if (playerOption == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 
 		//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
-		numberOfPlayers +=2;
+		numberOfPlayers = playerOption + 2;
 
 		//JPanel used for collecting player names
 		JPanel namesPanel = new JPanel();
 		//Set background Color to green
 		namesPanel.setBackground(boardGraphics.insideGreen);
-		//Set to grid Layout
-		namesPanel.setLayout(new GridLayout(0,2));
-		//List of textfields holding player names
+		
+		//Set to grid Layout dependent on number of players
+		if(numberOfPlayers <=3)
+			namesPanel.setLayout(new GridLayout(0,2));
+		else
+			namesPanel.setLayout(new GridLayout(0,4));
+		
+		//List of JTextfields for holding player names
 		ArrayList<JTextField> playerNames = new ArrayList<JTextField>();
 		//Check for empty names
 		boolean aNameIsEmpty = true;
 
 		//Create TextFields for name input
 		for(int i = 0;i<numberOfPlayers;i++){
-			int pnum = i+1;//Player number
-			JLabel l = new JLabel(" Name of Player " + pnum + ": ", JLabel.TRAILING);//Create new Label
-			namesPanel.add(l);//Add new Label to JPanel
-			JTextField t = new JTextField(5);//Create new JTextfield
-			String defaultPlayerName = "Player " + pnum; //Default player name
-			t.setText(defaultPlayerName);//Set default player name
-			playerNames.add(t);//Add new JTextfield
-			l.setLabelFor(t);//Set new Label as label for new JTextfield
-			namesPanel.add(t);//Add new JTextField to JPanel
+			int playerNumber = i+1;//Current player number
+			JLabel label = new JLabel(" Name of Player " + playerNumber + ": ", JLabel.TRAILING);//Create new Label
+			namesPanel.add(label);//Add new Label to JPanel
+			JTextField textField = new JTextField(5);//Create new JTextfield
+			String defaultPlayerName = "Player " + playerNumber; //Default player name
+			textField.setText(defaultPlayerName);//Set default player name
+			playerNames.add(textField);//Add new JTextfield
+			label.setLabelFor(textField);//Set new Label as label for new JTextfield
+			namesPanel.add(textField);//Add new JTextField to JPanel
 		}
 		//Get player names
 		while(aNameIsEmpty){
 			//JOptionPane containing JPanel 'namesPanel'
-		 JOptionPane.showMessageDialog(null,
-				namesPanel,
-				TITLE,
-				JOptionPane.INFORMATION_MESSAGE, 
-				icon
-				);
-		 //Count empty names entered
-		 int emptyNames = 0;
-		 for(JTextField text : playerNames){
-			 //If a name is empty, increment counter
-			 if(text.getText().equals("")){
-				 emptyNames++;
-			 }
-		 }
-		 aNameIsEmpty = emptyNames != 0; //Update check for empty names
+			JOptionPane.showMessageDialog(null,
+					namesPanel,
+					TITLE,
+					JOptionPane.INFORMATION_MESSAGE, 
+					icon
+					);
+			//Count empty names entered
+			int emptyNames = 0;
+			for(JTextField text : playerNames){
+				//If a name is empty, increment counter
+				if(text.getText().trim().equals("")){
+					emptyNames++;
+				}
+			}
+			aNameIsEmpty = emptyNames != 0; //Update check for empty names
 		}
-		 
+
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
 
@@ -346,11 +351,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Tiles.add(new Tile(col + 31,x,y));
 			y+= TILESIZE;
 		}
-
 	}
 
-
-
+	
 	public static void main(String[] args) {
 		//Create an instance of our main class
 		screen = new GameScreen();
@@ -418,7 +421,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//If mouse is in the center of the board ( not a tile )
 		if(mouseX > BOARD_WIDTH - TILESIZE*10 && 
 				mouseX <  BOARD_WIDTH - TILESIZE &&
-				mouseY > BOARD_WIDTH - TILESIZE*10 &&//BOARD_HEIGHT - TILESIZE*10 + TILESIZE/2 + TILESIZE/2 &&
+				mouseY > BOARD_WIDTH - TILESIZE*10 &&
 				mouseY < BOARD_WIDTH - TILESIZE ||
 				//or off the board
 				mouseX > BOARD_WIDTH - 10) {
@@ -427,13 +430,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-	//END OF GAME RUNNING METHODS
-
-
-	//METHODS
-
-
-
+	//MouseMotionListener Methods
 	@Override
 	public void mouseMoved(MouseEvent m) {//When mouse is moved
 		mouseX = m.getX() - 2;//Get mouse Location
@@ -441,5 +438,4 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	}
 	@Override
 	public void mouseDragged(MouseEvent m) {}
-
 }
