@@ -32,6 +32,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,11 +45,16 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.DefaultCaret;
 
 import cards.Card;
@@ -84,6 +90,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public ArrayList<Card> ChanceCards = new ArrayList<Card>();
 	public ArrayList<Card> ComChestCards = new ArrayList<Card>();
 
+	public static final String TITLE = "TopHat";
 	String propertyName = null;
 	String choice; //contains user's input throughout the game 
 	String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
@@ -107,7 +114,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		init();
 		timer = new Timer(20, this);//Params are delay and actionListener
 
-		frame = new JFrame("TopHat");
+		frame = new JFrame(TITLE);
 		frame.setSize(S_WIDTH,BOARD_WIDTH);
 		frame.setResizable(false);
 		//Set location of the JFrame to the center of the users screen.
@@ -141,7 +148,9 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		DefaultCaret caret = (DefaultCaret)infoPanel.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-		infoPanel.setText("INFO PANEL\n" + helpString + "\nMouse over property tile spaces for more info on the property\n\n");
+		infoPanel.setText("INFO PANEL\n" + helpString + 
+				"\nMouse over property tile spaces for more info on the property"
+				+ "\nEnter Key may be used to enter commands.\n\n");
 		infoPanel.setEditable(false);
 
 		//lines now wrap to next line so only vertical scrolling needed
@@ -198,13 +207,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	//Called once on create. Used to setup game
 	private void init() {  
-		//"/drawable/monopolyIcon.png"
+		//Set background of JOptionPanes to green
+		UIManager.put("OptionPane.background",new ColorUIResource(165, 255, 137));
+
+		//Icon used in JOptionPanes
 		ImageIcon icon = new ImageIcon(getClass().getResource("/monopolyIcon.png"));
+
 		//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
 		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};
 		numberOfPlayers = JOptionPane.showOptionDialog(null,
 				"Select Number of Players : ",
-				"TopHat",
+				TITLE,
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				icon,
@@ -219,27 +232,54 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Increment by 2 as '2' is option 0, '3' is option 1 etc. 
 		numberOfPlayers +=2;
 
+		//JPanel used for collecting player names
+		JPanel namesPanel = new JPanel();
+		//Set background Color to green
+		namesPanel.setBackground(boardGraphics.insideGreen);
+		//Set to grid Layout
+		namesPanel.setLayout(new GridLayout(0,2));
+		//List of textfields holding player names
+		ArrayList<JTextField> playerNames = new ArrayList<JTextField>();
+		//Check for empty names
+		boolean aNameIsEmpty = true;
+
+		//Create TextFields for name input
+		for(int i = 0;i<numberOfPlayers;i++){
+			int pnum = i+1;//Player number
+			JLabel l = new JLabel(" Name of Player " + pnum + ": ", JLabel.TRAILING);//Create new Label
+			namesPanel.add(l);//Add new Label to JPanel
+			JTextField t = new JTextField(5);//Create new JTextfield
+			String defaultPlayerName = "Player " + pnum; //Default player name
+			t.setText(defaultPlayerName);//Set default player name
+			playerNames.add(t);//Add new JTextfield
+			l.setLabelFor(t);//Set new Label as label for new JTextfield
+			namesPanel.add(t);//Add new JTextField to JPanel
+		}
+		//Get player names
+		while(aNameIsEmpty){
+			//JOptionPane containing JPanel 'namesPanel'
+		 JOptionPane.showMessageDialog(null,
+				namesPanel,
+				TITLE,
+				JOptionPane.INFORMATION_MESSAGE, 
+				icon
+				);
+		 //Count empty names entered
+		 int emptyNames = 0;
+		 for(JTextField text : playerNames){
+			 //If a name is empty, increment counter
+			 if(text.getText().equals("")){
+				 emptyNames++;
+			 }
+		 }
+		 aNameIsEmpty = emptyNames != 0; //Update check for empty names
+		}
+		 
 		//Create Players in Player ArrayList
 		for(int i = 0;i<numberOfPlayers;i++){
-			Players.add(new Player(i+1, STARTINGBAL));
 
-			//Ask for player name
-			int pnum = i+1;
-			String pname = "";
-			//Check that something has been entered
-			while(pname.equals("")){
-				pname = (String) JOptionPane.showInputDialog(null,
-						"Enter Name of Player " + pnum + ":", "TopHat",
-						JOptionPane.INFORMATION_MESSAGE, icon,
-						null, null);
-
-				//If user clicks 'X' or 'CANCEL' option
-				if (pname == null) {
-					System.exit(0);
-				}
-			}
-
-			Players.get(i).setName(pname);
+			//Create player and set number, balance and name
+			Players.add(new Player(i+1, STARTINGBAL, playerNames.get(i).getText()));
 
 			//roll dice and assign to the players
 			dice.roll();
@@ -338,7 +378,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					currentPlayerNumber = p.playerNumber;
 				}
 				//print for testing check
-				infoPanel.append("Roll for first turn: Player " + p.getName() + ": " + p.firstRoll + "\n");
+				infoPanel.append("Roll for first turn: " + p.getName() + ": " + p.firstRoll + "\n");
 			}
 
 			infoPanel.append(Players.get(currentPlayerNumber-1).getName() + " rolled highest and goes first.\n\n");

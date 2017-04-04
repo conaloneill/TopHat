@@ -38,13 +38,14 @@ public class Player {
 
 
 
-	Player(int playerNum, int balance){
+	Player(int playerNum, int balance, String pname){
 		this.currentTile = 0;
 		this.playerNumber = playerNum;
 		this.balance = balance;
 		this.utilitiesOwned = 0;
 		this.stationsOwned = 0;
 		this.numberOfGOOJCards = 0;
+		this.name = pname;
 	}
 
 	public void setColour(Color color) {
@@ -65,9 +66,6 @@ public class Player {
 	}
 	public String getName() {
 		return this.name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getAssetValue() {
