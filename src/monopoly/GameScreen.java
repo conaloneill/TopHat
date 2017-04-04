@@ -41,7 +41,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -77,7 +77,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public int currentPlayerNumber, doubleCount=0, rollTurns = 0, numBuildings = 0;
 	public static final int  STARTINGBAL = 1500, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 
-	public boolean mouseIsOnATile = false, playerNumberCheck = false, rollAgain = true, gameOver = false;
+	public boolean mouseIsOnATile = false, rollAgain = true, gameOver = false;
 
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
@@ -198,15 +198,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	//Called once on create. Used to setup game
 	private void init() {  
-
+		//"/drawable/monopolyIcon.png"
+		ImageIcon icon = new ImageIcon(getClass().getResource("/monopolyIcon.png"));
 		//String n = JOptionPane.showInputDialog("Enter Number of Players (2-6)");
 		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};
 		numberOfPlayers = JOptionPane.showOptionDialog(null,
-				"Enter Number of Players (2-6)",
+				"Select Number of Players : ",
 				"TopHat",
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
-				null,
+				icon,
 				options,
 				null);
 
@@ -227,7 +228,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			String pname = "";
 			//Check that something has been entered
 			while(pname.equals("")){
-				pname = JOptionPane.showInputDialog("Enter Name of Player " + pnum + ":");
+				pname = (String) JOptionPane.showInputDialog(null,
+						"Enter Name of Player " + pnum + ":", "TopHat",
+						JOptionPane.INFORMATION_MESSAGE, icon,
+						null, null);
+
 				//If user clicks 'X' or 'CANCEL' option
 				if (pname == null) {
 					System.exit(0);
