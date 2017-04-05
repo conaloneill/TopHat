@@ -59,6 +59,7 @@ import javax.swing.text.DefaultCaret;
 import cards.Card;
 import monopoly.RenderPanel;
 import monopoly.UserInputMethods;
+import property.PropertyInfo;
 
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener {
@@ -66,10 +67,11 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private Timer timer;
 	private JFrame frame;
 	JTextArea infoPanel, commandPanel;
-	private JButton enter;
+	public JButton enter;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 
 	Dice dice = new Dice();
+
 	UserInput userInput = new UserInput();
 	UserInputMethods userInputMethods = new UserInputMethods();
 	private RenderPanel boardGraphics = new RenderPanel();
@@ -77,12 +79,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public Player currentPlayer;
 	public static GameScreen screen;
 
-	public int mouseX, mouseY, currentTile, numberOfPlayers = 0;
+	public int mouseX, mouseY, currentTile, numberOfPlayers = 0, taxAmount = 0;
 	private int ticks, firstTurn = 0;
 	public int currentPlayerNumber, doubleCount=0, rollTurns = 0, numBuildings = 0;
 	public static final int  STARTINGBAL = 1500, MINPLAYERS = 2, MAXPLAYERS = 6, TILESIZE = 64, S_WIDTH = 1300, BOARD_WIDTH = TILESIZE*11;
 
-	public boolean mouseIsOnATile = false, rollAgain = true, gameOver = false;
+	public boolean inFineOrChanceLoop = false, mouseIsOnATile = false, rollAgain = true, gameOver = false;
 
 	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
 	public ArrayList<Player> Players = new ArrayList<Player>();
@@ -236,13 +238,13 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		JPanel namesPanel = new JPanel();
 		//Set background Color to green
 		namesPanel.setBackground(boardGraphics.insideGreen);
-		
+
 		//Set to grid Layout dependent on number of players
 		if(numberOfPlayers <=3)
 			namesPanel.setLayout(new GridLayout(0,2));
 		else
 			namesPanel.setLayout(new GridLayout(0,4));
-		
+
 		//List of JTextfields for holding player names
 		ArrayList<JTextField> playerNames = new ArrayList<JTextField>();
 		//Check for empty names
@@ -353,7 +355,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 	}
 
-	
+
 	public static void main(String[] args) {
 		//Create an instance of our main class
 		screen = new GameScreen();
@@ -362,10 +364,10 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	@Override  //MAIN LOOP, gets called when timer ticks
 	public void actionPerformed(ActionEvent e) {  
-		ticks++;
+		ticks++;//Counts ticks of the timer
 
-		//purely for performance until a better solution is thought of, only repaint the board every 6 ticks 
-		//(slight lag in mouse tracking but performance improvements are worth it for now)
+		//For performance, only repaint the board every 6 ticks 
+		//(slight lag in mouse tracking but performance improvements are worth it)
 		if (ticks%6==0) {
 			boardGraphics.repaint();
 		}
@@ -393,11 +395,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		if ("ENTER".equals(e.getActionCommand())) {
 
 			//If more than 1 Player left and 'quit' command hasn't been called 
-			if (!userInputMethods.checkGameOver() && !gameOver) {
+			if (!userInputMethods.checkGameOver() && !gameOver && !inFineOrChanceLoop) {
 				//Check user input and carry out command entered
 				userInput.userInput();
 			}
-			else {
+			//If game is over
+			else if((userInputMethods.checkGameOver() || gameOver) && !inFineOrChanceLoop) {
 				choice = commandPanel.getText().trim().toLowerCase();
 				switch (choice) {
 				case "exit":
@@ -407,6 +410,29 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				default:
 					break;
 				}
+			}
+			//If a player has drawn a 'Fine or Chance' Card
+			else if(inFineOrChanceLoop){
+				choice = commandPanel.getText().trim().toLowerCase();
+				switch (choice) {
+				case "fine":
+					infoPanel.append("\n" + currentPlayer.getName() +  " spent " + taxAmount + ".");
+					currentPlayer.spend(taxAmount);//Deduct from players balance
+					inFineOrChanceLoop = false;//Get out of loop
+					break;
+				case "chance":
+					infoPanel.append("\n" + currentPlayer.getName() + " drew  a chance card.");
+					userInputMethods.drawCard(PropertyInfo.TYPE_CHANCE);//Draw a chance card
+					inFineOrChanceLoop = false;//Get out of loop
+					break;
+				default:
+					//Default message is shown for invalid input
+					infoPanel.append("\nYou must enter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+				}
+				//Asks the next player for input
+				infoPanel.append("\n" + currentPlayer.getName() + " :"); 
+				//Clear text from command panel
+				commandPanel.setText("");
 			}
 		}
 

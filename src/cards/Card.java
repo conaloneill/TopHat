@@ -26,6 +26,7 @@ public class Card {
 	
 	public Card(int n){
 		this.cardNumber = n;
+		this.amount = 0;
 	}
 	public void setMessage(String s){
 		this.message = s;

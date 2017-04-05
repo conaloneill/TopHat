@@ -505,12 +505,10 @@ public class UserInputMethods {
 		}
 	}
 
-
-
 	public void drawCard(int tileType) {
 		GameScreen gameScreen = GameScreen.screen;
-		int cardNum = ThreadLocalRandom.current().nextInt(0, 16);
 		Card cardDrawn;
+		int cardNum = ThreadLocalRandom.current().nextInt(0, 16);
 		if (tileType == PropertyInfo.TYPE_CHANCE) {
 			cardDrawn = gameScreen.ChanceCards.get(cardNum);
 		}
@@ -528,23 +526,28 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.spend(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " spent " + cardDrawn.getAmount() + ".");
 			break;
-			
+
 		case Card.TYPE_REWARD :
 			gameScreen.currentPlayer.deposit(cardDrawn.getAmount());
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got " + cardDrawn.getAmount() + ".");
 			break;
-			
+
 		case Card.TYPE_GOOJ :
 			gameScreen.currentPlayer.numberOfGOOJCards++;
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " got a 'Get Out of Jail' card.");
 			break;
-			
+
 		case Card.TYPE_GOTO : 
 			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
 
 			while (gameScreen.currentPlayer.currentTile != cardDrawn.getDestination()) {
 				//Move Player
 				movePlayer(1, cardDrawn.passGo);
+			}
+			//If Landed on 'go to jail'
+			if(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() == PropertyInfo.TYPE_GOTO_JAIL) {
+				goToJail();
+				gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
 			}
 			break;
 
@@ -568,7 +571,7 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.spend(totalCost);
 
 			break;
-			
+
 		case Card.TYPE_MONEYFROMEACHPLAYER :
 			int total = 0;
 			int moneyFromPlayer = cardDrawn.getAmount();
@@ -587,7 +590,7 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.deposit(total);
 
 			break;
-			
+
 		case Card.TYPE_MOVEXSPACES :
 
 			int moveSpaces = cardDrawn.getDestination();
@@ -607,21 +610,47 @@ public class UserInputMethods {
 				movePlayer(moveSpaces, true);
 			}
 
-			break;
-			
-		case Card.TYPE_FINEORCHANCE :
-			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			//Landed on a new Tile
+			//Info about Tile player landed on:
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " landed on " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName());
 
-			//Not working yet
-			switch(gameScreen.choice){
-			case "fine":
-				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() +  " spent " + cardDrawn.getAmount() + ".");
-				gameScreen.currentPlayer.spend(cardDrawn.getAmount());
-			case "chance":
-				drawCard(PropertyInfo.TYPE_CHANCE);
-			default:
-				gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
+			int currTileType = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType();
+
+			//If property can be bought(Is property, station or utility with no owner)
+			if((currTileType == PropertyInfo.TYPE_PROPERTY || currTileType == PropertyInfo.TYPE_STATION || currTileType == PropertyInfo.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
+				gameScreen.infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
 			}
+			//If Tile landed on is owned and not by current player
+			else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != gameScreen.currentPlayer.playerNumber){
+				payRentOwed();
+			}
+			//If landed on go to jail
+			else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
+				goToJail();
+				gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
+			}
+
+			//If landed on tax
+			else if(currTileType == PropertyInfo.TYPE_TAX) {
+				payTax();
+			}
+			//If landed on card
+			else if (currTileType == PropertyInfo.TYPE_CHANCE || currTileType == PropertyInfo.TYPE_COMMUNITY) {
+				drawCard(currTileType);
+			}
+
+			break;
+
+		case Card.TYPE_FINEORCHANCE :
+			//Display Card message
+			gameScreen.infoPanel.append("\nEnter 'fine' to pay the fine or enter 'chance' to take a chance card.");
+			//Put game into Loop until selection is made.
+			//Selection is handled in GameScreen Class
+			gameScreen.inFineOrChanceLoop = true;
+			//Set amount to tax player if 'fine' is chosen
+			gameScreen.taxAmount = cardDrawn.getAmount();
+			
 			break;
 			
 		default :
