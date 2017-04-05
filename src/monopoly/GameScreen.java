@@ -401,6 +401,20 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			//If game is over
 			else if((userInputMethods.checkGameOver() || gameOver) && !inFineOrChanceLoop) {
+				
+				//If Only 1 player left
+				if(Players.size() <= 1){
+					//Get last players assets
+					Players.get(Players.size()-1).calculateAssetValue(Tiles);
+					//GameOver message
+					infoPanel.append("\nGame Over! Only one player remaining.\nWinner is " + Players.get(Players.size()-1).getName()
+							+ " with assets worth " + Players.get(Players.size()-1).getAssetValue()
+							+ "\nUse 'exit' to exit game");
+				//If multiple players left
+				}else{
+					userInputMethods.quitGame();
+				}
+				
 				choice = commandPanel.getText().trim().toLowerCase();
 				switch (choice) {
 				case "exit":

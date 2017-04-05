@@ -263,7 +263,7 @@ public class UserInputMethods {
 		//Sort is in ascending order
 		Player winner = gameScreen.Players.get(gameScreen.Players.size()-1);
 
-		gameScreen.infoPanel.append("Winner is Player " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
+		gameScreen.infoPanel.append("Winner is " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
 		gameScreen.infoPanel.append("\nEnter \"exit\" to end the program\n");
 		gameScreen.gameOver = true;
 	}
@@ -463,13 +463,8 @@ public class UserInputMethods {
 	//array or user enter's "quit". This also prints the winner.
 	public boolean checkGameOver() {
 		GameScreen gameScreen = GameScreen.screen;
-
-		if (gameScreen.Players.size() <= 1 || gameScreen.choice == "quit") {
-			gameScreen.infoPanel.append("Game Over! Only one player remaining.\n Winner is " + gameScreen.Players.get(gameScreen.Players.size()-1).getName()
-					+ " with assets worth " + gameScreen.Players.get(gameScreen.Players.size()-1).getAssetValue());
-			return true;
-		}
-		return false;
+		//Check if only 1 player remaining or 'quit' has been entered
+		return gameScreen.Players.size() <= 1 || gameScreen.choice == "quit"; 
 	}
 
 	//Checks if group of colors all owned by same player
