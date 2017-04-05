@@ -401,7 +401,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			}
 			//If game is over
 			else if((userInputMethods.checkGameOver() || gameOver) && !inFineOrChanceLoop) {
-				
+				gameOver = true;
 				//If Only 1 player left
 				if(Players.size() <= 1){
 					//Get last players assets

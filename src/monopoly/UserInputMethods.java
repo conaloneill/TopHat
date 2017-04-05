@@ -43,7 +43,7 @@ public class UserInputMethods {
 
 					//Pass go, collect 200
 					if(passGo) {
-						gameScreen.infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!");
+						gameScreen.infoPanel.append("\n" + currPlayer.getName() + " passed Go and received 200!");
 						currPlayer.deposit(200);
 					}
 				}
@@ -472,17 +472,29 @@ public class UserInputMethods {
 	public void setAllColoursOwned(Tile currTile, int numProperties) {
 		GameScreen gameScreen = GameScreen.screen;
 
-		int i = 0;
+		String currTileColor = currTile.getColour();
+		int colorCount = 0;//Count properties with given color
+
+		//Check all tiles 
 		for (Tile tile : gameScreen.Tiles) {
+			//Only check property Tiles
 			if (tile.getType() == PropertyInfo.TYPE_PROPERTY) {
-				if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber && tile.getColour().equals(currTile.getColour())) {
-					i++; 
-					if (i == numProperties) {
-						for (Tile tile2 : gameScreen.Tiles) {
-							if (tile2.getColour().equals(currTile.getColour())) {
-								tile2.setAllColourOwned(true);
-							}
-						}
+				//If tile has color and current owner number
+				if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber && tile.getColour().equals(currTileColor)) {
+					//Increment property count
+					colorCount++; 
+				}
+			}
+		}
+
+		//If all colored group is owned
+		if (colorCount == numProperties) {
+			//Loop through tiles to set desired tiles to 'allColorOwned'
+			for (Tile tile2 : gameScreen.Tiles) {
+				//Just check properties
+				if (tile2.getType() == PropertyInfo.TYPE_PROPERTY) {
+					if (tile2.getColour().equals(currTileColor)) {
+						tile2.setAllColourOwned(true);
 					}
 				}
 			}
@@ -539,7 +551,7 @@ public class UserInputMethods {
 				//Move Player
 				movePlayer(1, cardDrawn.passGo);
 			}
-			
+
 			landedOnNewTile(gameScreen);
 			break;
 
@@ -602,7 +614,7 @@ public class UserInputMethods {
 				movePlayer(moveSpaces, true);
 			}
 
-			
+
 			landedOnNewTile(gameScreen);
 
 			break;
@@ -615,9 +627,9 @@ public class UserInputMethods {
 			gameScreen.inFineOrChanceLoop = true;
 			//Set amount to tax player if 'fine' is chosen
 			gameScreen.taxAmount = cardDrawn.getAmount();
-			
+
 			break;
-			
+
 		default :
 			gameScreen.infoPanel.append("\nError retrieving card.");
 		}

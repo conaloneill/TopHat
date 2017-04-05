@@ -19,8 +19,8 @@ public class Dice {
 	public void roll(){
 		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
 		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
-		/*valueDice1 =10;
-		valueDice2=20;*/
+		/*valueDice1 =1;
+		valueDice2=0;*/
 	}
 
 	public boolean checkDouble() {
