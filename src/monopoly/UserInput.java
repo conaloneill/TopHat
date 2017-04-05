@@ -1,6 +1,5 @@
 package monopoly;
 
-import property.PropertyInfo;
 import monopoly.GameScreen;
 import monopoly.UserInputMethods;
 
@@ -86,21 +85,27 @@ public class UserInput {
 			//Re-roll the dice to get new values
 			gameScreen.dice.roll();
 
-			if(gameScreen.currentPlayer.inJail == true && gameScreen.rollAgain == true) {
-				gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " rolled " + gameScreen.dice.getDice1() + " and " + gameScreen.dice.getDice2() + "\n");
-				if(gameScreen.dice.checkDouble()) {
-					gameScreen.infoPanel.append("You rolled doubles and got out of Jail!\n");
-					gameScreen.currentPlayer.inJail = false;
-				}
-				else{
-					gameScreen.infoPanel.append("You need to roll doubles or pay a fine of 50 to get out of Jail");
-					gameScreen.rollAgain = false;
+			//If player is in jail
+			if(gameScreen.currentPlayer.inJail){
+				//If player hasn't rolled yet
+				if(gameScreen.rollAgain) {
+					gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " rolled " + gameScreen.dice.getDice1() + " and " + gameScreen.dice.getDice2() + "\n");
+
+					//Check if player successfully rolled doubles
+					if(gameScreen.dice.checkDouble()) {
+						gameScreen.infoPanel.append("You rolled doubles and got out of Jail!\n");
+						gameScreen.currentPlayer.inJail = false;
+					}
+					else{
+						gameScreen.infoPanel.append("Unlucky!, You need to roll doubles or pay a fine of 50 to get out of Jail");
+						gameScreen.rollAgain = false;
+					}
+				//If player has already rolled
+				}else{
+					gameScreen.infoPanel.append("You can't roll again this turn. To get out of Jail either pay a fine of 50 or roll doubles on your next turn");
 				}
 			}
 
-			if(gameScreen.currentPlayer.inJail == true && gameScreen.rollAgain == false) {
-				gameScreen.infoPanel.append("You can't roll again this turn. To get out of Jail either pay a fine of 50 or roll doubles on your next turn");
-			}
 			else {
 				//Check if player has rolled doubles less than 3 times but is still allowed roll again
 				if (gameScreen.rollTurns < 3 && gameScreen.rollTurns >= 0 && gameScreen.rollAgain) {
@@ -114,37 +119,12 @@ public class UserInput {
 						if(gameScreen.dice.checkDouble()) {
 							gameScreen.infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
 						}
-						//Info about Tile player landed on:
-						gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " landed on " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName());
 
-						Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
-						int currTileType = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType();
-
-						//If property can be bought(Is property, station or utility with no owner)
-						if((currTileType == PropertyInfo.TYPE_PROPERTY || currTileType == PropertyInfo.TYPE_STATION || currTileType == PropertyInfo.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
-							gameScreen.infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
-						}
-						//If Tile landed on is owned and not by current player
-						else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != gameScreen.currentPlayer.playerNumber){
-							userInputMethods.payRentOwed();
-						}
-
-						else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
-							userInputMethods.goToJail();
-							gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
-						}
-
-						//Tax
-						else if(currTileType == PropertyInfo.TYPE_TAX) {
-							userInputMethods.payTax();
-						}
-
-						else if (currTileType == PropertyInfo.TYPE_CHANCE || currTileType == PropertyInfo.TYPE_COMMUNITY) {
-							userInputMethods.drawCard(currTileType);
-						}
+						//Action of tile player landed on
+						userInputMethods.landedOnNewTile(gameScreen);
 
 					}else{
-						gameScreen.infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property or declare bankruptcy with 'bankrupt'");
+						gameScreen.infoPanel.append("\nCan't continue with a negative balance! Try mortgaging property with 'mortgage' or declare bankruptcy with 'bankrupt'");
 					}
 
 				}
@@ -179,7 +159,7 @@ public class UserInput {
 
 		case "done":
 			//Check if player must roll again this turn
-			if(gameScreen.rollTurns>0 && gameScreen.doubleCount == 0 && !gameScreen.rollAgain) {
+			if((gameScreen.rollTurns>0 && gameScreen.doubleCount == 0) || !gameScreen.rollAgain) {
 
 				//Check if player has positive  balance
 				if(gameScreen.currentPlayer.getBalance() >=0){
@@ -197,7 +177,7 @@ public class UserInput {
 			}
 			//Must roll again
 			else {
-				gameScreen.infoPanel.append("\nError: Must roll before turn can end\n");
+				gameScreen.infoPanel.append("\nError: Must roll before turn can end");
 			}
 			break;
 
@@ -205,14 +185,34 @@ public class UserInput {
 			userInputMethods.quitGame();
 			break;
 
+			//Pay fine when in jail
 		case "pay":
-			if(gameScreen.currentPlayer.inJail == false) {
-				gameScreen.infoPanel.append("\nError: You are not in Jail");
+			if(!gameScreen.currentPlayer.inJail) {
+				gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
 			}
 			else{
 				gameScreen.currentPlayer.spend(50);
 				gameScreen.currentPlayer.inJail = false;
-				gameScreen.infoPanel.append("\nYou paid a fine of 50 and got out of Jail");
+				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " paid a fine of 50 and got out of Jail.");
+			}
+			break;
+
+			//Use GOOJ card when in jail
+		case "card":
+			//Is player in jail
+			if(!gameScreen.currentPlayer.inJail) {
+				gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
+			}
+			else{
+				//Does player have any gooj cards
+				if(gameScreen.currentPlayer.numberOfGOOJCards == 0){
+					gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " doesn't have any 'Get out of Jail' cards to use.");
+				}else{
+					//Use card
+					gameScreen.currentPlayer.numberOfGOOJCards --;
+					gameScreen.currentPlayer.inJail = false;
+					gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " used a 'Get out of Jail' card and got out of Jail.");
+				}
 			}
 			break;
 
@@ -255,7 +255,7 @@ public class UserInput {
 		case "info" :
 			userInputMethods.info();
 			break;
-			
+
 		case "exit" :
 			System.exit(0);
 			break;

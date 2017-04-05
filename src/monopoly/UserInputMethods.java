@@ -43,7 +43,7 @@ public class UserInputMethods {
 
 					//Pass go, collect 200
 					if(passGo) {
-						gameScreen.infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!\n");
+						gameScreen.infoPanel.append("Player " + currPlayer.getName() + " passed Go and received 200!");
 						currPlayer.deposit(200);
 					}
 				}
@@ -430,7 +430,7 @@ public class UserInputMethods {
 		//Return property to bank
 		setPropertyUnowned();
 
-		gameScreen.infoPanel.append("Player " + gameScreen.currentPlayer.getName() + " has declared bankruptcy and has left the game with assets of " 
+		gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " has declared bankruptcy and has left the game with assets of " 
 				+ assets + ". All properties and buildings have been returned to the bank");
 
 		//Removes player from ArrayList
@@ -538,17 +538,14 @@ public class UserInputMethods {
 			break;
 
 		case Card.TYPE_GOTO : 
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".\n");
+			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " moved to " + gameScreen.Tiles.get(cardDrawn.getDestination()).getName() + ".");
 
 			while (gameScreen.currentPlayer.currentTile != cardDrawn.getDestination()) {
 				//Move Player
 				movePlayer(1, cardDrawn.passGo);
 			}
-			//If Landed on 'go to jail'
-			if(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() == PropertyInfo.TYPE_GOTO_JAIL) {
-				goToJail();
-				gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
-			}
+			
+			landedOnNewTile(gameScreen);
 			break;
 
 		case Card.TYPE_BUILDINGFINE :
@@ -610,35 +607,8 @@ public class UserInputMethods {
 				movePlayer(moveSpaces, true);
 			}
 
-			//Landed on a new Tile
-			//Info about Tile player landed on:
-			gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " landed on " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName());
-
-			Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
-			int currTileType = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType();
-
-			//If property can be bought(Is property, station or utility with no owner)
-			if((currTileType == PropertyInfo.TYPE_PROPERTY || currTileType == PropertyInfo.TYPE_STATION || currTileType == PropertyInfo.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
-				gameScreen.infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
-			}
-			//If Tile landed on is owned and not by current player
-			else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != gameScreen.currentPlayer.playerNumber){
-				payRentOwed();
-			}
-			//If landed on go to jail
-			else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
-				goToJail();
-				gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn.\n");
-			}
-
-			//If landed on tax
-			else if(currTileType == PropertyInfo.TYPE_TAX) {
-				payTax();
-			}
-			//If landed on card
-			else if (currTileType == PropertyInfo.TYPE_CHANCE || currTileType == PropertyInfo.TYPE_COMMUNITY) {
-				drawCard(currTileType);
-			}
+			
+			landedOnNewTile(gameScreen);
 
 			break;
 
@@ -655,6 +625,41 @@ public class UserInputMethods {
 			
 		default :
 			gameScreen.infoPanel.append("\nError retrieving card.");
+		}
+	}
+
+
+	//Called when a player Lands on a new tile
+	public void landedOnNewTile(GameScreen gameScreen) {
+		//Landed on a new Tile
+		//Info about Tile player landed on:
+		gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " landed on " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName());
+
+		Tile currTile = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile);
+		int currTileType = gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType();
+
+		//If property can be bought(Is property, station or utility with no owner)
+		if((currTileType == PropertyInfo.TYPE_PROPERTY || currTileType == PropertyInfo.TYPE_STATION || currTileType == PropertyInfo.TYPE_UTILITY)  && currTile.getOwnerNumber() == -1) {
+			gameScreen.infoPanel.append("\nThis property may be bought for " + currTile.getPrice() + ".");
+		}
+		//If Tile landed on is owned and not by current player
+		else if(currTile.getOwnerNumber() != -1 && currTile.getOwnerNumber() != gameScreen.currentPlayer.playerNumber){
+			payRentOwed();
+		}
+		//If landed on go to jail
+		else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
+			goToJail();
+			gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn."
+					+ "\nUse 'pay' to pay the fine, 'roll' to roll for doubles or 'card' to use a 'Get Out of Jail' card");
+		}
+
+		//If landed on tax
+		else if(currTileType == PropertyInfo.TYPE_TAX) {
+			payTax();
+		}
+		//If landed on card
+		else if (currTileType == PropertyInfo.TYPE_CHANCE || currTileType == PropertyInfo.TYPE_COMMUNITY) {
+			drawCard(currTileType);
 		}
 	}
 

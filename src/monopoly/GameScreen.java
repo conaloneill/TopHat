@@ -67,7 +67,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	private Timer timer;
 	private JFrame frame;
 	JTextArea infoPanel, commandPanel;
-	public JButton enter;
+	private JButton enter;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
 
 	Dice dice = new Dice();

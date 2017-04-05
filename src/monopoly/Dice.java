@@ -20,7 +20,7 @@ public class Dice {
 		this.valueDice1 = ThreadLocalRandom.current().nextInt(1, 7);
 		this.valueDice2 = ThreadLocalRandom.current().nextInt(1, 7);
 		/*valueDice1 =10;
-		valueDice2=7;*/
+		valueDice2=20;*/
 	}
 
 	public boolean checkDouble() {
