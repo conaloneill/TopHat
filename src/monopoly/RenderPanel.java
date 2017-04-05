@@ -12,9 +12,12 @@ package monopoly;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+
 import monopoly.GameScreen;
 import property.PropertyInfo;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import cards.CardInfo;
@@ -29,7 +32,7 @@ public class RenderPanel extends JPanel {
 
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
+	private int fireworksHeight = 350,fireworksWidth = 550, mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
 			logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
 
 
@@ -53,11 +56,19 @@ public class RenderPanel extends JPanel {
 			firstTime = false;
 		}
 
-		//Check if mouse is on a property Tile
-		if(screen.mouseIsOnATile && screen.Tiles.get(screen.currentTile).getInfoImage() != null){
-			g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+		//Check for Game Over
+		if(!screen.gameOver){
+			//Check if mouse is on a property Tile
+			if(screen.mouseIsOnATile && screen.Tiles.get(screen.currentTile).getInfoImage() != null){
+				g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
+			}else{
+				g.drawImage(propertyInfo.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
+			}
+		//If game has ended, draw fireworks animation
 		}else{
-			g.drawImage(propertyInfo.monopolyLogo, GameScreen.BOARD_WIDTH/2 - logoWidth/2, GameScreen.BOARD_WIDTH/2 - logoHeight/2,logoWidth,logoHeight, this);
+			ImageIcon icon = new ImageIcon(getClass().getResource("/fireworks-animation.gif"));
+			Image fireworks = icon.getImage();
+			g.drawImage(fireworks, GameScreen.BOARD_WIDTH/2 - fireworksWidth/2,  GameScreen.BOARD_WIDTH/2 - fireworksHeight/2, fireworksWidth, fireworksHeight, this);
 		}
 
 		//Loop to go through all tiles and draw the image and the black outline.
@@ -68,7 +79,7 @@ public class RenderPanel extends JPanel {
 			//Draw black rectangles around tiles
 			g.setColor(Color.BLACK);
 			g.drawRect(o.x - GameScreen.TILESIZE/2, o.y - GameScreen.TILESIZE/2, GameScreen.TILESIZE, GameScreen.TILESIZE);
-			
+
 			//Houses and Hotels
 			int x;
 			int y;
@@ -122,12 +133,12 @@ public class RenderPanel extends JPanel {
 					}
 				}
 			}
-			
-			
+
+
 			//Owner Indicator Tokens
 			//If tile has an owner
 			if(o.getOwnerNumber() != -1){
-				
+
 				//Find correct player color
 				Color playerColor = null;
 				for(Player p : screen.Players){
@@ -161,7 +172,7 @@ public class RenderPanel extends JPanel {
 					g.drawRect(o.x + GameScreen.TILESIZE/2 - ownerTokenSize/2, o.y - ownerTokenSize/2, ownerTokenSize/2, ownerTokenSize);
 				}
 			}
-			
+
 			//Mortgaged Banner
 			//If mortgaged
 			if(o.checkMortgaged()){
@@ -195,16 +206,16 @@ public class RenderPanel extends JPanel {
 
 
 	private void drawHouses(Graphics g, Tile o, int x, int y, int xInc, int yInc) {
-	
+
 		for(int i = 0;i<o.getBuildings();i++){
 			//Draw houses
 			g.setColor(Color.white);
 			g.fillRect(x, y, houseSize, houseSize);
 			g.setColor(Color.black);
 			g.drawRect(x, y, houseSize, houseSize);
-			
-			 x += xInc;
-			 y += yInc;
+
+			x += xInc;
+			y += yInc;
 		}
 	}
 }
