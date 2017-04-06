@@ -121,8 +121,15 @@ public class UserInputMethods {
 
 			//Take money from player
 			gameScreen.currentPlayer.spend(debt);
+			
+			
 			//Give money to player owed
-			gameScreen.Players.get(playerNumberOwed-1).deposit(debt);
+			for(Player p : gameScreen.Players){
+				if(p.playerNumber == playerNumberOwed){
+					p.deposit(debt);
+				}
+			}
+			
 			String s = "\n" + gameScreen.currentPlayer.getName() + " payed " + debt + " to " + gameScreen.Players.get(playerNumberOwed-1).getName() + ".";
 
 			gameScreen.infoPanel.append(s);
@@ -139,7 +146,7 @@ public class UserInputMethods {
 		gameScreen.currentPlayer.inJail = true;
 		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyInfo.TYPE_JAIL) {
 			if (movingPlayerToJail ) {
-				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " rolled 3 doubles in a row and has been sent to Jail!\n");
+				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " rolled 3 doubles in a row and has been sent to Jail!");
 				movingPlayerToJail = false;
 			}
 			movePlayer(1, false);
@@ -522,6 +529,8 @@ public class UserInputMethods {
 		for (Tile tile : gameScreen.Tiles) {
 			if (tile.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
 				tile.setOwnerNumber(-1);
+				tile.setMortgaged(false);
+				tile.removeAllBuildings();
 			}
 		}
 	}
@@ -669,6 +678,7 @@ public class UserInputMethods {
 		}
 		//If landed on go to jail
 		else if(currTileType == PropertyInfo.TYPE_GOTO_JAIL) {
+			movingPlayerToJail = false;
 			goToJail();
 			gameScreen.infoPanel.append("\nYou have been sent to Jail. In order to get out, you must pay a fine of 50 or roll doubles on your next turn."
 					+ "\nUse 'pay' to pay the fine, 'roll' to roll for doubles or 'card' to use a 'Get Out of Jail' card");
