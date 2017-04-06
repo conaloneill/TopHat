@@ -1,6 +1,4 @@
 package monopoly;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import cards.Card;
@@ -261,30 +259,35 @@ public class UserInputMethods {
 
 
 	public void quitGame() {
+		
 		GameScreen gameScreen = GameScreen.screen;
-
-		//Check if more than 1 Player left
-		if (gameScreen.Players.size() > 1) {
-			//calculate AssetValue for each player
-			for (Player player : gameScreen.Players) {
-				player.calculateAssetValue(gameScreen.Tiles);
-			}
-
-			//Sort Players array based on assetValue property of Player objects
-			Collections.sort(gameScreen.Players, new Comparator<Player>() {
-				@Override public int compare(Player p1, Player p2) {
-					return p1.getAssetValue() - p2.getAssetValue(); // Ascending order
-				}
-			});
-		}else{
-			//If only 1 Player, Calculate Players assets
-			gameScreen.Players.get(gameScreen.Players.size()-1).calculateAssetValue(gameScreen.Tiles);
+		Player winningPlayer = gameScreen.Players.get(0);
+		//Calculate assets of players
+		for (Player player : gameScreen.Players) {
+			player.calculateAssetValue(gameScreen.Tiles, player.playerNumber);
 		}
+		
+		//Find winning player
+		for(Player p : gameScreen.Players){
+			if(p.getAssetValue() > winningPlayer.getAssetValue()){
+				winningPlayer = p;
+			}
+			//If more than 1 winning player, compare balances(in case of a draw)
+			else if (p.getAssetValue() == winningPlayer.getAssetValue()) {
+				if (p.getBalance() > winningPlayer.getBalance()) {
+					winningPlayer = p;
+				}
+			}
+			
+		}
+		
+		//Print player assets
+		/*for(Player p : gameScreen.Players){
+			System.out.println(p.getName() + " , " + p.getAssetValue());
+		}*/
 
-		//Sort is in ascending order
-		Player winner = gameScreen.Players.get(gameScreen.Players.size()-1);
-
-		gameScreen.infoPanel.append("Winner is " + winner.getName() + " with a total of " + winner.getAssetValue() + " in assets!");
+		//Display winner
+		gameScreen.infoPanel.append("Winner is " + winningPlayer.getName() + " with a total of " + winningPlayer.getAssetValue() + " in assets!");
 		gameScreen.infoPanel.append("\nEnter \"exit\" to end the program\n");
 		gameScreen.gameOver = true;
 	}
@@ -446,7 +449,7 @@ public class UserInputMethods {
 			}
 		}
 
-		gameScreen.currentPlayer.calculateAssetValue(gameScreen.Tiles);
+		gameScreen.currentPlayer.calculateAssetValue(gameScreen.Tiles, gameScreen.currentPlayer.playerNumber);
 		int assets = gameScreen.currentPlayer.getAssetValue();
 		//Return property to bank
 		setPropertyUnowned();
@@ -531,6 +534,7 @@ public class UserInputMethods {
 				tile.setOwnerNumber(-1);
 				tile.setMortgaged(false);
 				tile.removeAllBuildings();
+				tile.setAllColourOwned(false);
 			}
 		}
 	}
