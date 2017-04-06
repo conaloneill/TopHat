@@ -121,14 +121,16 @@ public class UserInputMethods {
 			gameScreen.currentPlayer.spend(debt);
 			
 			
+			String playerOwedName = "";
 			//Give money to player owed
 			for(Player p : gameScreen.Players){
 				if(p.playerNumber == playerNumberOwed){
 					p.deposit(debt);
+					playerOwedName = p.getName();
 				}
 			}
 			
-			String s = "\n" + gameScreen.currentPlayer.getName() + " payed " + debt + " to " + gameScreen.Players.get(playerNumberOwed-1).getName() + ".";
+			String s = "\n" + gameScreen.currentPlayer.getName() + " payed " + debt + " to " + playerOwedName + ".";
 
 			gameScreen.infoPanel.append(s);
 		}
@@ -282,12 +284,12 @@ public class UserInputMethods {
 		}
 		
 		//Print player assets
-		/*for(Player p : gameScreen.Players){
-			System.out.println(p.getName() + " , " + p.getAssetValue());
-		}*/
+		for(Player p : gameScreen.Players){
+			gameScreen.infoPanel.append("\n" + p.getName() + " finished with " + p.getAssetValue() + " total assets.");
+		}
 
 		//Display winner
-		gameScreen.infoPanel.append("Winner is " + winningPlayer.getName() + " with a total of " + winningPlayer.getAssetValue() + " in assets!");
+		gameScreen.infoPanel.append("\nThe winner is " + winningPlayer.getName() + " with a total of " + winningPlayer.getAssetValue() + " in assets!");
 		gameScreen.infoPanel.append("\nEnter \"exit\" to end the program\n");
 		gameScreen.gameOver = true;
 	}
