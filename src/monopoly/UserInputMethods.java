@@ -11,6 +11,9 @@ import property.PropertyInfo;
 public class UserInputMethods {
 
 
+	private boolean movingPlayerToJail = true;
+
+
 	//This method moves the players around the board based on player x/y position and value of the dice. 
 	public void movePlayer(int move, boolean passGo) {
 		GameScreen gameScreen = GameScreen.screen;
@@ -43,7 +46,7 @@ public class UserInputMethods {
 
 					//Pass go, collect 200
 					if(passGo) {
-						gameScreen.infoPanel.append("\n" + currPlayer.getName() + " passed Go and received 200!");
+						gameScreen.infoPanel.append("\n" + currPlayer.getName() + " passed Go and received 200! ");
 						currPlayer.deposit(200);
 					}
 				}
@@ -64,12 +67,15 @@ public class UserInputMethods {
 			gameScreen.doubleCount = 0;
 		}
 
-
+		//move to jail on 3rd double roll check -- method not implemented yet.
 		if (gameScreen.doubleCount == 3) {
+			goToJail();
 			gameScreen.rollAgain = false;
 			gameScreen.rollTurns = 1;
 			gameScreen.doubleCount = 0;
+			
 		}
+
 	}
 
 
@@ -132,9 +138,17 @@ public class UserInputMethods {
 
 		gameScreen.currentPlayer.inJail = true;
 		while(gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getType() != PropertyInfo.TYPE_JAIL) {
+			if (movingPlayerToJail ) {
+				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " rolled 3 doubles in a row and has been sent to Jail!\n");
+				movingPlayerToJail = false;
+			}
 			movePlayer(1, false);
 		}
+		
 		gameScreen.rollAgain = false;
+		gameScreen.rollTurns = 1;
+		gameScreen.doubleCount = 0;
+		movingPlayerToJail = true;
 	}
 
 

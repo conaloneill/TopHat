@@ -113,10 +113,12 @@ public class UserInput {
 					//Check positive balance
 					if(gameScreen.currentPlayer.getBalance() >= 0){
 
+						
 						//Move currentPlayer the value of the dice, Pass Go is true
-						gameScreen.userInputMethods.movePlayer(gameScreen.dice.getValue(), true);
 						gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " rolled " + gameScreen.dice.getDice1() + " and " + gameScreen.dice.getDice2() + ". Moved " + gameScreen.dice.getValue() + " squares"); //Says how many squares a player has moved
-						if(gameScreen.dice.checkDouble()) {
+						gameScreen.userInputMethods.movePlayer(gameScreen.dice.getValue(), true);
+						
+						if(gameScreen.dice.checkDouble() && !gameScreen.currentPlayer.inJail) {
 							gameScreen.infoPanel.append("\nDoubles! Roll again!"); //add text to info pane
 						}
 
