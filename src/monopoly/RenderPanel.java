@@ -32,7 +32,7 @@ public class RenderPanel extends JPanel {
 
 	public Color insideGreen = new Color(165, 255, 137);
 
-	private int fireworksHeight = 350,fireworksWidth = 550, mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
+	private int gameOverHeight = 81, gameOverWidth = 500, fireworksHeight = 350,fireworksWidth = 550, mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
 			logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
 
 
@@ -66,9 +66,16 @@ public class RenderPanel extends JPanel {
 			}
 		//If game has ended, draw fireworks animation
 		}else{
+			//Fireworks
 			ImageIcon icon = new ImageIcon(getClass().getResource("drawable/fireworks-animation.gif"));
 			Image fireworks = icon.getImage();
 			g.drawImage(fireworks, GameScreen.BOARD_WIDTH/2 - fireworksWidth/2,  GameScreen.BOARD_WIDTH/2 - fireworksHeight/2, fireworksWidth, fireworksHeight, this);
+			
+			//GameOver Image
+			ImageIcon gameoverIcon = new ImageIcon(getClass().getResource("drawable/gameOverImage.png"));
+			Image gameoverImage = gameoverIcon.getImage();
+			g.drawImage(gameoverImage,  GameScreen.BOARD_WIDTH/2 - gameOverWidth/2,  GameScreen.BOARD_WIDTH/2 - gameOverHeight/2, gameOverWidth, gameOverHeight, this);
+			
 		}
 
 		//Loop to go through all tiles and draw the image and the black outline.
