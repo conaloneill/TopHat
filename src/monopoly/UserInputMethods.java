@@ -699,5 +699,20 @@ public class UserInputMethods {
 			drawCard(currTileType);
 		}
 	}
+	
+	
+	
+	//Called when a player wants to pay the Jail fine
+	public void payJailFine() {
+		GameScreen gameScreen = GameScreen.screen;
+		if(!gameScreen.currentPlayer.inJail) {
+			gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
+		}
+		else{
+			gameScreen.currentPlayer.spend(50);
+			gameScreen.currentPlayer.inJail = false;
+			gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + ": paid a fine of 50 and got out of Jail.");
+		}
+	}
 
 }

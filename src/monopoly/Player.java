@@ -35,6 +35,7 @@ public class Player {
 	public int utilitiesOwned;
 	
 	public int numberOfGOOJCards;
+	private int inJailRollCount = 0;
 
 
 
@@ -68,6 +69,17 @@ public class Player {
 		return this.name;
 	}
 
+	public int getinJailRollCount() {
+		return this.inJailRollCount;
+	}
+	public void incrementInJailRollCount() {
+		this.inJailRollCount++;
+	}
+	public void resetInJailCount() {
+		this.inJailRollCount = 0;
+		
+	}
+	
 	public int getAssetValue() {
 		return assetValue;
 	}
@@ -90,5 +102,6 @@ public class Player {
 			}
 		}
 	}
+
 
 }

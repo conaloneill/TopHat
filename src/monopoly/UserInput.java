@@ -96,9 +96,19 @@ public class UserInput {
 						gameScreen.infoPanel.append("You rolled doubles and got out of Jail!\n");
 						gameScreen.currentPlayer.inJail = false;
 					}
-					else{
+					else {
+						gameScreen.currentPlayer.incrementInJailRollCount();
+					}
+					if (gameScreen.currentPlayer.getinJailRollCount() < 3){
 						gameScreen.infoPanel.append("Unlucky!, You need to roll doubles or pay a fine of 50 to get out of Jail");
 						gameScreen.rollAgain = false;
+					}
+					if (gameScreen.currentPlayer.getinJailRollCount() == 3) {
+						gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " failed to roll Doubles on third turn and had to pay the fine\n");
+						userInputMethods.payJailFine();
+						gameScreen.currentPlayer.resetInJailCount();
+						userInputMethods.movePlayer(gameScreen.dice.getValue(), true);
+						userInputMethods.landedOnNewTile(GameScreen.screen);
 					}
 				//If player has already rolled
 				}else{
@@ -189,32 +199,36 @@ public class UserInput {
 
 			//Pay fine when in jail
 		case "pay":
-			if(!gameScreen.currentPlayer.inJail) {
-				gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
+			if (gameScreen.rollAgain) {
+				userInputMethods.payJailFine();
 			}
-			else{
-				gameScreen.currentPlayer.spend(50);
-				gameScreen.currentPlayer.inJail = false;
-				gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " paid a fine of 50 and got out of Jail.");
+			else {
+				gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + ": Must pay the fine before rolling on your next turn\n");
 			}
 			break;
 
 			//Use GOOJ card when in jail
 		case "card":
-			//Is player in jail
-			if(!gameScreen.currentPlayer.inJail) {
-				gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
+			if (gameScreen.rollAgain) {
+				//Is player in jail
+				if (!gameScreen.currentPlayer.inJail) {
+					gameScreen.infoPanel.append("Error: " + gameScreen.currentPlayer.getName() + " isn't in Jail.");
+				} else {
+					//Does player have any gooj cards
+					if (gameScreen.currentPlayer.numberOfGOOJCards == 0) {
+						gameScreen.infoPanel.append("Error: " + gameScreen.currentPlayer.getName()
+								+ " doesn't have any 'Get out of Jail' cards to use.");
+					} else {
+						//Use card
+						gameScreen.currentPlayer.numberOfGOOJCards--;
+						gameScreen.currentPlayer.inJail = false;
+						gameScreen.infoPanel.append(gameScreen.currentPlayer.getName()
+								+ " used a 'Get out of Jail' card and got out of Jail.");
+					}
+				} 
 			}
-			else{
-				//Does player have any gooj cards
-				if(gameScreen.currentPlayer.numberOfGOOJCards == 0){
-					gameScreen.infoPanel.append("\nError: " + gameScreen.currentPlayer.getName() + " doesn't have any 'Get out of Jail' cards to use.");
-				}else{
-					//Use card
-					gameScreen.currentPlayer.numberOfGOOJCards --;
-					gameScreen.currentPlayer.inJail = false;
-					gameScreen.infoPanel.append("\n" + gameScreen.currentPlayer.getName() + " used a 'Get out of Jail' card and got out of Jail.");
-				}
+			else {
+				gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + ": Must use the Get Out Of Jail Card before rolling on your next turn\n");
 			}
 			break;
 
