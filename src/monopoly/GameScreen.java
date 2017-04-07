@@ -212,7 +212,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		UIManager.put("OptionPane.background", boardGraphics.insideGreen);
 
 		//Icon used in JOptionPanes
-		ImageIcon icon = new ImageIcon(getClass().getResource("/monopolyIcon.png"));
+		ImageIcon icon = new ImageIcon(getClass().getResource("drawable/monopolyIcon.png"));
 
 		//Options for JOptionPane
 		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};

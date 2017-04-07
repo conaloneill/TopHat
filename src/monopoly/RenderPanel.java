@@ -66,7 +66,7 @@ public class RenderPanel extends JPanel {
 			}
 		//If game has ended, draw fireworks animation
 		}else{
-			ImageIcon icon = new ImageIcon(getClass().getResource("/fireworks-animation.gif"));
+			ImageIcon icon = new ImageIcon(getClass().getResource("drawable/fireworks-animation.gif"));
 			Image fireworks = icon.getImage();
 			g.drawImage(fireworks, GameScreen.BOARD_WIDTH/2 - fireworksWidth/2,  GameScreen.BOARD_WIDTH/2 - fireworksHeight/2, fireworksWidth, fireworksHeight, this);
 		}
