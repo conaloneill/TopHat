@@ -27,8 +27,9 @@ public class UserInput {
 			try {
 				gameScreen.numBuildings = Integer.parseInt(choiceCopy.replaceAll("\\D+",""));
 			} catch (NumberFormatException e) {
-				System.out.println("Number expected");
-				e.printStackTrace();
+				//Don't need this in final product
+				//System.out.println("Number expected");
+				//e.printStackTrace();
 			}
 			choiceCopy = choiceCopy.replace("build ", "");
 			choiceCopy = choiceCopy.replace("demolish ", "");
