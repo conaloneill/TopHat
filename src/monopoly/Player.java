@@ -73,11 +73,11 @@ public class Player {
 	}
 	
 	//used to calculate the total value of the Players assets, both cash and properties
-	public void calculateAssetValue(ArrayList<Tile> Tiles) {
-		GameScreen gameScreen = GameScreen.screen;
-		this.assetValue = balance;
+	public void calculateAssetValue(ArrayList<Tile> Tiles, int playerNumber) {
+		//GameScreen gameScreen = GameScreen.screen;
+		this.assetValue = getBalance();
 		for (Tile o : Tiles) {
-			if (o.getOwnerNumber() == gameScreen.currentPlayer.playerNumber) {
+			if (o.getOwnerNumber() == playerNumber) {
 				if (!o.checkMortgaged()) {
 					this.assetValue += o.getPrice();
 				}

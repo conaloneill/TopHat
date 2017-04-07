@@ -405,7 +405,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				//If Only 1 player left
 				if(Players.size() <= 1){
 					//Get last players assets
-					Players.get(Players.size()-1).calculateAssetValue(Tiles);
+					Players.get(Players.size()-1).calculateAssetValue(Tiles, Players.get(Players.size()-1).playerNumber );
 					//GameOver message
 					infoPanel.append("\nGame Over! Only one player remaining.\nWinner is " + Players.get(Players.size()-1).getName()
 							+ " with assets worth " + Players.get(Players.size()-1).getAssetValue()
