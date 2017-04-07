@@ -96,15 +96,18 @@ public class UserInput {
 					if(gameScreen.dice.checkDouble()) {
 						gameScreen.infoPanel.append("You rolled doubles and got out of Jail!\n");
 						gameScreen.currentPlayer.inJail = false;
+						gameScreen.currentPlayer.resetInJailCount();
+						userInputMethods.movePlayer(gameScreen.dice.getValue(), true);
+						gameScreen.rollAgain = false;
 					}
 					else {
 						gameScreen.currentPlayer.incrementInJailRollCount();
 					}
-					if (gameScreen.currentPlayer.getinJailRollCount() < 3){
+					if (gameScreen.currentPlayer.getinJailRollCount() < 3 && gameScreen.currentPlayer.inJail){
 						gameScreen.infoPanel.append("Unlucky!, You need to roll doubles or pay a fine of 50 to get out of Jail");
 						gameScreen.rollAgain = false;
 					}
-					if (gameScreen.currentPlayer.getinJailRollCount() == 3) {
+					if (gameScreen.currentPlayer.getinJailRollCount() == 3 && gameScreen.currentPlayer.inJail) {
 						gameScreen.infoPanel.append(gameScreen.currentPlayer.getName() + " failed to roll Doubles on third turn and had to pay the fine\n");
 						userInputMethods.payJailFine();
 						gameScreen.currentPlayer.resetInJailCount();
