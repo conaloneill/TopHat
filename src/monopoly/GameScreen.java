@@ -56,6 +56,8 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 
+import com.sun.prism.Image;
+
 import cards.Card;
 import monopoly.RenderPanel;
 import monopoly.UserInputMethods;
@@ -213,6 +215,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 		//Icon used in JOptionPanes
 		ImageIcon icon = new ImageIcon(getClass().getResource("drawable/monopolyIcon.png"));
+		
+		ImageIcon welcomeIcon = new ImageIcon(getClass().getResource("drawable/welcome.gif"));
 
 		//Options for JOptionPane
 		String[] options = new String[] {"  2  ", "  3  ", "  4  ", "  5  ", "  6  "};
@@ -222,7 +226,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				TITLE,
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
-				icon,
+				welcomeIcon,
 				options,
 				null);
 
