@@ -264,13 +264,20 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		}
 		//Get player names
 		while(aNameIsEmpty){
+			
 			//JOptionPane containing JPanel 'namesPanel'
-			JOptionPane.showMessageDialog(null,
+			int namesOptionPane = JOptionPane.showConfirmDialog(null,
 					namesPanel,
 					TITLE,
-					JOptionPane.INFORMATION_MESSAGE, 
+					JOptionPane.OK_CANCEL_OPTION, 
+					0,
 					icon
 					);
+				
+			//If user clicks 'X' or Cancel
+			if (namesOptionPane == 2 || namesOptionPane == -1) {
+				System.exit(0);
+			}
 			//Count empty names entered
 			int emptyNames = 0;
 			for(JTextField text : playerNames){
