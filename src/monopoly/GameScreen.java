@@ -95,20 +95,21 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 	public static final String TITLE = "TopHat";//Game Title
 	String propertyName = null;
 	String choice; //contains user's input throughout the game 
-	String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
+	String helpString = "Type commands on your turn to play the game. (commands are not case-senstive)\n"
 			+ "-help : gives list of all available commands \n"
 			+ "-roll : rolls both dice and moves player around the board \n"
 			+ "-buy : allows player to buy the property they are on if it can be bought \n"
 			+ "-build <short name> <number> : build houses on the property using short name and number to build \n"
-			+ "-demolish <short name <number> : demolish houses on the property using short name and number to demolish \n"
+			+ "-demolish <short name> <number> : demolish houses on the property using short name and number to demolish \n"
 			+ "-mortgage <short name> : allows player to mortgage a property to the bank for the amount listed on it's card \n"
 			+ "-redeem <short name> : allows player to buy back a mortgaged property from the bank for the mortgage value + 10%\n"
 			+ "-property : shows a list of the all the properties owned by the player \n"
 			+ "-balance : shows the bank balance of the player \n"
 			+ "-done : ends the players turn and allows the next player to start their turn \n"
-			+ "-quit : ends the game and display the winner\n"
+			+ "-bankrupt : Current player is declared bankrupt and is removed from the game\n"
 			+ "-info : displays the short name of the current tile\n"
-			+ "-bankrupt : Current player is declared bankrupt and is removed from the game\n";
+			+ "-quit : ends the game and display the winner\n"
+			+ "-exit : Closes game\n";
 
 	//Constructor called when this class is instantiated
 	GameScreen() {
@@ -121,7 +122,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		frame.setResizable(false);//Disable the user resizing the screen
 		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);//Set location of the JFrame to the center of the users screen.
 
-		addComponentsToPane(frame.getContentPane());
+		addComponentsToPane(frame.getContentPane());//Add elements to screen
 
 		frame.pack(); //Shrinks size to wrap layout
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

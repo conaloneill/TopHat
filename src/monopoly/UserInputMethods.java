@@ -21,7 +21,7 @@ import property.PropertyInfo;
 public class UserInputMethods {
 
 
-	private boolean movingPlayerToJail = true;
+	private boolean movingPlayerToJail = true;//
 
 
 	//This method moves the players around the board based on player x/y position and value of the dice. 
@@ -451,7 +451,6 @@ public class UserInputMethods {
 		}
 	}
 
-	//Sets all property owned by currentPlayer to have no owner (-1 denotes no owner)
 	//Used when a player goes bankrupt
 	public void bankrupt() {
 		GameScreen gameScreen = GameScreen.screen;
@@ -489,10 +488,10 @@ public class UserInputMethods {
 
 	}
 
-
+	//For 'info' input
 	public void info() {
 		GameScreen gameScreen = GameScreen.screen;
-
+		//Print current tiles short name
 		gameScreen.infoPanel.append("Short name of " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getName() + " is " + gameScreen.Tiles.get(gameScreen.currentPlayer.currentTile).getShortName());
 	}
 
@@ -540,6 +539,8 @@ public class UserInputMethods {
 	}
 
 
+	//Resets current players property.
+	//Used when player declares bankrupt.
 	public void setPropertyUnowned() {
 		GameScreen gameScreen = GameScreen.screen;
 
@@ -556,7 +557,7 @@ public class UserInputMethods {
 	public void drawCard(int tileType) {
 		GameScreen gameScreen = GameScreen.screen;
 		Card cardDrawn;
-		int cardNum = ThreadLocalRandom.current().nextInt(0, 16);
+		int cardNum = ThreadLocalRandom.current().nextInt(0, 16);//Random card number
 		if (tileType == PropertyInfo.TYPE_CHANCE) {
 			cardDrawn = gameScreen.ChanceCards.get(cardNum);
 		}
