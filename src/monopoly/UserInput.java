@@ -1,10 +1,22 @@
 package monopoly;
 
+/*
+ *---Tophat---
+ * Brian O'Leary - 13475468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
+ * 
+ * This class contains our main method which is called whenever our main 'ENTER' button is pressed.
+ * It checks the users input from the command panel and carries out the appropriate action based on the input.
+ *
+ * */
+
 import monopoly.GameScreen;
 import monopoly.UserInputMethods;
 
 public class UserInput {
 
+	//Instance of our class containing methods for user input
 	UserInputMethods userInputMethods = new UserInputMethods();
 
 	//method for all user inputs on a players turn. gets the input and calls methods to implement choice
@@ -27,9 +39,7 @@ public class UserInput {
 			try {
 				gameScreen.numBuildings = Integer.parseInt(choiceCopy.replaceAll("\\D+",""));
 			} catch (NumberFormatException e) {
-				//Don't need this in final product
-				//System.out.println("Number expected");
-				//e.printStackTrace();
+				//gameScreen.infoPanel.append("\nCommand must contain a valid number of buildings");;
 			}
 			choiceCopy = choiceCopy.replace("build ", "");
 			choiceCopy = choiceCopy.replace("demolish ", "");
@@ -65,7 +75,7 @@ public class UserInput {
 			}
 			if (found == false) {
 				gameScreen.propertyName=null;
-				gameScreen.infoPanel.append("\nError invalid property name");
+				gameScreen.infoPanel.append("\nError invalid property short name");
 			}
 			if (gameScreen.choice.startsWith("mortgage")) {
 				gameScreen.choice = "mortgage";
@@ -242,7 +252,7 @@ public class UserInput {
 			if(gameScreen.numBuildings > 0 && gameScreen.propertyName != null){
 				userInputMethods.build(gameScreen.numBuildings, gameScreen.propertyName);
 			}else{
-				gameScreen.infoPanel.append("Error Need positive number and valid property name for building.");
+				gameScreen.infoPanel.append("Error Need positive number and valid property short name for building.");
 			}
 			break;
 
@@ -252,7 +262,7 @@ public class UserInput {
 			if(gameScreen.numBuildings > 0 && gameScreen.propertyName != null){
 				userInputMethods.demolish(gameScreen.numBuildings, gameScreen.propertyName);
 			}else{
-				gameScreen.infoPanel.append("Error Need positive number and valid property name for demolishing.");
+				gameScreen.infoPanel.append("Error Need positive number and valid property short name for demolishing.");
 			}
 			break;
 

@@ -9,6 +9,7 @@ package monopoly;
  * own color, number and x,y position. These are used by our 'RenderPanel' class
  * to draw each player. 
  * 'Player' objects contain their own balances, owned properties, debt owed and to who, and their asset value
+ * Players also keep track of information such as number of stations owned and number of get out of jail cards.
  * 
  * */
 import java.awt.Color;
@@ -18,26 +19,23 @@ import monopoly.Tile;
 
 public class Player {
 
-	private Color colour;
-	private int  balance;
-	private String name;
-	private int assetValue = 0;
-
+	private Color colour;//Players color
+	private int  balance;//Players balance
+	private String name;//Name of player
+	private int assetValue;//Players total assets
+	private int inJailRollCount;//Number of rolls taken while in jail
+	
 	public int playerNumber;
-	public int currentTile;
-	public int firstRoll;
+	public int currentTile;//Tile player is currently on
+	public int firstRoll;//Value of first dice roll
 	public int xPosition;  //Stores current x position
 	public int yPosition;  //Stores current y position
+	public int stationsOwned;//Number of stations owned by player
+	public int utilitiesOwned;//Number of utilities owned by player
+	public int numberOfGOOJCards;//Number of 'GOOJ' cards owned by player
 	
-	public boolean inJail = false;
+	public boolean inJail;//Has player been sent to jail
 	
-	public int stationsOwned;
-	public int utilitiesOwned;
-	
-	public int numberOfGOOJCards;
-	private int inJailRollCount = 0;
-
-
 
 	Player(int playerNum, int balance, String pname){
 		this.currentTile = 0;
@@ -47,6 +45,9 @@ public class Player {
 		this.stationsOwned = 0;
 		this.numberOfGOOJCards = 0;
 		this.name = pname;
+		this.inJail = false;
+		this.assetValue = 0;
+		this.inJailRollCount = 0;
 	}
 
 	public void setColour(Color color) {
@@ -84,10 +85,10 @@ public class Player {
 		return assetValue;
 	}
 	
-	//used to calculate the total value of the Players assets, both cash and properties
+	//Used to calculate the total value of the Players assets, both cash and properties
 	public void calculateAssetValue(ArrayList<Tile> Tiles, int playerNumber) {
-		//GameScreen gameScreen = GameScreen.screen;
-		this.assetValue = getBalance();
+		this.assetValue = getBalance();//Add players balance
+		//Add players properties and buildings
 		for (Tile o : Tiles) {
 			if (o.getOwnerNumber() == playerNumber) {
 				if (!o.checkMortgaged()) {

@@ -7,6 +7,8 @@ package monopoly;
  * 
  * This class acts as our board for monopoly. It extends JPanel which we use to paint 
  * images on the board. It is redrawn using the ActionListener in our GameScreen Class.
+ * 
+ * It handles all images drawn on our board.
  *
  * */
 import java.awt.Color;
@@ -27,10 +29,10 @@ import cards.CardInfo;
 public class RenderPanel extends JPanel {
 
 	private boolean firstTime = true;
-	private PropertyInfo propertyInfo = new PropertyInfo();
-	private CardInfo cardInfo = new CardInfo();
+	private PropertyInfo propertyInfo = new PropertyInfo();//Instance of our class used to set up tiles
+	private CardInfo cardInfo = new CardInfo();//Instance of our class used to set up cards
 
-	public Color insideGreen = new Color(165, 255, 137);
+	public Color insideGreen = new Color(165, 255, 137);//Green color used throughout games
 
 	private int gameOverHeight = 81, gameOverWidth = 500, fireworksHeight = 350,fireworksWidth = 550, mortgageWidth = 54, mortgageHeight = 11, ownerTokenSize = 10, hotelSize = 12, houseSize = 8, dotsize = 15, logoWidth = 500, 
 			logoHeight = 200, propertyImageWidth = GameScreen.BOARD_WIDTH/3 + 100, propertyImageHeight = GameScreen.BOARD_WIDTH/2 + 100;
@@ -43,13 +45,16 @@ public class RenderPanel extends JPanel {
 		super.paintComponent(g);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 10));
 
-		//Draw green background
+		//Draw white base background
 		g.setColor(Color.WHITE);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11 ,GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*11, GameScreen.BOARD_WIDTH, GameScreen.BOARD_WIDTH);
+		//Draw green background
 		g.setColor(insideGreen);
 		g.fillRect(GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*10 ,GameScreen.BOARD_WIDTH  - GameScreen.TILESIZE*10, GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2 , GameScreen.BOARD_WIDTH - GameScreen.TILESIZE*2);
 
-		if(firstTime){ //get images for the tile spaces only on the first time this method is called.
+		//Set up tiles and cards. (only called once)
+		if(firstTime){ 
+			//Assign Tile info
 			propertyInfo.assignTileImages();
 			//Assign Cards Info
 			cardInfo.assignCards();
@@ -58,7 +63,7 @@ public class RenderPanel extends JPanel {
 
 		//Check for Game Over
 		if(!screen.gameOver){
-			//Check if mouse is on a property Tile
+			//Check if mouse is on a property Tile. If so draw property image. Else draw monopoly logo.
 			if(screen.mouseIsOnATile && screen.Tiles.get(screen.currentTile).getInfoImage() != null){
 				g.drawImage(screen.Tiles.get(screen.currentTile).getInfoImage(), GameScreen.BOARD_WIDTH/2 - propertyImageWidth/2, GameScreen.BOARD_WIDTH/2 - propertyImageHeight/2, propertyImageWidth, propertyImageHeight, this);
 			}else{
@@ -199,9 +204,11 @@ public class RenderPanel extends JPanel {
 		//Mouse tracker red dot
 		g.setColor(Color.red);
 		g.fillOval(screen.mouseX - 8/2, screen.mouseY - 8/2, 8, 8);
+		g.setColor(Color.black);
+		g.drawOval(screen.mouseX - 8/2, screen.mouseY - 8/2, 8, 8);
 	}
 
-
+	//Method to draw a hotel with given coordinates
 	private void drawHotel(Graphics g, int x, int y) {
 		//Draw Hotel
 		g.setColor(Color.red);
@@ -211,7 +218,7 @@ public class RenderPanel extends JPanel {
 		g.drawString("H", x+2, y + 10);
 	}
 
-
+	//Method to draw houses with given Tile, coordinates and offsets
 	private void drawHouses(Graphics g, Tile o, int x, int y, int xInc, int yInc) {
 
 		for(int i = 0;i<o.getBuildings();i++){

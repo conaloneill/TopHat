@@ -6,19 +6,19 @@ package monopoly;
  * Daniel Graham - 15319536
  * 
  * This is our main class used for our Monopoly Game.
- * It extends  JFrame as well as an ActionListener to run the game.
+ * It extends  JFrame as well as an ActionListener to run the game.#
+ * The MouseMotionListener is used to enable the player to mouse over tiles for more information.
  * This class contains an instance of our JPanel class 'RenderPanel' called 'boardGraphics' as well as 
- * 2 ArrayLists. One used to hold our 'Tile' Objects and the other used to hold our 
- * 'Player' Objects.
+ * 4 ArrayLists. One used to hold our 'Tile' Objects, another used to hold our 
+ * 'Player' Objects and two for our two decks of cards.
  * The ActionListener is attached to a Timer. This activates the ActionListener 
  * every time the Timer ticks. We use this method to redraw the board on a loop
  * and show objects moving on the board.
  * We also increment a counter called 'ticks' every loop and use this as
  * a reference to redraw the board for mouse tracking and player movement, and to check for the enter key  
- * This class also implements a KeyListener which we intend to use as an alternative way
- * of entering commands via our 'ENTER' button. This is still a work in process, but works 
- * using the space bar.
  * 
+ * This class also implements a KeyListener which is used as an alternative way
+ * of entering commands via our 'ENTER' button. The 'ENTER' key may be used to input commands
  * 
  * 
  * currentPlayer(Player) is the current player based on the index position in the Players array (i.e: 0-5)
@@ -56,7 +56,6 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 
-import com.sun.prism.Image;
 
 import cards.Card;
 import monopoly.RenderPanel;
@@ -66,19 +65,19 @@ import property.PropertyInfo;
 @SuppressWarnings("serial")
 public class GameScreen extends JFrame implements ActionListener, MouseMotionListener {
 
-	private Timer timer;
+	private Timer timer;//Timer used to activate actionListener
 	private JFrame frame;
 	JTextArea infoPanel, commandPanel;
-	private JButton enter;
-	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//size of computer screen
+	private JButton enter;//Main enter button
+	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//Size of computer screen, used to set frame position
 
-	Dice dice = new Dice();
+	Dice dice = new Dice();//Dice object used when 'rolling' dice
 
-	UserInput userInput = new UserInput();
-	UserInputMethods userInputMethods = new UserInputMethods();
-	private RenderPanel boardGraphics = new RenderPanel();
+	UserInput userInput = new UserInput();//Instance of class containing our userInput method
+	UserInputMethods userInputMethods = new UserInputMethods();//Instance of our class containing methods for user actions
+	private RenderPanel boardGraphics = new RenderPanel();//Instance of our JPanel class
 
-	public Player currentPlayer;
+	public Player currentPlayer;//Used to keep track of player who's current turn it is
 	public static GameScreen screen;
 
 	public int mouseX, mouseY, currentTile, numberOfPlayers = 0, taxAmount = 0;
@@ -88,12 +87,12 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 
 	public boolean inFineOrChanceLoop = false, mouseIsOnATile = false, rollAgain = true, gameOver = false;
 
-	public ArrayList<Tile> Tiles = new ArrayList<Tile>();
-	public ArrayList<Player> Players = new ArrayList<Player>();
-	public ArrayList<Card> ChanceCards = new ArrayList<Card>();
-	public ArrayList<Card> ComChestCards = new ArrayList<Card>();
+	public ArrayList<Tile> Tiles = new ArrayList<Tile>();//Our list of 40 tiles surrounding the board
+	public ArrayList<Player> Players = new ArrayList<Player>();//Our list of players in the game
+	public ArrayList<Card> ChanceCards = new ArrayList<Card>();//List of chance cards
+	public ArrayList<Card> ComChestCards = new ArrayList<Card>();//List of Community chest cards
 
-	public static final String TITLE = "TopHat";
+	public static final String TITLE = "TopHat";//Game Title
 	String propertyName = null;
 	String choice; //contains user's input throughout the game 
 	String helpString = "type command on your turn to play the game. (commands are not case-senstive)\n"
@@ -111,17 +110,16 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			+ "-info : displays the short name of the current tile\n"
 			+ "-bankrupt : Current player is declared bankrupt and is removed from the game\n";
 
-
+	//Constructor called when this class is instantiated
 	GameScreen() {
 		//Sets up Tiles and Players
 		init();
-		timer = new Timer(20, this);//Params are delay and actionListener
+		timer = new Timer(20, this);//Parameters are delay and actionListener
 
-		frame = new JFrame(TITLE);
-		frame.setSize(S_WIDTH,BOARD_WIDTH);
-		frame.setResizable(false);
-		//Set location of the JFrame to the center of the users screen.
-		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);
+		frame = new JFrame(TITLE);//Create JFrame and set title
+		frame.setSize(S_WIDTH,BOARD_WIDTH);//Set size
+		frame.setResizable(false);//Disable the user resizing the screen
+		frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2 - 30);//Set location of the JFrame to the center of the users screen.
 
 		addComponentsToPane(frame.getContentPane());
 
@@ -129,17 +127,17 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addMouseMotionListener(this); //Listener for Mouse position
 		frame.setVisible(true);
-		ticks = 0;
-		timer.start();
+		ticks = 0;//Ticks counts timer ticks. Initially set to 0
+		timer.start();//Begin game
 
 	}
 
 	//Adds Components to screen (JFrame pane)
 	private void addComponentsToPane(Container pane) {
-		pane.setLayout(new BorderLayout());
+		pane.setLayout(new BorderLayout());//Use border layout in JFrame
 
-		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_WIDTH+1));
-		pane.add(boardGraphics, BorderLayout.LINE_START);
+		boardGraphics.setPreferredSize(new Dimension(BOARD_WIDTH+1, BOARD_WIDTH+1));//Set size of our JPanel class
+		pane.add(boardGraphics, BorderLayout.LINE_START);//Add JPanel to JFrame
 
 		//Container to hold text boxes and button (everything on the right)
 		Container INFOAREA = new Container();
@@ -147,7 +145,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		INFOAREA.setLayout(new BorderLayout());
 
 		infoPanel = new JTextArea(37,5);//Parameters are rows and columns
-		//set info panel to auto scroll to end of newly appended text
+		//Set info panel to auto scroll to end of newly appended text
 		DefaultCaret caret = (DefaultCaret)infoPanel.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
@@ -156,34 +154,34 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 				+ "\nEnter Key may be used to enter commands.\n\n");
 		infoPanel.setEditable(false);
 
-		//lines now wrap to next line so only vertical scrolling needed
+		//Lines now wrap to next line so only vertical scrolling needed
 		infoPanel.setLineWrap(true);
 		infoPanel.setWrapStyleWord(true);
 
-		infoPanel.setBackground(boardGraphics.insideGreen);
+		infoPanel.setBackground(boardGraphics.insideGreen);//Set color of info panel
 
-		//adding a JScrollPane to the info panel to allow it to vertically scroll through all the commands
+		//Add a JScrollPane to the info panel to allow it to vertically scroll through all the commands
 		JScrollPane infoScrollPane = new JScrollPane(infoPanel);
 
-		infoScrollPane.add(infoPanel);
+		infoScrollPane.add(infoPanel);//Add info panel to JScrollpane
 		infoScrollPane.setViewportView(infoPanel);
 		infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);
+		INFOAREA.add(infoScrollPane, BorderLayout.NORTH);//Add JScrollpane containing info panel to JFrame
 
 		//commandPanel set at JTextArea so line can wrap around and can be made scrollable vertically
 		commandPanel = new JTextArea("COMMAND PANEL", 5,3);
 		commandPanel.setLineWrap(true);
 		commandPanel.setWrapStyleWord(true);
-		//Meant to enable pressing enter key as a button click
+		//Enable pressing enter key as a button click
 		commandPanel.addKeyListener(new KeyListener(){
 
 			@Override
 			public void keyPressed(KeyEvent key) {
 				//If 'ENTER' is pressed, click the button
 				if(key.getKeyCode() == KeyEvent.VK_ENTER){
-					key.consume();
-					enter.doClick();
+					key.consume();//Don't type enter into command panel
+					enter.doClick();//Activate button
 				}
 			}
 			//Unused mandatory methods
@@ -192,19 +190,19 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			@Override
 			public void keyTyped(KeyEvent e) {} 
 		});
-		//adding a JScrollPane to the command panel to allow it to vertically scroll through the new command
+		//Add a JScrollPane to the command panel to allow it to vertically scroll through the new command
 		JScrollPane commandScrollPane = new JScrollPane(commandPanel);
 		commandScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);
+		INFOAREA.add(commandScrollPane, BorderLayout.CENTER);//Add JScrollpane containing command panel to JFrame
 
-		enter = new JButton("Enter");
-		enter.setPreferredSize(new Dimension((S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1))/2,50));
-		enter.addActionListener(this);
+		enter = new JButton("Enter");//Create main enter button
+		enter.setPreferredSize(new Dimension((S_WIDTH - (BOARD_WIDTH+TILESIZE/2+1))/2,50));//Set size
+		enter.addActionListener(this);//Add this class's actionListener
 		enter.setActionCommand("ENTER");//Name of action
 		INFOAREA.add(enter, BorderLayout.LINE_END);
 
-		pane.add(INFOAREA, BorderLayout.LINE_END);
+		pane.add(INFOAREA, BorderLayout.LINE_END);//Add container to JFrame using border layout
 	}
 
 
@@ -213,9 +211,8 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 		//Set background of JOptionPanes to green
 		UIManager.put("OptionPane.background", boardGraphics.insideGreen);
 
-		//Icon used in JOptionPanes
+		//Icons used in JOptionPanes
 		ImageIcon icon = new ImageIcon(getClass().getResource("drawable/monopolyIcon.png"));
-		
 		ImageIcon welcomeIcon = new ImageIcon(getClass().getResource("drawable/welcome.gif"));
 
 		//Options for JOptionPane
@@ -341,7 +338,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 			Players.get(5).setColour(Color.pink);
 		}
 
-		//Loops to create Tiles in correct order
+		//Loops to create Tiles in correct order around the board
 		int x = BOARD_WIDTH - TILESIZE/2;
 		int y = BOARD_WIDTH - TILESIZE/2;
 		for(int row = 0;row<11;row++){//BOTTOM ROW
@@ -426,6 +423,7 @@ public class GameScreen extends JFrame implements ActionListener, MouseMotionLis
 					userInputMethods.quitGame();
 				}
 				
+				//Game is over, Only available command is 'exit'
 				choice = commandPanel.getText().trim().toLowerCase();
 				switch (choice) {
 				case "exit":

@@ -1,4 +1,16 @@
 package monopoly;
+
+/*
+ *---Tophat---
+ * Brian O'Leary - 13475468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
+ * 
+ * This class contains methods used in our 'UserInput' class. This class was created in order
+ * to reduce the size of our userInput method and increase readability.
+ *
+ * */
+
 import java.util.concurrent.ThreadLocalRandom;
 
 import cards.Card;
@@ -76,7 +88,7 @@ public class UserInputMethods {
 
 	}
 
-
+	//Automatically pays rent when an owned tile is landed on.
 	public void payRentOwed() {
 		GameScreen gameScreen = GameScreen.screen;
 

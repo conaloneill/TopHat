@@ -1,7 +1,22 @@
 package cards;
 
+/*
+ *---Tophat---
+ * Brian O'Leary - 13475468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
+ * 
+ * This class is used to create 'Card' objects to represent chance and community chest cards. 
+ * 
+ * Cards were designed with the intention of making is easy to add more cards to the game by 
+ * making card types as general as possible.
+ * What information is held by a card depends heavily on what type of card it is.
+ *
+ * */
+
 public class Card {
 	
+	//Types of card
 	public static final int TYPE_FINE = 0;
 	public static final int TYPE_REWARD = 1; 
 	public static final int TYPE_GOOJ = 2; 
@@ -11,16 +26,17 @@ public class Card {
 	public static final int TYPE_FINEORCHANCE = 6;
 	public static final int TYPE_MOVEXSPACES = 7;
 	
+	private String message;//Message to be printed when card is drawn.
+	private int amount;//Used to hold fine or reward amount
+	private int type;//Type of card as listed above
+	private int destination;//When a player is told to move to a certain tile
+	private int spacesToMove;//When a player is told to move a certain numner of spaces
 	
-	private String message;
-	private int amount;
-	private int type;
-	private int destination;
-	private int spacesToMove;
+	//Used for 'building fine' cards
 	private int housecost;
 	private int hotelcost;
 	
-	public boolean passGo;
+	public boolean passGo;//Is player allowed to collect 200 when passing go
 	public int cardNumber;
 	
 	

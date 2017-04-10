@@ -20,33 +20,35 @@ public class Tile {
 	
 	private String propertyName;
 	private String propertyShortname;
+	private String colour;
 	
-	private int type;
-	private int[] rents;
+	private Image image;//Image drawn in tile space around board
+	private Image infoImage;//Image drawn when player mouses over tile
+	
+	private int type;//Type of tile as defined in 'PropertyInfo'
+	private int[] rents;//Array of all possible rents
 	private int ownedByPlayer;
-	private Image image;
-	private Image infoImage;
-	private int number;
-	private boolean mortgaged = false;
+	private int number;//Tile number
 	private int price;
 	private int mortgageValue;
 	private int housePrice;
-	private int tax;
+	private int tax;//If tax tile, holds tax amount
+	private int buildings;//Number of buildings on tile
 	
-	private int buildings = 0;
-	
-	private boolean allColourOwned;
-	private String colour;
+	private boolean mortgaged;
+	private boolean allColourOwned;//Is this tiles color group all owned by the same player
 	
 	public int x;	//stores tile x position
 	public int y;	//stores tile y position 
 
-	public Tile(int numberl,int posx, int posy){
-		number = numberl;
+	public Tile(int tileNumber,int posx, int posy){
+		this.number = tileNumber;
 		this.price = 0;
-		x=posx;
-		y=posy;
-		ownedByPlayer = -1; // -1 denotes no owner
+		this.x=posx;
+		this.y=posy;
+		this.ownedByPlayer = -1; // -1 denotes no owner
+		this.buildings = 0;
+		this.mortgaged = false;
 	}
 
 	public void setImage(Image img) {
@@ -85,7 +87,6 @@ public class Tile {
 		return this.ownedByPlayer;
 	}
 	
-	
 	public String getName() {
 		return this.propertyName;
 	}
@@ -98,7 +99,6 @@ public class Tile {
 	public void setShortname(String name) {
 		this.propertyShortname = name;
 	}
-	
 	
 	public void setPrice(int value) {
 		this.price = value;
@@ -113,8 +113,8 @@ public class Tile {
 		return this.mortgageValue;
 	}
 	
-	
 	public int getRent() {
+		//If color group is all owned by same player, chack number of buildings
 		if (buildings == 0 && isAllColourOwned()) {
 			return (this.rents[buildings] * 2);
 		}
@@ -140,15 +140,14 @@ public class Tile {
 	public void setMortgaged(boolean mortgaged) {
 		this.mortgaged = mortgaged;
 	}
-
 	
-	//get num of building
+	//Get number of building
 	public int getBuildings() {
 		return buildings;
-	}	// add x num of buildings
+	}	// add x number of buildings
 	public void addBuildings(int num) {
 		this.buildings += num;
-	}	//remove x num of buildings
+	}	//remove x number of buildings
 	public void removeBuildings(int num) {
 		this.buildings -= num;
 	}	
@@ -160,7 +159,7 @@ public class Tile {
 		return gain;
 	}
 
-	//set house and hotel price
+	//Set house and hotel price
 	public int getHousePrice() {
 		return housePrice;
 	}
@@ -168,7 +167,6 @@ public class Tile {
 		this.housePrice = housePrice;
 	}
 
-	
 	public String getColour() {
 		return colour;
 	}

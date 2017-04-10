@@ -1,5 +1,17 @@
 package cards;
 
+/*
+ *---Tophat---
+ * Brian O'Leary - 13475468
+ * Conal O'Neill - 13315756
+ * Daniel Graham - 15319536
+ * 
+ * This Class is used to handle creating and assigning info to our cards used in chance and community chest.
+ * It first creates 16 blank cards in each of our 2 decks. These decks are ArrayLists held in our main class 'GameScreen'.
+ * It then cycles through these cards and assigns the relevant information as it does so.
+ * 
+ * */
+
 import monopoly.GameScreen;
 
 public class CardInfo {
